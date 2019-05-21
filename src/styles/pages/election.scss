@@ -1,0 +1,35 @@
+@import '../_alignment.scss';
+
+.row {
+  padding-top: $gutter;
+}
+
+.table tr.is-selected {
+  background-color: lightblue !important;
+}
+#election-form {
+  width: 100%;
+  .candidates-table {
+    width: 100%;
+    border: 1px solid blue;
+    tr {
+      width: 100%;
+    }
+
+    .party-name {
+      word-break: break-all;
+      display: block;
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .candidate-name {
+      word-break: break-all;
+      color: #363636;
+      font-size: 1.5rem;
+      font-weight: 600;
+      line-height: 1.125;
+    }
+  }
+}

@@ -1,0 +1,10 @@
+@import '../_alignment.scss';
+
+.pageloader {
+  padding:$gutter;
+  .title {
+    width: 100%;
+    display: inline-block;
+    word-break: break-word;
+  }
+}

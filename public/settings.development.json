@@ -1,0 +1,5 @@
+{
+  "apiHost": "http://localhost",
+  "apiPort": "5000",
+  "apiPath": "/voterify-7637e/us-central1/voterifyApi/"
+}

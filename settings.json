@@ -1,0 +1,13 @@
+{
+  "dev": {
+    "appDomain" : "http://localhost",
+    "appPort": "8080",
+    "apiDomain" : "http://localhost",
+    "apiPort": "5000",
+    "apiEndpoint": "/voterify-7637e/us-central1/voterifyApi/"
+  },
+  "endpoints": {
+    "load" : "/load",
+    "verify" : "/verify/:phone"
+  }
+}

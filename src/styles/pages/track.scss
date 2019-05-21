@@ -1,0 +1,14 @@
+@import '../_alignment.scss';
+#track-input {
+  margin-bottom: $gutter;
+  margin-top: $gutter;
+}
+
+.field {
+  label {
+    font-weight: bold;
+  }
+  div {
+    margin-bottom:$gutter;
+  }
+}

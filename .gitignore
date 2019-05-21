@@ -1,0 +1,6 @@
+node_modules/
+.firebaserc
+.firebase/
+.secrets/
+.idea/
+*.log

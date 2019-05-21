@@ -1,0 +1,25 @@
+@import '../typography';
+
+.bubble {
+  width:320px;
+  height:auto;
+  margin:auto;
+}
+
+.home-bubble-container {
+  font: 16px $font-family;
+
+  a {
+    color:white;
+    font-weight: bold;
+  }
+}
+
+.bubble-fat {
+  width: 400px;
+  height: auto;
+}
+
+.bubble-outline {
+  border: 3px solid blue;
+}
