@@ -5,5 +5,6 @@ import PageLoader from "./page-loader.vue";
 import TextInput from "./text-input.vue";
 import DateDisplay from "./date.vue";
 import ElectionChooser from "./election-chooser.vue";
+import Spinner from "./spinner.vue";
 
-export { Bubble, Button, ProgressCounter, PageLoader, TextInput, DateDisplay, ElectionChooser};
+export { Bubble, Button, ProgressCounter, PageLoader, TextInput, DateDisplay, ElectionChooser, Spinner};

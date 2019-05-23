@@ -5,9 +5,12 @@
     </div>
     <div class="box bubble-outline votes-table-container has-text-centered">
       <election-chooser :onChange="onChangeElection"></election-chooser>
+      <div v-show="!isReady">
+        <spinner></spinner>
+      </div>
       <div class="home-bubble-container content" v-show="isReady">
         {{ $content("count-header", "Vote Counts") }}
-        <div class="padded" v-if="isReady">
+        <div class="padded" v-if="isMounted" v-show="isReady">
           <vuetable-pagination
             @vuetable-pagination:change-page="onChangePage"
             ref="pagination"
@@ -18,6 +21,7 @@
             :fields="fields"
             :http-options="httpOptions"
             @vuetable:pagination-data="onPaginationData"
+            @vuetable:load-success="onTableLoaded"
             data-path="mydata"
             pagination-path="pagination"
             ref="vuetable"
@@ -36,7 +40,8 @@ import {
     TextInput,
     ProgressCounter,
     DateDisplay,
-    ElectionChooser
+    ElectionChooser,
+    Spinner
 } from "@/components/ui/all";
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { session } from "@/factory/session";
@@ -57,7 +62,8 @@ import CssForBootstrap4 from '@/components/ui/VuetableCss.js'
         Button,
         TextInput,
         ProgressCounter,
-        DateDisplay
+        DateDisplay,
+        Spinner
     }
 })
 export default class CountPage extends Vue {
@@ -67,6 +73,7 @@ export default class CountPage extends Vue {
     data() {
         return {
             isReady: false as boolean,
+            isMounted: false as boolean,
             electionName: "" as string,
             election: null as Election,
             css: CssForBootstrap4
@@ -81,10 +88,11 @@ export default class CountPage extends Vue {
     }
 
     onChangeElection(election:Election) {
+        (this as any).isMounted = true;
+        (this as any).isReady = false;
         this.electionId = election.id;
         (this as any).election = election;
         (this as any).electionName = election.name;
-        (this as any).isReady = true;
         // prevent double loading
         if(this.prevElectionId !== this.electionId) {
             this.prevElectionId = this.electionId;
@@ -152,7 +160,12 @@ export default class CountPage extends Vue {
         ((this.$refs.pagination) as any).setPaginationData(paginationData)
     }
 
+    onTableLoaded() {
+      (this as any).isReady = true;
+    }
+
     onChangePage(page) {
+        (this as any).isReady = false;
         ((this.$refs.vuetable) as any).changePage(page)
     }
 
