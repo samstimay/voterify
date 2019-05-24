@@ -2,12 +2,13 @@
   <div id="app">
     <div v-if="isLoaded">
       <PageLoader></PageLoader>
-      <swiper class="quotes-slider" :options="swiperOption">
-        <swiper-slide class="is-italic" v-for="quote in quotes">{{ quote }}</swiper-slide>
-      </swiper>
       <h2 class="has-background-info has-text-centered is-0-fullhd">Beta Version of Site</h2>
       <h1>{{ lang("app-name") }}</h1>
       <router-view></router-view>
+
+      <swiper class="quotes-slider" :options="swiperOption">
+        <swiper-slide class="is-italic" v-for="quote in quotes">{{ quote }}</swiper-slide>
+      </swiper>
 
       <div id="recaptcha-container"></div>
     </div>
