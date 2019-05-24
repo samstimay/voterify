@@ -26,6 +26,7 @@
     import { session } from "@/factory/session";
     import { api } from "@/factory/api";
     import firebaseAuth from "@/factory/firebase-auth";
+    import { electionFactory } from "@/factory/election-factory";
 
     @Component({
         components: {
@@ -66,7 +67,10 @@
         onSelect() {
             const selected = this.getSelected();
             session.setElection(selected);
-            this.$router.push("/election");
+            electionFactory.hasVoterVoted().then(voted => {
+                if (voted) this.$router.push("/already");
+                else this.$router.push("/election");
+            });
         }
     }
 </script>

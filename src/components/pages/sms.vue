@@ -204,10 +204,7 @@ export default class SMSPage extends Vue {
             instance = this;
         // voter exists, have they voted?
         if (voter.voterId || voter.uid) {
-            electionFactory.hasVoterVoted().then(voted => {
-                if (voted) this.$router.push("/already");
-                else this.$router.push("/chose");
-            });
+            this.$router.push("/chose");
         }
         // voter does not exist, create them
         else {
