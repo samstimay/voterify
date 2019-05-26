@@ -1,25 +1,31 @@
 <template>
     <div class="hello">
-        <Bubble text="" class="bubble-outline" v-if="isLoaded">
-            <election-chooser :onChange="onElectionChanged"></election-chooser>
-            <p>
-                <span>{{ $content('selected', 'Selected') }} : {{ displaySelected() }}</span>
-            </p>
-            <p>
-                <input
-                        id="pick-election-button"
-                        class="button is-large is-centered"
-                        type="button"
-                        :value="$ui('select', 'Select')"
-                        @click="onSelect"
-                />
-            </p>
+        <Bubble text="" class="bubble-outline">
+            <div v-show="!isLoaded">
+                <spinner></spinner>
+            </div>
+            <div v-show="isLoaded">
+                <election-chooser
+                    :onChange="onElectionChanged"
+                    :onLoaded="onElectionLoaded">
+                </election-chooser>
+                <p>&nbsp;</p>
+                <p>
+                    <input
+                            id="pick-election-button"
+                            class="button is-large is-centered"
+                            type="button"
+                            :value="$ui('select', 'Select')"
+                            @click="onSelect"
+                    />
+                </p>
+            </div>
         </Bubble>
     </div>
 </template>
 
 <script lang="ts">
-    import { Bubble, Button, TextInput, ProgressCounter, ElectionChooser } from "@/components/ui/all";
+    import { Bubble, Button, TextInput, ProgressCounter, ElectionChooser, Spinner } from "@/components/ui/all";
     import { Component, Prop, Vue } from "vue-property-decorator";
     import Election from "@/models/election";
     import Vote from "@/models/vote";
@@ -27,6 +33,7 @@
     import { api } from "@/factory/api";
     import firebaseAuth from "@/factory/firebase-auth";
     import { electionFactory } from "@/factory/election-factory";
+    import { voterFactory } from "@/factory/voter-factory";
 
     @Component({
         components: {
@@ -34,7 +41,8 @@
             Button,
             TextInput,
             ProgressCounter,
-            ElectionChooser
+            ElectionChooser,
+            Spinner
         }
     })
     export default class ChosePage extends Vue {
@@ -46,9 +54,9 @@
             }
         }
 
-        created() {
-            if (!firebaseAuth.isAuthorized()) this.$router.push("/");
-            (this as any).isLoaded = true;
+        async created() {
+            const voter = await voterFactory.getVoter();
+            if (!firebaseAuth.isAuthorized() || !voter || !voter.voterId) this.$router.push("/");
         }
 
         getSelected() {
@@ -58,6 +66,10 @@
         displaySelected() {
             if(this._election) return this._election.name;
             return '';
+        }
+
+        onElectionLoaded() {
+            (this as any).isLoaded = true;
         }
 
         onElectionChanged(election:Election) {
