@@ -72,7 +72,7 @@
                     {{
                         $content(
                             "home-footer",
-                            "A parallel election prototype."
+                            "Voting made whole."
                         )
                     }}
                 </div>
