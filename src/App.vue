@@ -9,8 +9,6 @@
       <swiper class="quotes-slider" :options="swiperOption">
         <swiper-slide class="is-italic" v-for="quote in quotes">{{ quote }}</swiper-slide>
       </swiper>
-
-      <div id="recaptcha-container"></div>
     </div>
   </div>
 </template>
