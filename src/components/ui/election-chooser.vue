@@ -27,6 +27,7 @@
     export default class ElectionChooser extends Vue {
         private _elections : Election[] = [];
         @Prop() onChange : Function;
+        @Prop() onLoaded? : Function;
 
         data() {
             return {
@@ -41,9 +42,13 @@
         }
 
         async load() {
+            const instance = (this as any);
             this._elections = await electionFactory.getElections();
-            (this as any).selected = this._elections[0].id;
-            (this as any).isLoaded = true;
+            instance.selected = this._elections[0].id;
+            instance.isLoaded = true;
+            if(instance.onLoaded) {
+                instance.onLoaded();
+            }
             this.onChange(this._elections[0]);
         }
 
