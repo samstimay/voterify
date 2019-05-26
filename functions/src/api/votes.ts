@@ -91,7 +91,7 @@ class VoteApi {
                 .where("electionId", "==", electionId)
                 .get()
                 .then((data: QuerySnapshot) => {
-                    let result = [] as Object[];
+                    const result = [] as Object[];
                     data.docs.forEach(function(value: QueryDocumentSnapshot) {
                         result.push({
                             voterId: value.get("voterId"),
@@ -129,7 +129,7 @@ class VoteApi {
                 .limit(perPage)
                 .get()
                 .then((data: QuerySnapshot) => {
-                    let result = [] as Object[];
+                    const result = [] as Object[];
                     data.docs.forEach(function(value: QueryDocumentSnapshot) {
                         result.push({
                             voterId: value.get("voterId"),
@@ -168,7 +168,7 @@ class VoteApi {
                 .where("electionId", "==", electionId)
                 .get()
                 .then((data: QuerySnapshot) => {
-                    let result = [] as Object[];
+                    const result = [] as Object[];
                     data.docs.forEach(function(value: QueryDocumentSnapshot) {
                         const candidateId = value.get("candidateId");
                         const existing = result.filter(function(x) {
@@ -292,7 +292,7 @@ class VoteApi {
         try {
             // todo: need to auth before call this
             // remove non-digit
-            let phoneNumber = (tracking as any).phone.replace(/\D+/g, "");
+            const phoneNumber = (tracking as any).phone.replace(/\D+/g, "");
             const voter = (await VoterApi.getVoter(
                 phoneNumber,
                 undefined
