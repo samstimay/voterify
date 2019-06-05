@@ -12,7 +12,8 @@
         "manifesto-link": "The Voterify Manifesto",
         "sms-new-code": "I need a new SMS Code",
         "back-election": "Back to Election",
-        "loading": "Loading..."
+        "loading": "Loading...",
+        "ok": "Ok"
     },
     "home-begin": "To begin enter your valid US cell phone number.",
     "home-footer": "Voting made whole.",
@@ -72,5 +73,8 @@
     "count-header": "Vote Counts",
     "candidate": "Candidate",
     "voterId": "Voter Id",
-    "date": "Date"
+    "date": "Date",
+    "cookies": "Cookies",
+    "cookies-required": "This site requires cookies, please enable them in your browser.",
+    "check-for-cookies": "Checking for cookie power..."
 }

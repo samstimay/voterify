@@ -1,6 +1,6 @@
 <template>
     <div class="hello">
-        <Bubble text="" class="bubble-outline">
+        <Bubble text="" class="bubble-outline" v-show="isLoaded">
             <div class="field">
                 <div class="control">
                     <vue-tel-input
@@ -82,6 +82,31 @@
                 <progress-counter currentPage="0" pageCount="4"></progress-counter>
             </div>
         </Bubble>
+
+        <div class="modal is-active" v-show="showModal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">
+                        {{ $content("cookies", "Cookies") }}
+                    </p>
+                    <button class="delete" aria-label="close"></button>
+                </header>
+                <section class="modal-card-body">
+                    {{
+                    $content(
+                    "cookies-required",
+                    "This site requires cookies, please enable them in your browser."
+                    )
+                    }}
+                </section>
+                <footer class="modal-card-foot space-evenly">
+                    <button class="button is-success" @click="onClickOk">
+                        {{ $ui("ok", "OK") }}
+                    </button>
+                </footer>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -109,12 +134,24 @@ export default class HomePage extends Vue {
         return {
             constants: constants,
             phoneNumber: this.phone,
-            isValid: false
+            isLoaded: false,
+            isValid: false,
+            showModal: false
         };
     }
 
     public mounted() {
-        const instance = this;
+        this.load();
+    }
+
+    public load() {
+        const instance = (this as any);
+
+        if(!instance.areCookiesEnabled()) {
+            instance.showModal = true;
+            return;
+        }
+
         (window as any).recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
             "send-sms-button",
             {
@@ -126,6 +163,7 @@ export default class HomePage extends Vue {
         );
         const phoneInput: Element = document.querySelectorAll('[type="tel"]')[0];
         (phoneInput as any).focus();
+        instance.isLoaded = true;
     }
 
     public onInput({ number, isValid, country }) {
@@ -151,5 +189,29 @@ export default class HomePage extends Vue {
     }
 
     public onRestartCaptcha() {}
+
+    public areCookiesEnabled() {
+        try {
+            document.cookie = 'cookietest=1';
+            var cookiesEnabled = document.cookie.indexOf('cookietest=') !== -1;
+            document.cookie = 'cookietest=1; expires=Thu, 01-Jan-1970 00:00:01 GMT';
+            return cookiesEnabled;
+        } catch (e) {
+            return false;
+        }
+    }
+
+    public onClickOk() {
+        const instance = (this as any);
+        instance.showModal = false;
+        EventHub.$emit("showPageLoader", {
+            message: (instance as any).$content(
+                "check-for-cookies",
+                "Checking for cookie power..."
+            ),
+            callBackFn: instance.load,
+            timeout: 1000
+        });
+    }
 }
 </script>
