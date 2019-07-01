@@ -33,6 +33,3 @@ npm run test
 ```
 npm run lint
 ```
-
-### The block-chain question
-Voting does not need block-chain technology.  Votes are not linked to other votes and only the final state of the voting database matters (when the election officialy ends).  If each person can validate their own vote and the entire sum of votes can be tallied by public organizations than the correct results can be assured.
