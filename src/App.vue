@@ -6,8 +6,12 @@
       <h1>{{ lang("app-name") }}</h1>
       <router-view></router-view>
 
+      <div class="modal-container">
+          <component :is="currentModal" v-bind="currentModalParams"></component>
+      </div>
+
       <swiper class="quotes-slider" :options="swiperOption">
-        <swiper-slide class="is-italic" v-for="quote in quotes">{{ quote }}</swiper-slide>
+        <swiper-slide class="is-italic" v-for="(quote, index) in quotes" :key="index">{{ quote }}</swiper-slide>
       </swiper>
     </div>
   </div>
@@ -24,6 +28,7 @@ import { swiper, swiperSlide } from "vue-awesome-swiper";
 import { constants } from "@/factory/constants";
 import { api } from "@/factory/api";
 import { lang, Lang } from "@/factory/lang";
+import { EventHub } from "@/factory/event-hub";
 
 @Component({
     components: {
@@ -49,7 +54,9 @@ export default class App extends Vue {
                     nextEl: ".swiper-button-next",
                     prevEl: ".swiper-button-prev"
                 }
-            }
+            },
+            currentModal: null,
+            currentModalParams: null
         };
     }
 
@@ -58,7 +65,7 @@ export default class App extends Vue {
     }
 
     public created() {
-        const instance = this;
+        const instance = (this as any);
         lang.init().then(function() {
             api.init().then(function() {
                 api.getElections().then(function(data) {
@@ -66,6 +73,10 @@ export default class App extends Vue {
                 });
             });
         });
+        EventHub.$on("showModal", function(params) {
+            instance.currentModal = params.modal 
+            instance.currentModalParams = Object.assign(params, { showModal: true })
+        })
     }
 }
 </script>

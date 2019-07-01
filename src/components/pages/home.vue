@@ -82,31 +82,6 @@
                 <progress-counter currentPage="0" pageCount="4"></progress-counter>
             </div>
         </Bubble>
-
-        <div class="modal is-active" v-show="showModal">
-            <div class="modal-background"></div>
-            <div class="modal-card">
-                <header class="modal-card-head">
-                    <p class="modal-card-title">
-                        {{ $content("cookies", "Cookies") }}
-                    </p>
-                    <button class="delete" aria-label="close"></button>
-                </header>
-                <section class="modal-card-body">
-                    {{
-                    $content(
-                    "cookies-required",
-                    "This site requires cookies, please enable them in your browser."
-                    )
-                    }}
-                </section>
-                <footer class="modal-card-foot space-evenly">
-                    <button class="button is-success" @click="onClickOk">
-                        {{ $ui("ok", "OK") }}
-                    </button>
-                </footer>
-            </div>
-        </div>
     </div>
 </template>
 
@@ -118,6 +93,7 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 import firebase from "@/factory/firebase-provider";
 import { constants } from "@/factory/constants";
 import firebaseAuth from "@/factory/firebase-auth";
+import CookiesModal from "@/components/modals/cookies.vue";
 
 @Component({
     components: {
@@ -135,8 +111,7 @@ export default class HomePage extends Vue {
             constants: constants,
             phoneNumber: this.phone,
             isLoaded: false,
-            isValid: false,
-            showModal: false
+            isValid: false
         };
     }
 
@@ -148,8 +123,10 @@ export default class HomePage extends Vue {
         const instance = (this as any);
 
         if(!instance.areCookiesEnabled()) {
-            instance.showModal = true;
-            return;
+            EventHub.$emit("showModal", {
+                modal: CookiesModal,
+                callBackFn: instance.onClickModalOk
+            })
         }
 
         (window as any).recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
@@ -201,9 +178,8 @@ export default class HomePage extends Vue {
         }
     }
 
-    public onClickOk() {
+    public onClickModalOk() {
         const instance = (this as any);
-        instance.showModal = false;
         EventHub.$emit("showPageLoader", {
             message: (instance as any).$content(
                 "check-for-cookies",
