@@ -18,7 +18,7 @@ class Logger {
             statusCode: res.statusCode,
             statusMessage: res.statusMessage,
             url: req.url,
-            ip: req.headers['x-forwarded-for'] || req.connection.remoteAddress
+            ip: req.headers["x-forwarded-for"] || req.connection.remoteAddress
         });
     }
 }

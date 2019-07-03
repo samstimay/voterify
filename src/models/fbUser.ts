@@ -8,11 +8,11 @@ export default class FbUser {
         phone: string,
         token: string,
         refreshToken: string,
-        uid: string,
+        uid: string
     ) {
-        this.phone = phone || '';
-        this.token = token || '';
-        this.refreshToken = refreshToken || '';
-        this.uid = uid || '';
+        this.phone = phone || "";
+        this.token = token || "";
+        this.refreshToken = refreshToken || "";
+        this.uid = uid || "";
     }
 }

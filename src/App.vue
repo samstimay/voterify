@@ -1,20 +1,31 @@
 <template>
-  <div id="app">
-    <div v-if="isLoaded">
-      <PageLoader></PageLoader>
-      <h2 class="has-background-info has-text-centered is-0-fullhd">Beta Version of Site</h2>
-      <h1>{{ lang("app-name") }}</h1>
-      <router-view></router-view>
+    <div id="app">
+        <div v-if="isLoaded">
+            <PageLoader></PageLoader>
+            <h2 class="has-background-info has-text-centered is-0-fullhd">
+                Beta Version of Site
+            </h2>
+            <h1>{{ lang("app-name") }}</h1>
+            <router-view></router-view>
 
-      <div class="modal-container">
-          <component :is="currentModal" v-bind="currentModalParams"></component>
-      </div>
+            <div class="modal-container">
+                <component
+                    :is="currentModal"
+                    v-bind="currentModalParams"
+                ></component>
+            </div>
 
-      <swiper class="quotes-slider" :options="swiperOption">
-        <swiper-slide class="is-italic" v-for="(quote, index) in quotes" :key="index">{{ quote }}</swiper-slide>
-      </swiper>
+            <swiper class="quotes-slider" :options="swiperOption">
+                <swiper-slide
+                    class="is-italic"
+                    v-for="(quote, index) in quotes"
+                    :key="index"
+                >
+                    {{ quote }}
+                </swiper-slide>
+            </swiper>
+        </div>
     </div>
-  </div>
 </template>
 
 <script lang="ts">
@@ -65,7 +76,7 @@ export default class App extends Vue {
     }
 
     public created() {
-        const instance = (this as any);
+        const instance = this as any;
         lang.init().then(function() {
             api.init().then(function() {
                 api.getElections().then(function(data) {
@@ -74,9 +85,11 @@ export default class App extends Vue {
             });
         });
         EventHub.$on("showModal", function(params) {
-            instance.currentModal = params.modal 
-            instance.currentModalParams = Object.assign(params, { showModal: true })
-        })
+            instance.currentModal = params.modal;
+            instance.currentModalParams = Object.assign(params, {
+                showModal: true
+            });
+        });
     }
 }
 </script>

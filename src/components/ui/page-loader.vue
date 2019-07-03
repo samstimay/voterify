@@ -1,7 +1,6 @@
 <template>
     <div class="pageloader" v-bind:class="{ 'is-active': active }">
-        <span class="title" v-html="text">
-        </span>
+        <span class="title" v-html="text"></span>
     </div>
 </template>
 

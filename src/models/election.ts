@@ -1,4 +1,4 @@
-import Candidate from './candidate';
+import Candidate from "./candidate";
 
 export default class Election {
     public name: string;
@@ -12,11 +12,11 @@ export default class Election {
         id?: string,
         region?: string,
         date?: Date,
-        candidates?: Candidate[],
+        candidates?: Candidate[]
     ) {
-        this.name = name || '';
-        this.id = id || '';
-        this.region = region || '';
+        this.name = name || "";
+        this.id = id || "";
+        this.region = region || "";
         this.date = date || new Date();
 
         this.candidates = [];
@@ -27,9 +27,9 @@ export default class Election {
 
     public candidateName(candidateId: string): string {
         const result = this.candidates.filter(
-            (candidate) => candidate.id === candidateId,
+            candidate => candidate.id === candidateId
         );
-        return result[0] ? result[0].name : '';
+        return result[0] ? result[0].name : "";
     }
 
     public valid(): boolean {

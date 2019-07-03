@@ -58,9 +58,9 @@
                 <div clas="padded">&nbsp;</div>
                 <div class="is-2">
                     <router-link
-                            tag="button"
-                            to="/track"
-                            class="button is-link"
+                        tag="button"
+                        to="/track"
+                        class="button is-link"
                     >
                         {{ $ui("track-link", "Track your Vote") }}
                     </router-link>
@@ -69,17 +69,15 @@
 
                 <hr />
                 <div class="is-2">
-                    {{
-                        $content(
-                            "home-footer",
-                            "Voting made whole."
-                        )
-                    }}
+                    {{ $content("home-footer", "Voting made whole.") }}
                 </div>
             </div>
 
             <div class="page-counter" v-show="isValid">
-                <progress-counter currentPage="0" pageCount="4"></progress-counter>
+                <progress-counter
+                    currentPage="0"
+                    pageCount="4"
+                ></progress-counter>
             </div>
         </Bubble>
     </div>
@@ -120,13 +118,13 @@ export default class HomePage extends Vue {
     }
 
     public load() {
-        const instance = (this as any);
+        const instance = this as any;
 
-        if(!instance.areCookiesEnabled()) {
+        if (!instance.areCookiesEnabled()) {
             EventHub.$emit("showModal", {
                 modal: CookiesModal,
                 callBackFn: instance.onClickModalOk
-            })
+            });
         }
 
         (window as any).recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
@@ -138,7 +136,9 @@ export default class HomePage extends Vue {
                 }
             }
         );
-        const phoneInput: Element = document.querySelectorAll('[type="tel"]')[0];
+        const phoneInput: Element = document.querySelectorAll(
+            '[type="tel"]'
+        )[0];
         (phoneInput as any).focus();
         instance.isLoaded = true;
     }
@@ -169,9 +169,10 @@ export default class HomePage extends Vue {
 
     public areCookiesEnabled() {
         try {
-            document.cookie = 'cookietest=1';
-            var cookiesEnabled = document.cookie.indexOf('cookietest=') !== -1;
-            document.cookie = 'cookietest=1; expires=Thu, 01-Jan-1970 00:00:01 GMT';
+            document.cookie = "cookietest=1";
+            var cookiesEnabled = document.cookie.indexOf("cookietest=") !== -1;
+            document.cookie =
+                "cookietest=1; expires=Thu, 01-Jan-1970 00:00:01 GMT";
             return cookiesEnabled;
         } catch (e) {
             return false;
@@ -179,7 +180,7 @@ export default class HomePage extends Vue {
     }
 
     public onClickModalOk() {
-        const instance = (this as any);
+        const instance = this as any;
         EventHub.$emit("showPageLoader", {
             message: (instance as any).$content(
                 "check-for-cookies",

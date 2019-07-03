@@ -3,14 +3,22 @@
         <Bubble class="bubble-outline">
             <div class="home-bubble-container">
                 <p>
-                    {{ $content("voted-already", "You have already voted in this election.") }}
+                    {{
+                        $content(
+                            "voted-already",
+                            "You have already voted in this election."
+                        )
+                    }}
                 </p>
                 <p>
                     {{ electionName() }}
                 </p>
                 <p>{{ voterId() }}</p>
                 <p>
-                    <router-link class="button is-centered is-link" :to="{path:'/track', query: {voterId: voterId() }}">
+                    <router-link
+                        class="button is-centered is-link"
+                        :to="{ path: '/track', query: { voterId: voterId() } }"
+                    >
                         {{ $ui("track-link", "Track your Vote") }}
                     </router-link>
                 </p>

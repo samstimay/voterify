@@ -7,4 +7,13 @@ import DateDisplay from "./date.vue";
 import ElectionChooser from "./election-chooser.vue";
 import Spinner from "./spinner.vue";
 
-export { Bubble, Button, ProgressCounter, PageLoader, TextInput, DateDisplay, ElectionChooser, Spinner};
+export {
+    Bubble,
+    Button,
+    ProgressCounter,
+    PageLoader,
+    TextInput,
+    DateDisplay,
+    ElectionChooser,
+    Spinner
+};

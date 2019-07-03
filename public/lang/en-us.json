@@ -1,5 +1,5 @@
 {
-    "app-name": "Voterify",
+    "app-name": "Votery",
     "ui-elements": {
         "home": "Home",
         "send": "Send",
@@ -8,8 +8,8 @@
         "no": "NO",
         "select": "Select",
         "phone-number": "Phone Number",
-        "instructions-link": "How to use Voterify",
-        "manifesto-link": "The Voterify Manifesto",
+        "instructions-link": "How to use Votery",
+        "manifesto-link": "The Votery Manifesto",
         "sms-new-code": "I need a new SMS Code",
         "back-election": "Back to Election",
         "loading": "Loading...",
@@ -30,7 +30,7 @@
         "Voting should be quick, easy and readily available."
     ],
     "instructions": "Instructions",
-    "instructions-header": "Voterify is a parallel election site using simple cell phone and SMS verification. The goal is to provide an easy way for people to vote in under 60 seconds. And the best part is you get a receipt to track your vote.",
+    "instructions-header": "Votery is a parallel election site using simple cell phone and SMS verification. The goal is to provide an easy way for people to vote in under 60 seconds. And the best part is you get a receipt to track your vote.",
     "instruction-lines": [
         "Enter your cell phone number. You will not be called and your number will kept private. Your cell phone number is the only piece of information we will collect from you.",
         "Next you must authenticate with the Google SMS gateway to verify your phone. After Verification, you have 5 minutes to cast your ballot before you must restart the process.",

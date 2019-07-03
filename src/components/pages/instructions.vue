@@ -20,10 +20,7 @@
                     </li>
                 </ol>
                 <div class="padded">
-                    <router-link
-                        class="button is-link"
-                        to="/"
-                    >
+                    <router-link class="button is-link" to="/">
                         {{ $ui("home", "Home") }}
                     </router-link>
                 </div>

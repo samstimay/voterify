@@ -10,7 +10,7 @@ class VoterApi {
     public static createEndpoints(app: Application) {
         app.get("/getVoter", function(req: Request, res: Response) {
             logger.message("GET /getVoter", logger.parseExpress(req, res));
-            return VoterApi.getVoter(req.query.id, res) ;
+            return VoterApi.getVoter(req.query.id, res);
         });
         app.get("/createVoter", function(req: Request, res: Response) {
             logger.message("GET /createVoter", logger.parseExpress(req, res));
@@ -26,8 +26,8 @@ class VoterApi {
         });
     }
 
-    public static getVoter(phone: string, res? : Response): Promise<object> {
-        const phoneKey = phone.replace(/[^0-9\.]+/g, '').trim();
+    public static getVoter(phone: string, res?: Response): Promise<object> {
+        const phoneKey = phone.replace(/[^0-9\.]+/g, "").trim();
         return firebaseApi
             .firestore()
             .collection("voters")
@@ -42,7 +42,7 @@ class VoterApi {
                 };
                 console.log("gvr", result);
                 console.log("res", res);
-                if(res) return res.json(result);
+                if (res) return res.json(result);
                 return result;
             })
             .catch((err: any) => {

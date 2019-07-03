@@ -1,5 +1,5 @@
 const constants = {
-    appName: "Voterify",
+    appName: "Votery",
     interpolate: "%%"
 };
 

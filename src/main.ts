@@ -22,8 +22,8 @@ Vue.use(VueRouter);
 Vue.use(VueTelInput);
 Vue.use(VueAwesomeSwiper);
 Vue.use(Translate);
-Vue.component('vuetable', Vuetable)
-Vue.component('vuetable-pagination', VuetablePagination)
+Vue.component("vuetable", Vuetable);
+Vue.component("vuetable-pagination", VuetablePagination);
 
 window["VfyEnvironment"] = process.env.NODE_ENV;
 

@@ -5,27 +5,27 @@ import { EventHub } from "@/factory/event-hub";
 import { api } from "@/factory/api";
 import * as firebase from "firebase";
 import User = firebase.User;
-import {voterFactory} from '@/factory/voter-factory';
-import Election from '@/models/election';
+import { voterFactory } from "@/factory/voter-factory";
+import Election from "@/models/election";
 
 class ElectionFactory {
-    private _elections : Election[] = [];
+    private _elections: Election[] = [];
 
     async getDefaultElection() {
         const elections = await api.getElections();
         return elections[0];
     }
 
-    async getElection() : Promise<Election> {
+    async getElection(): Promise<Election> {
         let election = session.getElection();
-        if(election.id) return election;
+        if (election.id) return election;
         election = await this.getDefaultElection();
         session.setElection(election);
         return election;
     }
 
-    async getElections() : Promise<Election[]> {
-        if(this._elections === null || this._elections.length === 0) {
+    async getElections(): Promise<Election[]> {
+        if (this._elections === null || this._elections.length === 0) {
             this._elections = await api.getElections();
         }
         return this._elections;

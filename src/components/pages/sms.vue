@@ -1,95 +1,104 @@
 <template>
-  <div class="hello">
-    <Bubble text="Verifying your number..." class="bubble-outline">
-      <div class="field">
-        <div class="control">
-          <input
-            id="sms-input"
-            type="tel"
-            class="is-large input is-centered has-text-centered"
-            maxlength="6"
-            v-model="sms"
-            @input="onChange"
-            placeholder="######"
-            autocomplete="off"
-          >
-        </div>
-      </div>
+    <div class="hello">
+        <Bubble text="Verifying your number..." class="bubble-outline">
+            <div class="field">
+                <div class="control">
+                    <input
+                        id="sms-input"
+                        type="tel"
+                        class="is-large input is-centered has-text-centered"
+                        maxlength="6"
+                        v-model="sms"
+                        @input="onChange"
+                        placeholder="######"
+                        autocomplete="off"
+                    />
+                </div>
+            </div>
 
-      <div class="field is-grouped is-grouped-centered">
-        <div class="control">
-          <input
-            class="button is-large is-centered is-link"
-            type="button"
-            :disabled="!isValid"
-            :value="$ui('send', 'Send')"
-            @click="onClick"
-          >
-        </div>
-      </div>
-      <div class="field is-grouped is-grouped-multiline" v-show="!isValid">
-        <div class="is-size-8 is-light is-italic">
-          <p>
-            {{
-            $content(
-            "sms-instructions",
-            "Enter your 6 digit SMS code."
-            )
-            }}
-          </p>
-          <p>
-            {{
-            $content(
-            "sms-didnot",
-            "If you did not receive a code."
-            )
-            }}
-          </p>
-        </div>
-      </div>
-      <div class="field is-grouped is-grouped-multiline" v-show="!isValid">
-        <div class="is-size-8 is-light is-italic">
-          <hr>
-          <p>
-            Having trouble?
-            <input
-              class="button is-centered is-link"
-              type="button"
-              :value="newSmsText"
-              @click="onRestartSms"
+            <div class="field is-grouped is-grouped-centered">
+                <div class="control">
+                    <input
+                        class="button is-large is-centered is-link"
+                        type="button"
+                        :disabled="!isValid"
+                        :value="$ui('send', 'Send')"
+                        @click="onClick"
+                    />
+                </div>
+            </div>
+            <div
+                class="field is-grouped is-grouped-multiline"
+                v-show="!isValid"
             >
-          </p>
-        </div>
-      </div>
-      <div class="field is-grouped has-text-left">
-        <div class="is-size-8 is-light is-italic" v-show="tries > 0">
-          <p>{{ $content("sms-incorrect", "Incorrect SMS code") }}</p>
-          <p>
-            {{
-            $content(
-            "sms-tries",
-            "You have %% chances to enter the correct SMS code.",
-            maxTries - tries
-            )
-            }}
-          </p>
-          <p>
-            <i>
-              {{
-              $content(
-              "sms-didyou",
-              "Did you receive a text message on your cell phone?"
-              )
-              }}
-            </i>
-          </p>
-        </div>
-      </div>
-      <div class="page-counter">
-        <progress-counter currentPage="1" pageCount="4"></progress-counter>
-      </div>
-    </Bubble>
-  </div>
+                <div class="is-size-8 is-light is-italic">
+                    <p>
+                        {{
+                            $content(
+                                "sms-instructions",
+                                "Enter your 6 digit SMS code."
+                            )
+                        }}
+                    </p>
+                    <p>
+                        {{
+                            $content(
+                                "sms-didnot",
+                                "If you did not receive a code."
+                            )
+                        }}
+                    </p>
+                </div>
+            </div>
+            <div
+                class="field is-grouped is-grouped-multiline"
+                v-show="!isValid"
+            >
+                <div class="is-size-8 is-light is-italic">
+                    <hr />
+                    <p>
+                        Having trouble?
+                        <input
+                            class="button is-centered is-link"
+                            type="button"
+                            :value="newSmsText"
+                            @click="onRestartSms"
+                        />
+                    </p>
+                </div>
+            </div>
+            <div class="field is-grouped has-text-left">
+                <div class="is-size-8 is-light is-italic" v-show="tries > 0">
+                    <p>{{ $content("sms-incorrect", "Incorrect SMS code") }}</p>
+                    <p>
+                        {{
+                            $content(
+                                "sms-tries",
+                                "You have %% chances to enter the correct SMS code.",
+                                maxTries - tries
+                            )
+                        }}
+                    </p>
+                    <p>
+                        <i>
+                            {{
+                                $content(
+                                    "sms-didyou",
+                                    "Did you receive a text message on your cell phone?"
+                                )
+                            }}
+                        </i>
+                    </p>
+                </div>
+            </div>
+            <div class="page-counter">
+                <progress-counter
+                    currentPage="1"
+                    pageCount="4"
+                ></progress-counter>
+            </div>
+        </Bubble>
+    </div>
 </template>
 
 <script lang="ts">

@@ -9,9 +9,9 @@ import FbUser from "@/models/fbUser";
 import firebaseAuth from "@/factory/firebase-auth";
 
 class VoterFactory {
-    async getVoter() : Promise<Voter> {
+    async getVoter(): Promise<Voter> {
         const voter = session.getVoter();
-        if(voter.voterId && voter.uid) return voter;
+        if (voter.voterId && voter.uid) return voter;
 
         return await api.getVoter().then(function(voter) {
             session.setVoter(voter);

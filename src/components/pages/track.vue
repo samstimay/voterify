@@ -1,78 +1,89 @@
 <template>
-  <div class="hello">
-    <Bubble text class="bubble-outline">
-      <div class="home-bubble-container content" v-show="isReady">
-        <election-chooser :onChange="onElectionChange"></election-chooser>
-        {{ $content("track-header", "Track your vote") }}
-        <div v-show="!hasTrackingInfo">
-          <div class="field">
-            {{ $content("track-number", "Using tracking number") }}
-            <br>
-            <input
-              id="track-input"
-              class="is-large input is-centered has-text-centered"
-              maxlength="16"
-              v-model="trackingNumber"
-              placeholder="######"
-            >
-            <br>
-            <input
-              class="button is-large is-centered is-link"
-              type="button"
-              :value="$ui('send', 'Send')"
-              @click="onClickTrack"
-            >
-          </div>
-          <!-- <hr/> -->
-          <!--<div class="field">-->
-          <!--{{ $content("track-phone", "Using your phone number") }}-->
-          <!--<br/>-->
-          <!--<vue-tel-input-->
-          <!--class="phone-number-input"-->
-          <!--v-model="trackingPhone"-->
-          <!--:defaultCountry="'us'"-->
-          <!--:placeholder="$ui('phone-number', 'Phone Number')"-->
-          <!--&gt;</vue-tel-input>-->
-          <!--<br/>-->
-          <!--<input-->
-          <!--class="button is-large is-centered is-link"-->
-          <!--type="button"-->
-          <!--:value="$ui('send', 'Send')"-->
-          <!--@click="onClickPhone"-->
-          <!--/>-->
-          <!--</div>-->
-          <div
-            v-show="trackingNotFound"
-          >{{ $content("track-not-found", "Your tracking number was not found in the database.")}}</div>
-        </div>
-        <div v-if="hasTrackingInfo">
-          <div class="field has-text-left">
-            <label>Election</label>
-            <div class="control">{{ electionName }}</div>
-          </div>
-          <div class="field has-text-left">
-            <label>Candidate</label>
-            <div class="control">{{ vote.candidate }}</div>
-          </div>
-          <div class="field has-text-left">
-            <label>Date</label>
-            <div class="control">{{ date() }}</div>
-          </div>
-          <div class="field has-text-left">
-            <label>Voter Id</label>
-            <div class="control">{{ vote.voterId }}</div>
-          </div>
-        </div>
-        <hr>
-        <div class="padded">
-          <router-link class="button is-link" to="/count">{{ $ui("count", "Count all Votes") }}</router-link>
-        </div>
-        <div class="padded">
-          <router-link class="button is-link" to="/">{{ $ui("home", "Home") }}</router-link>
-        </div>
-      </div>
-    </Bubble>
-  </div>
+    <div class="hello">
+        <Bubble text class="bubble-outline">
+            <div class="home-bubble-container content" v-show="isReady">
+                <election-chooser
+                    :onChange="onElectionChange"
+                ></election-chooser>
+                {{ $content("track-header", "Track your vote") }}
+                <div v-show="!hasTrackingInfo">
+                    <div class="field">
+                        {{ $content("track-number", "Using tracking number") }}
+                        <br />
+                        <input
+                            id="track-input"
+                            class="is-large input is-centered has-text-centered"
+                            maxlength="16"
+                            v-model="trackingNumber"
+                            placeholder="######"
+                        />
+                        <br />
+                        <input
+                            class="button is-large is-centered is-link"
+                            type="button"
+                            :value="$ui('send', 'Send')"
+                            @click="onClickTrack"
+                        />
+                    </div>
+                    <!-- <hr/> -->
+                    <!--<div class="field">-->
+                    <!--{{ $content("track-phone", "Using your phone number") }}-->
+                    <!--<br/>-->
+                    <!--<vue-tel-input-->
+                    <!--class="phone-number-input"-->
+                    <!--v-model="trackingPhone"-->
+                    <!--:defaultCountry="'us'"-->
+                    <!--:placeholder="$ui('phone-number', 'Phone Number')"-->
+                    <!--&gt;</vue-tel-input>-->
+                    <!--<br/>-->
+                    <!--<input-->
+                    <!--class="button is-large is-centered is-link"-->
+                    <!--type="button"-->
+                    <!--:value="$ui('send', 'Send')"-->
+                    <!--@click="onClickPhone"-->
+                    <!--/>-->
+                    <!--</div>-->
+                    <div v-show="trackingNotFound">
+                        {{
+                            $content(
+                                "track-not-found",
+                                "Your tracking number was not found in the database."
+                            )
+                        }}
+                    </div>
+                </div>
+                <div v-if="hasTrackingInfo">
+                    <div class="field has-text-left">
+                        <label>Election</label>
+                        <div class="control">{{ electionName }}</div>
+                    </div>
+                    <div class="field has-text-left">
+                        <label>Candidate</label>
+                        <div class="control">{{ vote.candidate }}</div>
+                    </div>
+                    <div class="field has-text-left">
+                        <label>Date</label>
+                        <div class="control">{{ date() }}</div>
+                    </div>
+                    <div class="field has-text-left">
+                        <label>Voter Id</label>
+                        <div class="control">{{ vote.voterId }}</div>
+                    </div>
+                </div>
+                <hr />
+                <div class="padded">
+                    <router-link class="button is-link" to="/count">
+                        {{ $ui("count", "Count all Votes") }}
+                    </router-link>
+                </div>
+                <div class="padded">
+                    <router-link class="button is-link" to="/">
+                        {{ $ui("home", "Home") }}
+                    </router-link>
+                </div>
+            </div>
+        </Bubble>
+    </div>
 </template>
 
 <script lang="ts">
@@ -89,7 +100,7 @@ import { electionFactory } from "@/factory/election-factory";
 import { api } from "@/factory/api";
 import Vote from "@/models/vote";
 import "@/styles/pages/track.scss";
-import Election from '@/models/election';
+import Election from "@/models/election";
 import moment from "moment";
 
 @Component({
@@ -126,10 +137,10 @@ export default class TrackPage extends Vue {
     }
 
     date() {
-      return moment((this as any).vote.date).format("LLLL");
+        return moment((this as any).vote.date).format("LLLL");
     }
 
-    onElectionChange(election:Election) {
+    onElectionChange(election: Election) {
         this.electionId = election.id;
         this._election = election;
         (this as any).electionName = election.name;

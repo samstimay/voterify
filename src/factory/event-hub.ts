@@ -1,6 +1,5 @@
-import {Vue} from 'vue-property-decorator';
+import { Vue } from "vue-property-decorator";
 
 const EventHub = new Vue();
 
-export {EventHub};
-
+export { EventHub };

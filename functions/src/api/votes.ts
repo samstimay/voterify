@@ -194,15 +194,15 @@ class VoteApi {
         }
     }
 
-    public static async createVote(req: Request, res: Response, uid:string) {
+    public static async createVote(req: Request, res: Response, uid: string) {
         // get the user, phone and voter from the auth token uid
         const user = await authApi.getUser(uid);
-        if(!user.phoneNumber || user.phoneNumber.length === 0)
+        if (!user.phoneNumber || user.phoneNumber.length === 0)
             return Errors.onCatch(res, "User not found after auth.");
-        const phone = user.phoneNumber.replace(/[^0-9\.]+/g, '').trim();
+        const phone = user.phoneNumber.replace(/[^0-9\.]+/g, "").trim();
         const voter = await VoterApi.getVoter(phone);
-        if(!(voter as any).exists)
-            return Errors.onCatch(res, "Voter not found after auth: " + phone );
+        if (!(voter as any).exists)
+            return Errors.onCatch(res, "Voter not found after auth: " + phone);
 
         let vote = {};
 

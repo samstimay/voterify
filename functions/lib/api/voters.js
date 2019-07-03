@@ -26,7 +26,7 @@ class VoterApi {
         });
     }
     static getVoter(phone, res) {
-        const phoneKey = phone.replace(/[^0-9\.]+/g, '').trim();
+        const phoneKey = phone.replace(/[^0-9\.]+/g, "").trim();
         return firebase_api_1.firebaseApi
             .firestore()
             .collection("voters")

@@ -10,12 +10,12 @@ export default class Vote {
         candidateId?: string,
         candidate?: string,
         voterId?: string,
-        date?: Date,
+        date?: Date
     ) {
-        this.electionId = electionId || '';
-        this.candidateId = candidateId || '';
-        this.candidate = candidate || '';
-        this.voterId = voterId || '';
+        this.electionId = electionId || "";
+        this.candidateId = candidateId || "";
+        this.candidate = candidate || "";
+        this.voterId = voterId || "";
         this.date = date || new Date();
     }
 }

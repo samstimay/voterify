@@ -12,10 +12,9 @@
 </template>
 
 <script lang="ts">
-    import "../../styles/components/spinner.scss";
-    import { Component, Prop, Vue } from "vue-property-decorator";
+import "../../styles/components/spinner.scss";
+import { Component, Prop, Vue } from "vue-property-decorator";
 
-    @Component
-    export default class Spinner extends Vue {
-    }
+@Component
+export default class Spinner extends Vue {}
 </script>

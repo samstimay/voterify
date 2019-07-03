@@ -27,7 +27,10 @@
                 </div>
             </div>
             <div class="page-counter">
-                <progress-counter currentPage="3" pageCount="4"></progress-counter>
+                <progress-counter
+                    currentPage="3"
+                    pageCount="4"
+                ></progress-counter>
             </div>
         </Bubble>
         <div class="modal is-active" v-show="showModal">
@@ -63,7 +66,12 @@
 
 <script lang="ts">
 import "@/styles/pages/vote.scss";
-import { Bubble, Button, TextInput, ProgressCounter } from "@/components/ui/all";
+import {
+    Bubble,
+    Button,
+    TextInput,
+    ProgressCounter
+} from "@/components/ui/all";
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { session } from "@/factory/session";
 import { api } from "@/factory/api";
@@ -104,7 +112,7 @@ export default class VotePage extends Vue {
     }
     onClickYes() {
         const vote = session.getVote();
-        api.createVote(vote).then((data) => {
+        api.createVote(vote).then(data => {
             console.log("vote status", data);
             session.setVoteStatus((data as any).status);
             this.$router.push("/thanks");

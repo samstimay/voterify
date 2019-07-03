@@ -194,7 +194,7 @@ class VoteApi {
             const user = yield auth_api_1.authApi.getUser(uid);
             if (!user.phoneNumber || user.phoneNumber.length === 0)
                 return log_1.Errors.onCatch(res, "User not found after auth.");
-            const phone = user.phoneNumber.replace(/[^0-9\.]+/g, '').trim();
+            const phone = user.phoneNumber.replace(/[^0-9\.]+/g, "").trim();
             const voter = yield voters_1.VoterApi.getVoter(phone);
             if (!voter.exists)
                 return log_1.Errors.onCatch(res, "Voter not found after auth: " + phone);

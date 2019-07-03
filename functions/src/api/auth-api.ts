@@ -11,14 +11,13 @@ class AuthApi {
         return token;
     }
 
-    public firebaseTokenAuth(req: Request): Promise<string|null> {
+    public firebaseTokenAuth(req: Request): Promise<string | null> {
         const token = this.getToken(req);
         return admin
             .auth()
             .verifyIdToken(token)
             .then(function(data) {
-                if(data.uid && data.uid.length)
-                    return data.uid;
+                if (data.uid && data.uid.length) return data.uid;
                 return null;
             })
             .catch(function(msg: any) {
@@ -27,11 +26,11 @@ class AuthApi {
             });
     }
 
-    public getAuth() : admin.auth.Auth {
+    public getAuth(): admin.auth.Auth {
         return admin.auth();
     }
 
-    public getUser(uid : string) : Promise<admin.auth.UserRecord> {
+    public getUser(uid: string): Promise<admin.auth.UserRecord> {
         return this.getAuth().getUser(uid);
     }
 }

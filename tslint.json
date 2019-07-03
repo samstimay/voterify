@@ -9,15 +9,19 @@
     ]
   },
   "rules": {
-    "quotemark": false,
+    "arrow-parens": false,
+    "forin":false,
     "indent": [true, "spaces", 2],
     "interface-name": false,
+    "member-access": false,
+    "no-consecutive-blank-lines": false,
+    "no-reference": false,
+    "no-string-literal": false,
     "ordered-imports": false,
     "object-literal-sort-keys": false,
-    "no-consecutive-blank-lines": false,
-    "forin":false,
-    "no-reference": false,
-    "arrow-parens": false,
+    "only-arrow-functions": false,
+    "quotemark": false,
+    "semicolon": false,
     "trailing-comma": false
   }
 }

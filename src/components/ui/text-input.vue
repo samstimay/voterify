@@ -4,13 +4,14 @@
             class="input is-large"
             type="text"
             :placeholder="placeholder"
-            v-model="input">
+            v-model="input"
+        />
     </div>
 </template>
 
 <script lang="ts">
-import '../../styles/components/input.scss';
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import "../../styles/components/input.scss";
+import { Component, Prop, Vue } from "vue-property-decorator";
 
 @Component
 export default class TextInput extends Vue {
@@ -19,10 +20,8 @@ export default class TextInput extends Vue {
 
     public data() {
         return {
-            input: this.text,
+            input: this.text
         };
     }
 }
 </script>
-
-
