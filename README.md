@@ -9,7 +9,6 @@ Colaboration is welcome.
 In order for this project to run locally, you'll need to contact me  for the API secrets folder in `/functions/`  
 voterify at _g_ _m_ _a_ _i_ _l_ 
 
-
 ## Project setup
 ```
 npm install
@@ -34,8 +33,3 @@ npm run test
 ```
 npm run lint
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
-
-:)
