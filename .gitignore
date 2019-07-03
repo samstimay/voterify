@@ -4,3 +4,4 @@ node_modules/
 .secrets/
 .idea/
 *.log
+dist/
