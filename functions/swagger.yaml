@@ -1,0 +1,434 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Votery API
+  description: The API for the Votery app
+  termsOfService: 'hhttps://github.com/voterify/voterify'
+  contact:
+    name: voterify@gmail.com
+  license:
+    name: MIT
+host: firebase
+basePath: /voterifyApi
+schemes:
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /candidates:
+    get:
+      description: Returns all Candidates for a given election
+      operationId: getCandidats
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: query
+          description: election id
+          required: true
+          type: string
+      responses:
+        '200':
+          description: candidate response
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Candidate'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/ErrorModel'
+  /elections:
+    get:
+      description: Gets all elections
+      operationId: getElections
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: election response
+          schema:
+            $ref: '#/definitions/Election'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/ErrorModel'
+  /phone:
+    get:
+      description: Gets phone information
+      operationId: getPhone
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: query
+          description: phone number
+          required: true
+          type: string
+      responses:
+        '200':
+          description: phone response
+          schema:
+            $ref: '#/definitions/Phone'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/ErrorModel'
+  /getVoter:
+    get:
+      description: Gets a voter record
+      operationId: getVoter
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: query
+          description: phone number
+          required: true
+          type: string
+      responses:
+        '200':
+          description: voter response
+          schema:
+            $ref: '#/definitions/Voter'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/ErrorModel'
+  /createVoter:
+    get:
+      description: Create a voter record
+      operationId: createVoter
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: query
+          description: phone number
+          required: true
+          type: string
+        - name: uid
+          in: query
+          description: firebase userid
+          required: true
+          type: string
+      responses:
+        '200':
+          description: voter response
+          schema:
+            $ref: '#/definitions/Voter'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/ErrorModel'
+  /checkVote:
+    get:
+      description: Check if a vote exists
+      operationId: checkVote
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: query
+          description: election id
+          required: true
+          type: string
+        - name: voterId
+          in: query
+          description: voter ID
+          required: true
+          type: string
+      responses:
+        '200':
+          description: vote response
+          schema:
+            $ref: '#/definitions/Vote'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/ErrorModel'
+  /getVotes:
+    get:
+      description: Get all votes for an Election
+      operationId: getAllVotes
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: query
+          description: election id
+          required: true
+          type: string
+      responses:
+        '200':
+          description: vote response
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Vote'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/ErrorModel'
+  /getVotesTable:
+    get:
+      description: Get all votes for an Election for a table with pagination
+      operationId: getVotesTable
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: query
+          description: election id
+          required: true
+          type: string
+        - name: page
+          in: query
+          description: current page
+          required: true
+          type: number
+        - name: perPage
+          in: query
+          description: results per page (response size)
+          required: true
+          type: number
+        - name: sort
+          in: query
+          description: sort field (table column name)
+          required: true
+          type: string
+      responses:
+        '200':
+          description: vote response
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Vote'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/ErrorModel'
+  /tallyVotes:
+    get:
+      description: Count all votes grouped by candidate
+      operationId: tallyVotes
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: query
+          description: election id
+          required: true
+          type: string
+      responses:
+        '200':
+          description: tally result response
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/TallyResult'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/ErrorModel'
+  /trackVote:
+    post:
+      description: Get a vote by voterId and electionId
+      operationId: trackVote
+      produces:
+        - application/json
+      parameters:
+        - name: vote
+          in: body
+          description: vote
+          required: true
+          schema:
+            $ref: '#/definitions/VoteReq'
+      responses:
+        '200':
+          description: vote response
+          schema:
+            $ref: '#/definitions/Vote'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/ErrorModel'
+  /trackPhone:
+    post:
+      description: >-
+        Get a vote by phone and electionId. Calls /trackVote after retrieiving
+        voterId
+      operationId: trackPhone
+      produces:
+        - application/json
+      parameters:
+        - name: votePhone
+          in: body
+          description: vote by phone
+          required: true
+          schema:
+            $ref: '#/definitions/VotePhoneReq'
+      responses:
+        '200':
+          description: vote response
+          schema:
+            $ref: '#/definitions/Vote'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/ErrorModel'
+  /createVote:
+    post:
+      description: 'Create a vote. Get User from Auth, not request.'
+      operationId: createVote
+      produces:
+        - application/json
+      parameters:
+        - name: vote
+          in: body
+          description: vote model
+          required: true
+          schema:
+            $ref: '#/definitions/Vote'
+      responses:
+        '200':
+          description: vote response
+          schema:
+            $ref: '#/definitions/Vote'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/ErrorModel'
+definitions:
+  Exists:
+    type: object
+    allOf:
+        - properties:
+            exists:
+              type: boolean
+  Candidate:
+    type: object
+    allOf:
+      - $ref: '#/definitions/Exists'
+      - required:
+          - id
+        properties:
+          id:
+            type: string
+          electionId:
+            type: string
+          name:
+            type: string
+          party:
+            type: string
+  Election:
+    type: object
+    allOf:
+      - required:
+          - id
+        properties:
+          id:
+            type: string
+          region:
+            type: string
+          name:
+            type: string
+          date:
+            type: string
+  Voter:
+    type: object
+    allOf:
+      - $ref: '#/definitions/Exists'
+      - required:
+          - uid
+        properties:
+          uid:
+            type: string
+          phone:
+            type: string
+          voterId:
+            type: string
+  Vote:
+    type: object
+    allOf:
+      - $ref: '#/definitions/Exists'
+      - required:
+          - voterId
+          - candidateId
+          - electionId
+        properties:
+          voterId:
+            type: string
+          candidateId:
+            type: string
+          electionId:
+            type: string
+          candidate:
+            type: string
+          date:
+            type: string
+  Phone:
+    type: object
+    allOf:
+      - $ref: '#/definitions/Exists'
+      - required:
+          - exists
+          - phone
+          - uid
+        properties:
+          phone:
+            type: string
+          uid:
+            type: string
+          exists:
+            type: boolean
+  TallyResult:
+    type: object
+    allOf:
+      - required:
+          - candidate
+          - candidateId
+          - count
+        properties:
+          candidate:
+            type: string
+          candidateId:
+            type: string
+          count:
+            type: number
+  VoteReq:
+    type: object
+    allOf:
+      - required: 
+        - electedId
+        - voterId
+        properties:
+          electionId:
+            type: string
+          voterId:
+            type: string
+  VotePhoneReq:
+    type: object
+    allOf:
+      - required: 
+        - electedId
+        - phone
+        properties:
+          electionId:
+            type: string
+          phone:
+            type: string            
+  ErrorModel:
+    type: object
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
