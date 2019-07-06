@@ -5,6 +5,7 @@ import { CandidateApi } from "./api/candidates";
 import { PhoneApi } from "./api/phones";
 import { VoteApi } from "./api/votes";
 import { VoterApi } from "./api/voters";
+import { blockService } from "./blockchain/blockService";
 import admin from "./firebase/firebaseAdmin-provider";
 import FirebaseQueue  from "./firebase/queue"
 const cors = require("cors");
@@ -37,8 +38,8 @@ VoterApi.createEndpoints(app);
 
 admin.auth();
 
-const queue = new FirebaseQueue();
-queue.start(admin);
+VoteApi.blockchainQueue = new FirebaseQueue();
+VoteApi.blockchainQueue.start(admin, blockService.add);
 
 // Export App for use with Firebase Functions
 exports.voterifyApi = functions.https.onRequest(app);

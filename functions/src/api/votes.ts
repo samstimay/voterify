@@ -7,9 +7,13 @@ import { authApi } from "./auth-api";
 import QuerySnapshot = firebase.firestore.QuerySnapshot;
 import QueryDocumentSnapshot = firebase.firestore.QueryDocumentSnapshot;
 import { VoterApi } from "./voters";
+import { BlockInfo } from "../blockchain/blockService"
 const cors = require("cors");
 
 class VoteApi {
+
+    public static blockchainQueue : any;
+
     public static voteId(voterId: string, electionId: string): string {
         return electionId + "-" + voterId;
     }
@@ -237,6 +241,10 @@ class VoteApi {
                             .doc(voteId)
                             .set(vote)
                             .then(() => {
+                                // @ts-ignore
+                                const blockInfo = new BlockInfo(vote, "block-" + vote.electionId);
+                                // TODO: release the Kraken
+                                // VoteApi.blockchainQueue.push(blockInfo);
                                 return res.json(
                                     Object.assign(vote, { status: "new-vote" })
                                 );

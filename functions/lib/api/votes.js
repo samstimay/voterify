@@ -12,6 +12,7 @@ const log_1 = require("../log");
 const firebase_api_1 = require("../firebase/firebase-api");
 const auth_api_1 = require("./auth-api");
 const voters_1 = require("./voters");
+const blockService_1 = require("../blockchain/blockService");
 const cors = require("cors");
 class VoteApi {
     static voteId(voterId, electionId) {
@@ -227,6 +228,10 @@ class VoteApi {
                             .doc(voteId)
                             .set(vote)
                             .then(() => {
+                            // @ts-ignore
+                            const blockInfo = new blockService_1.BlockInfo(vote, "block-" + vote.electionId);
+                            // TODO: release the Kraken
+                            // VoteApi.blockchainQueue.push(blockInfo);
                             return res.json(Object.assign(vote, { status: "new-vote" }));
                         });
                     }

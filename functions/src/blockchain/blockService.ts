@@ -2,16 +2,33 @@ import { logger, Errors } from "../log";
 import { firebaseApi } from "../firebase/firebase-api";
 import Block from "./block"
 
+class BlockInfo {
+    public data: Object;
+    public collection: string;
+
+    constructor(
+        data: Object, 
+        collection: string) {
+        this.data = data;
+        this.collection = collection;
+    }
+
+    toString() {
+        return `BlockInfo - 
+            data           : ${this.data} 
+            collectionName : ${this.collection}`;
+    }
+}
+
 class BlockService {
     // add a block and return it's hash
-    async Add(
-        data: object, 
-        collectionName: string)
+    public async add(blockInfo : BlockInfo)
     {
-        logger.debug("BlockService.Add()", data.toString());
+        logger.debug("BlockService.Add()", blockInfo.toString());
+
         const lastBlockData = await firebaseApi
             .firestore()
-            .collection(collectionName)            
+            .collection(blockInfo.collection)            
             .orderBy("timestamp", "desc")
             .limit(1)
             .get()
@@ -25,18 +42,23 @@ class BlockService {
                 return null;
             });
         
-        if(!lastBlockData) return '';
+        if(!lastBlockData || !lastBlockData.hash) {
+            Errors.generic("BlockService.Add invalid last block format '" + JSON.stringify(lastBlockData) + "'");
+            return '';
+        } 
 
-        const lastBlock = new Block(lastBlockData.timestamp,
+        const lastBlock = new Block(
+            lastBlockData.timestamp,
             lastBlockData.lastHash,
             lastBlockData.hash,
-            lastBlockData.data);
+            lastBlockData.data
+        );
 
-        const newBlock = Block.mineBlock(lastBlock, data);
+        const newBlock = Block.mineBlock(lastBlock, blockInfo.data);
 
         return await firebaseApi
             .firestore()
-            .collection(collectionName)
+            .collection(blockInfo.collection)
             .doc(newBlock.hash)
             .set(newBlock)
             .then(() => {
@@ -44,11 +66,11 @@ class BlockService {
             })
             .catch(function(err: any) {
                 Errors.generic("BlockService.Add can't add new block. " + err)
-                return null;
+                return '';
             });            
     }
 }
 
 const blockService = new BlockService()
 
-export default blockService;
+export { blockService, BlockInfo };
