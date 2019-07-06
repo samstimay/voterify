@@ -39,6 +39,9 @@ class Errors {
     static notImplemented(res) {
         return res.json({ error: "not implemented" });
     }
+    static generic(msg) {
+        console.log("Error: ", msg);
+    }
 }
 exports.Errors = Errors;
 //# sourceMappingURL=log.js.map

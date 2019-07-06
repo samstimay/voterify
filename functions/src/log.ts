@@ -40,6 +40,9 @@ class Errors {
     public static notImplemented(res: Response) {
         return res.json({ error: "not implemented" });
     }
+    public static generic(msg: string) {
+        console.log("Error: ", msg)
+    }
 }
 
 export { logger, Errors };

@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const SHA256 = require("crypto-js/sha256");
 class Block {
     constructor(timestamp, lastHash, hash, data) {
@@ -34,5 +35,5 @@ class Block {
         return Block.hash(timestamp, lastHash, data);
     }
 }
-module.exports = Block;
+exports.default = Block;
 //# sourceMappingURL=block.js.map

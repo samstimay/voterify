@@ -2,10 +2,10 @@ const SHA256 = require("crypto-js/sha256");
 
 class Block {
 
-    private timestamp: string
-    private lastHash: string 
-    private hash: string
-    private data: Object
+    public timestamp: string
+    public lastHash: string 
+    public hash: string
+    public data: Object
 
     constructor(
         timestamp: string, 
@@ -51,4 +51,4 @@ class Block {
     }
 }
 
-module.exports = Block;
+export default Block;
