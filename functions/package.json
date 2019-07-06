@@ -3,7 +3,7 @@
   "scripts": {
     "lint": "tslint --project tsconfig.json",
     "build": "tsc",
-    "serve": "npm run build && firebase serve --only functions",
+    "serve": "clear && npm run build && firebase serve --only functions",
     "shell": "npm run build && firebase functions:shell",
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
@@ -15,10 +15,12 @@
     "@types/express": "^4.16.1",
     "body-parser": "^1.18.3",
     "cors": "^2.8.5",
+    "crypto-js": "^3.1.9-1",
     "express": "^4.16.4",
     "firebase": "^5.8.4",
     "firebase-admin": "^7.0.0",
     "firebase-functions": "^2.2.0",
+    "firebase-queue": "^1.6.1",
     "shortid": "^2.2.14"
   },
   "devDependencies": {

@@ -8,6 +8,7 @@ const phones_1 = require("./api/phones");
 const votes_1 = require("./api/votes");
 const voters_1 = require("./api/voters");
 const firebaseAdmin_provider_1 = require("./firebase/firebaseAdmin-provider");
+const queue_1 = require("./firebase/queue");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const express = require("express");
@@ -32,6 +33,8 @@ elections_1.ElectionApi.createEndpoints(app);
 votes_1.VoteApi.createEndpoints(app);
 voters_1.VoterApi.createEndpoints(app);
 firebaseAdmin_provider_1.default.auth();
+const queue = new queue_1.default();
+queue.start(firebaseAdmin_provider_1.default);
 // Export App for use with Firebase Functions
 exports.voterifyApi = functions.https.onRequest(app);
 log_1.logger.debug("API loaded");

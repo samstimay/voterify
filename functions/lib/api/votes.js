@@ -43,7 +43,7 @@ class VoteApi {
             return VoteApi.trackPhone(req, res);
         });
         app.post("/createVote", function (req, res) {
-            log_1.logger.message("POST /checkVote", log_1.logger.parseExpress(req, res));
+            log_1.logger.message("POST /createVote", log_1.logger.parseExpress(req, res));
             return auth_api_1.authApi
                 .firebaseTokenAuth(req)
                 .then(uid => {

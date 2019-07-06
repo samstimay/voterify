@@ -6,6 +6,7 @@ import { PhoneApi } from "./api/phones";
 import { VoteApi } from "./api/votes";
 import { VoterApi } from "./api/voters";
 import admin from "./firebase/firebaseAdmin-provider";
+import FirebaseQueue  from "./firebase/queue"
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const express = require("express");
@@ -35,6 +36,9 @@ VoteApi.createEndpoints(app);
 VoterApi.createEndpoints(app);
 
 admin.auth();
+
+const queue = new FirebaseQueue();
+queue.start(admin);
 
 // Export App for use with Firebase Functions
 exports.voterifyApi = functions.https.onRequest(app);
