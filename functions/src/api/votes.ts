@@ -241,10 +241,10 @@ class VoteApi {
                             .doc(voteId)
                             .set(vote)
                             .then(() => {
+                                logger.message("/createVote new vote", JSON.stringify(vote));
                                 // @ts-ignore
                                 const blockInfo = new BlockInfo(vote, "block-" + vote.electionId);
-                                // TODO: release the Kraken
-                                // VoteApi.blockchainQueue.push(blockInfo);
+                                VoteApi.blockchainQueue.push(blockInfo);
                                 return res.json(
                                     Object.assign(vote, { status: "new-vote" })
                                 );

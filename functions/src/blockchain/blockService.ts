@@ -21,53 +21,64 @@ class BlockInfo {
 }
 
 class BlockService {
+
+    public async getLastBlock(collectionName: string) {
+        return await firebaseApi
+            .firestore()
+            .collection(collectionName)            
+            .orderBy("timestamp", "desc")
+            .limit(1)
+            .get()
+            .then((data: any) => {
+                if (data.docs && data.docs.length > 0)  {
+                    const lastBlockData = data.docs[0];
+                    return new Block(
+                        lastBlockData.timestamp,
+                        lastBlockData.lastHash,
+                        lastBlockData.hash,
+                        lastBlockData.data
+                    );
+                }
+                return null;
+            })
+            .catch(function(err: any) {
+                Errors.log("BlockService.Add can't get recent block. " + err)
+                return null;
+            });
+    }
+
     // add a block and return it's hash
     public async add(blockInfo : BlockInfo)
     {
         logger.debug("BlockService.Add()", blockInfo.toString());
 
-        const lastBlockData = await firebaseApi
-            .firestore()
-            .collection(blockInfo.collection)            
-            .orderBy("timestamp", "desc")
-            .limit(1)
-            .get()
-            .then((data: any) => {
-                return (data.docs && data.docs.length > 0) ?
-                    data.docs[0] :
-                    null;
-            })
-            .catch(function(err: any) {
-                Errors.generic("BlockService.Add can't get recent block. " + err)
-                return null;
-            });
-        
-        if(!lastBlockData || !lastBlockData.hash) {
-            Errors.generic("BlockService.Add invalid last block format '" + JSON.stringify(lastBlockData) + "'");
+        try {
+            const lastBlock = await this.getLastBlock(blockInfo.collection);
+            
+            if(!lastBlock || !lastBlock.hash) {
+                Errors.log("BlockService.Add invalid last block format '" + lastBlock + "'");
+                return '';
+            } 
+
+            const newBlock = Block.mineBlock(lastBlock, blockInfo.data);
+
+            return await firebaseApi
+                .firestore()
+                .collection(blockInfo.collection)
+                .doc(newBlock.hash)
+                .set(newBlock)
+                .then(() => {
+                    return newBlock.hash;
+                })
+                .catch(function(err: any) {
+                    Errors.log("BlockService.Add can't add new block. " + err)
+                    return '';
+                });
+        }
+        catch(err) {
+            Errors.log("BlockService.Add caught error " + err)
             return '';
         } 
-
-        const lastBlock = new Block(
-            lastBlockData.timestamp,
-            lastBlockData.lastHash,
-            lastBlockData.hash,
-            lastBlockData.data
-        );
-
-        const newBlock = Block.mineBlock(lastBlock, blockInfo.data);
-
-        return await firebaseApi
-            .firestore()
-            .collection(blockInfo.collection)
-            .doc(newBlock.hash)
-            .set(newBlock)
-            .then(() => {
-                return newBlock.hash;
-            })
-            .catch(function(err: any) {
-                Errors.generic("BlockService.Add can't add new block. " + err)
-                return '';
-            });            
     }
 }
 

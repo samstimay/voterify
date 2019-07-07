@@ -26,13 +26,24 @@ class Logger {
 const logger = new Logger();
 
 class Errors {
+
+    public static showStack: Boolean = true;
+
+    public static trace() {
+        this.showStack && console.trace();
+    }
+
     public static onCrash(res: Response, error: any, msg?: string) {
         console.log("onCrash", error, msg);
+        this.trace();
         return res.json({ status: "crash", error: error });
     }
-    public static onCatch(res: Response, error: any, msg?: string) {
+    public static onCatch(res?: Response, error?: any, msg?: string) {
         console.log("onCatch", error, msg);
-        return res.json({ status: "fail", error: error });
+        this.trace();
+        if(res)
+            return res.json({ status: "fail", error: error });
+        return '';
     }
     public static authFailed(req: Request, res: Response) {
         return res.json({ status: "auth-failed", error: req.url });
@@ -40,7 +51,8 @@ class Errors {
     public static notImplemented(res: Response) {
         return res.json({ error: "not implemented" });
     }
-    public static generic(msg: string) {
+    public static log(msg: string) {
+        this.trace();
         console.log("Error: ", msg)
     }
 }
