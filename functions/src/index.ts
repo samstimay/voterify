@@ -5,7 +5,6 @@ import { CandidateApi } from "./api/candidates";
 import { PhoneApi } from "./api/phones";
 import { VoteApi } from "./api/votes";
 import { VoterApi } from "./api/voters";
-import { blockService } from "./blockchain/blockService";
 import FirebaseQueue  from "./firebase/queue"
 import admin from "./firebase/firebaseAdmin-provider";
 const cors = require("cors");
@@ -38,19 +37,8 @@ VoterApi.createEndpoints(app);
 
 admin.auth();
 
-VoteApi.blockchainQueue = new FirebaseQueue();
-VoteApi.blockchainQueue.start(admin, blockService.add);
+VoteApi.blockchainQueue = new FirebaseQueue(admin);
 
 // Export App for use with Firebase Functions
 exports.voterifyApi = functions.https.onRequest(app);
 logger.debug("API loaded");
-
-// handle shutdown gracefully
-process.on('SIGINT', function() {
-    if(VoteApi.blockchainQueue === null) return;
-    VoteApi.blockchainQueue.shutdown().then(function() {
-        VoteApi.blockchainQueue = null;
-        logger.message("Finished queue shutdown");
-        process.exit(0);
-    });
-});
