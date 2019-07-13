@@ -30,7 +30,6 @@
                 ".validate": "newData.isString()"
               },
               "original_task": {
-                /* This space intentionally left blank, for malformed tasks */
               },
               "attempts": {
                 ".validate": "newData.isNumber() && newData.val() > 0"
