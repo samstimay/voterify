@@ -242,9 +242,10 @@ class VoteApi {
                             .set(vote)
                             .then(() => {
                                 logger.message("/createVote new vote", JSON.stringify(vote));
-                                // @ts-ignore
-                                const blockInfo = new BlockInfo(vote, "block-" + vote.electionId);
-                                VoteApi.blockchainQueue.push(blockInfo);
+                                // // @ts-ignore
+                                // TODO: integrate blockchain voting
+                                // const blockInfo = new BlockInfo(vote, "block-" + vote.electionId);
+                                // VoteApi.blockchainQueue.push(blockInfo);
                                 return res.json(
                                     Object.assign(vote, { status: "new-vote" })
                                 );
