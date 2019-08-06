@@ -1,12 +1,13 @@
 class EnvironmentConfig {
     public firebaseConfig() {
         return {
-            apiKey: "AIzaSyA6PINilo0TTOspPfbh4_TiWMOvfQ7PhJQ",
-            authDomain: "voterify-7637e.firebaseapp.com",
-            databaseURL: "https://voterify-7637e.firebaseio.com",
-            projectId: "voterify-7637e",
-            storageBucket: "voterify-7637e.appspot.com",
-            messagingSenderId: "245719463941"
+            apiKey: "AIzaSyCWFNeONYw-XgFdgg5ixZUdXy_0nw9EfXg",
+            authDomain: "votery-1bfb6.firebaseapp.com",
+            databaseURL: "https://votery-1bfb6.firebaseio.com",
+            projectId: "votery-1bfb6",
+            storageBucket: "votery-1bfb6.appspot.com",
+            messagingSenderId: "1084565131396",
+            appId: "1:1084565131396:web:7f7b08daaad409f4"
         };
     }
 }

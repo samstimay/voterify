@@ -159,6 +159,7 @@ class Api {
                 this.getHeader()
             )
             .then(function(res) {
+                console.log("create voter returned ", res);
                 if (res.data.error) {
                     console.log("error", res.data.error);
                     return false;

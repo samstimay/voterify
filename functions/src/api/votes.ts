@@ -7,7 +7,7 @@ import { authApi } from "./auth-api";
 import QuerySnapshot = firebase.firestore.QuerySnapshot;
 import QueryDocumentSnapshot = firebase.firestore.QueryDocumentSnapshot;
 import { VoterApi } from "./voters";
-import { BlockInfo } from "../blockchain/blockService"
+// import { BlockInfo } from "../blockchain/blockService"
 const cors = require("cors");
 
 class VoteApi {

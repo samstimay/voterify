@@ -207,12 +207,12 @@ export default class SMSPage extends Vue {
         this.$router.push("/");
     }
 
-    public onPhoneCheck() {
+    public async onPhoneCheck() {
         EventHub.$emit("hidePageLoader");
-        const voter = session.getVoter(),
+        const voter = await voterFactory.getVoter(),
             instance = this;
         // voter exists, have they voted?
-        if (voter.voterId || voter.uid) {
+        if (voter.voterId && voter.uid) {
             this.$router.push("/chose");
         }
         // voter does not exist, create them

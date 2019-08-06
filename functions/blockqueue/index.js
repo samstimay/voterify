@@ -1,12 +1,12 @@
 /* eslint-disable promise/always-return */
 /* eslint-disable prefer-arrow-callback */
 /* eslint-disable promise/catch-or-return */
-var Queue = require('firebase-queue'),
-    Firebase = require('firebase');
+const Queue = require('firebase-queue'),
+    Firebase = require('firebase'),
+    credential = require('../secrets/firebase-secrets.json');
     
 var firebase = Firebase.initializeApp({
-    credential: "../secrets/voterify-7637e-firebase-adminsdk-nal41-d99d35a65e.json",
-    databaseURL: "https://voterify-7637e.firebaseio.com"
+    credential: credential
 });
 
 // TODO: this is not reading from the Queue yet.  It is writing to the queue, just not retrieving.
