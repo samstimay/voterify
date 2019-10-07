@@ -40,8 +40,6 @@ class VoterApi {
                     uid: data.get("uid"),
                     voterId: data.get("voterId")
                 };
-                console.log("gvr", result);
-                console.log("res", res);
                 if (res) return res.json(result);
                 return result;
             })

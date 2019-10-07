@@ -7,7 +7,6 @@
                         class="phone-number-input"
                         v-model="phoneNumber"
                         @onInput="onInput"
-                        :defaultCountry="'us'"
                         :placeholder="$ui('phone-number', 'Phone Number')"
                     ></vue-tel-input>
                 </div>
@@ -152,7 +151,6 @@ export default class HomePage extends Vue {
     public onClick() {
         const instance = this as any;
         const phoneNumber = instance.phoneToRecaptcha((this as any).phoneNumber);
-        console.log("TCL: onClick -> phoneNumber", phoneNumber)
         const appVerifier = (window as any).recaptchaVerifier;
         return firebaseAuth
             .phone(phoneNumber, appVerifier)
