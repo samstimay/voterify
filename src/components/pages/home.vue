@@ -92,13 +92,15 @@ import firebase from "@/factory/firebase-provider";
 import { constants } from "@/factory/constants";
 import firebaseAuth from "@/factory/firebase-auth";
 import CookiesModal from "@/components/modals/cookies.vue";
+import Phone from '@/mixins/phone'
 
 @Component({
     components: {
         Bubble,
         TextInput,
         ProgressCounter
-    }
+    },
+    mixins: [Phone]
 })
 export default class HomePage extends Vue {
     @Prop() private msg!: string;
@@ -148,8 +150,9 @@ export default class HomePage extends Vue {
     }
 
     public onClick() {
-        const instance = this;
-        const phoneNumber = (this as any).phoneNumber;
+        const instance = this as any;
+        const phoneNumber = instance.phoneToRecaptcha((this as any).phoneNumber);
+        console.log("TCL: onClick -> phoneNumber", phoneNumber)
         const appVerifier = (window as any).recaptchaVerifier;
         return firebaseAuth
             .phone(phoneNumber, appVerifier)
