@@ -19,7 +19,11 @@ firebase.auth();
 Vue.config.productionTip = false;
 
 Vue.use(VueRouter);
-Vue.use(VueTelInput);
+Vue.use(VueTelInput,  {
+    defaultCountry: 'US',
+    enabledFlags: false,
+    onlyCountries: ['US']
+})
 Vue.use(VueAwesomeSwiper);
 Vue.use(Translate);
 Vue.component("vuetable", Vuetable);
@@ -27,7 +31,9 @@ Vue.component("vuetable-pagination", VuetablePagination);
 
 window["VfyEnvironment"] = process.env.NODE_ENV;
 
-new Vue({
+const app = new Vue({
     router: Router,
     render: h => h(App)
 }).$mount("#app");
+
+export default app
