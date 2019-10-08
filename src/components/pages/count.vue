@@ -92,7 +92,7 @@ export default class CountPage extends Vue {
 
     onChangeElection(election: Election) {
         (this as any).isMounted = true;
-        (this as any).isReady = false;
+        (this as any).isReady = false
         this.electionId = election.id;
         (this as any).election = election;
         (this as any).electionName = election.name;
@@ -110,6 +110,7 @@ export default class CountPage extends Vue {
     get httpOptions() {
         return {
             headers: {
+                // tslint:disable-next-line
                 Authorization: "public",
                 "Access-Control-Allow-Origin": api.getApiPath()
             }
@@ -135,7 +136,7 @@ export default class CountPage extends Vue {
     }
 
     transform(data) {
-        var transformed = {};
+        const transformed = {};
 
         (transformed as any).pagination = {
             total: data.total,
@@ -150,8 +151,8 @@ export default class CountPage extends Vue {
 
         (transformed as any).mydata = [];
 
-        for (var i = 0; i < data.data.length; i++) {
-            var item = data.data[i];
+        for (let i = 0; i < data.data.length; i++) {
+            const item = data.data[i];
             (transformed as any).mydata.push({
                 candidate: item.candidate,
                 voterId: item.voterId,

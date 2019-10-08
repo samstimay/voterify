@@ -167,7 +167,6 @@ export default class SMSPage extends Vue {
         const confirmation = firebaseAuth.confirmation;
 
         if (!confirmation) {
-            console.log("Missing firebase confirmation");
             instance.onPhoneError();
         }
 
@@ -187,7 +186,6 @@ export default class SMSPage extends Vue {
                         instance.onPhoneCheck();
                     })
                     .catch(() => {
-                        console.log("onVoterAuth failed");
                         instance.onPhoneError();
                     });
             })
@@ -198,7 +196,9 @@ export default class SMSPage extends Vue {
         const instance = this as any;
         instance.sms = "";
         instance.tries++;
-        if (instance.tries >= instance.maxTries) instance.onRestartSms();
+        if (instance.tries >= instance.maxTries) {
+            instance.onRestartSms();
+        }
     }
 
     public async onRestartSms() {
@@ -209,20 +209,18 @@ export default class SMSPage extends Vue {
 
     public async onPhoneCheck() {
         EventHub.$emit("hidePageLoader");
-        const voter = await voterFactory.getVoter(),
-            instance = this;
+        const voter = await voterFactory.getVoter();
+        const instance = this;
         // voter exists, have they voted?
         if (voter.voterId && voter.uid) {
             this.$router.push("/chose");
-        }
         // voter does not exist, create them
-        else {
+        } else {
             voterFactory.createVoter(
                 function() {
                     instance.$router.push("/chose");
                 },
                 function() {
-                    console.log("Create voter failed.");
                     instance.onVoterCreateError();
                 }
             );

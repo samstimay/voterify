@@ -63,8 +63,9 @@ export default class ChosePage extends Vue {
 
     async created() {
         const voter = await voterFactory.getVoter();
-        if (!firebaseAuth.isAuthorized() || !voter || !voter.voterId)
+        if (!firebaseAuth.isAuthorized() || !voter || !voter.voterId) {
             this.$router.push("/");
+        }
     }
 
     getSelected() {
@@ -72,7 +73,9 @@ export default class ChosePage extends Vue {
     }
 
     displaySelected() {
-        if (this._election) return this._election.name;
+        if (this._election) {
+            return this._election.name;
+        }
         return "";
     }
 
@@ -88,8 +91,11 @@ export default class ChosePage extends Vue {
         const selected = this.getSelected();
         session.setElection(selected);
         electionFactory.hasVoterVoted().then(voted => {
-            if (voted) this.$router.push("/already");
-            else this.$router.push("/election");
+            if (voted) {
+                this.$router.push("/already");
+            } else {
+                this.$router.push("/election");
+            }
         });
     }
 }

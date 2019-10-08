@@ -58,8 +58,8 @@ export default class ElectionChooser extends Vue {
     }
 
     onChangeElection(evt) {
-        const id = (this as any).selected,
-            election = this._elections.filter(x => {
+        const id = (this as any).selected;
+        const election = this._elections.filter(x => {
                 return x.id === id;
             });
         this.onChange(election[0]);

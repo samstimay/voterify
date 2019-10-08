@@ -40,8 +40,10 @@ export default class PageLoader extends Vue {
     }
 
     public hidePageLoader() {
-        this.isActive = false;
-        if (this.callBackFn) this.callBackFn();
+        this.isActive = false
+        if (this.callBackFn) {
+            this.callBackFn();
+        }
     }
 }
 </script>

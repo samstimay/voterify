@@ -46,7 +46,9 @@ import firebaseAuth from "@/factory/firebase-auth";
 })
 export default class AlreadyPage extends Vue {
     created() {
-        if (!firebaseAuth.isAuthorized()) this.$router.push("/");
+        if (!firebaseAuth.isAuthorized()) {
+            this.$router.push("/");
+        }
     }
 
     voterId() {

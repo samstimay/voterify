@@ -95,9 +95,10 @@ export default class ThanksPage extends Vue {
     }
 
     created() {
-        if (!firebaseAuth.isAuthorized()) this.$router.push("/");
+        if (!firebaseAuth.isAuthorized()) {
+            this.$router.push("/");
+        }
         this.status = session.getVoteStatus();
-        console.log("this.status ", this.status);
         this.voterId = session.getVoter().voterId;
     }
 

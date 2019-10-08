@@ -94,7 +94,9 @@ export default class VotePage extends Vue {
         };
     }
     created() {
-        if (!firebaseAuth.isAuthorized()) this.$router.push("/");
+        if (!firebaseAuth.isAuthorized()) {
+            this.$router.push("/");
+        }
     }
 
     get vote() {
@@ -102,18 +104,19 @@ export default class VotePage extends Vue {
     }
 
     onClickVote() {
-        if ((this as any).showModal == false) (this as any).showModal = true;
+        if ((this as any).showModal === false) {
+            (this as any).showModal = true;
+        }
     }
     onClickBack() {
         this.$router.push("/election");
     }
     onClickNo() {
-        (this as any).showModal = false;
+        (this as any).showModal = false
     }
     onClickYes() {
         const vote = session.getVote();
         api.createVote(vote).then(data => {
-            console.log("vote status", data);
             session.setVoteStatus((data as any).status);
             this.$router.push("/thanks");
         });

@@ -50,8 +50,7 @@ class Session {
     }
 
     public setElection(election: Election) {
-        let candidates = [];
-        // deep copy
+        const candidates = [];
         election.candidates.forEach(candidate => {
             candidates.push(
                 new Candidate(

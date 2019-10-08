@@ -11,11 +11,12 @@ import firebaseAuth from "@/factory/firebase-auth";
 class VoterFactory {
     async getVoter(): Promise<Voter> {
         const voter = session.getVoter();
-        if (voter.voterId && voter.uid) return voter;
-
-        return await api.getVoter().then(function(voter) {
-            session.setVoter(voter);
-            return voter;
+        if (voter.voterId && voter.uid) {
+             return voter;
+        }
+        return await api.getVoter().then(function(v) {
+            session.setVoter(v);
+            return v;
         });
     }
 

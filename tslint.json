@@ -22,6 +22,12 @@
     "only-arrow-functions": false,
     "quotemark": false,
     "semicolon": false,
-    "trailing-comma": false
+    "trailing-comma": false,
+    "member-ordering" : false,
+    "ban-types": false,
+    "whitespace": [true, "check-branch", "check-operator", "check-typecast"],
+    "variable-name": false,
+    "object-literal-shorthand": false,
+    "prefer-for-of": false
   }
 }

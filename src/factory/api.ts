@@ -1,6 +1,5 @@
 import { session } from "@/factory/session";
 import axios from "axios";
-import fbUser from "@/models/fbUser";
 import FbUser from "@/models/fbUser";
 import Voter from "@/models/voter";
 import Election from "@/models/election";
@@ -18,15 +17,17 @@ class Api {
         return session.getUser();
     }
 
-    private onCatch(res: any): any {
+    private onCatch(res: any): Boolean {
+        // tslint:disable-next-line
         console.log("api failed", res);
-        return null;
+        return false
     }
 
     private getHeader(): object {
-        let user = this.user;
-        if (!user || !user.token)
+        const user = this.user;
+        if (!user || !user.token) {
             return { headers: { Authorization: "anonymous" } };
+        }
         const token = user.token;
         return { headers: { Authorization: "Bearer " + token } };
     }
@@ -36,8 +37,8 @@ class Api {
     }
 
     public init() {
-        const instance = this,
-            fileName = "settings." + this.env() + ".json";
+        const instance = this
+        const fileName = "settings.json";
         return axios
             .get(fileName)
             .then(function(res) {
@@ -47,6 +48,7 @@ class Api {
                     res.data.apiPath;
             })
             .catch(function(res) {
+                // tslint:disable-next-line
                 console.log("api init failed", res);
             });
     }
@@ -55,7 +57,7 @@ class Api {
         return axios
             .get(this.apiPath + "elections", this.getHeader())
             .then(function(res) {
-                let elections = [];
+                const elections = [];
                 res.data.forEach(election => {
                     elections.push(
                         new Election(
@@ -88,7 +90,7 @@ class Api {
                 this.getHeader()
             )
             .then(function(res) {
-                let candidates = [];
+                const candidates = [];
                 res.data.forEach(candidate => {
                     candidates.push(
                         new Candidate(
@@ -112,8 +114,7 @@ class Api {
             .get(this.apiPath + "getVoter/?id=" + user.phone, this.getHeader())
             .then(function(res) {
                 if (res.data.error) {
-                    console.log("error", res.data.error);
-                    return null;
+                    return this.onCatch(res);
                 }
                 if (res.data.exists) {
                     return new Voter(
@@ -128,7 +129,7 @@ class Api {
             .catch(this.onCatch);
     }
 
-    public hasVoterVoted(voter: Voter, election: Election): Promise<Boolean> {
+    public hasVoterVoted(voter: Voter, election: Election): Promise< Boolean > {
         return axios
             .get(
                 this.apiPath +
@@ -140,10 +141,9 @@ class Api {
             )
             .then(function(res) {
                 if (res.data.error) {
-                    console.log("error", res.data.error);
-                    return false;
+                    return this.onCatch(res);
                 }
-                return res.data.exists == true;
+                return res.data.exists === true;
             })
             .catch(this.onCatch);
     }
@@ -159,10 +159,8 @@ class Api {
                 this.getHeader()
             )
             .then(function(res) {
-                console.log("create voter returned ", res);
                 if (res.data.error) {
-                    console.log("error", res.data.error);
-                    return false;
+                    return this.onCatch(res);
                 }
                 voter.voterId = res.data.voterId;
                 return voter;
@@ -171,7 +169,7 @@ class Api {
     }
 
     public createVote(vote: Vote) {
-        let post = {
+        const post = {
             method: "post",
             url: this.apiPath + "createVote",
             data: vote
@@ -179,8 +177,7 @@ class Api {
         return axios(Object.assign(post, this.getHeader()))
             .then(function(res) {
                 if (res.data.error) {
-                    console.log("error", res.data.error);
-                    return false;
+                    return this.onCatch(res);
                 }
                 return res.data;
             })
@@ -188,7 +185,7 @@ class Api {
     }
 
     public trackVote(voterId: string, electionId: string): Promise<Vote> {
-        let post = {
+        const post = {
             method: "post",
             url: this.apiPath + "trackVote",
             data: { voterId, electionId }
@@ -196,8 +193,7 @@ class Api {
         return axios(Object.assign(post, this.getHeader()))
             .then(function(res) {
                 if (res.data.error) {
-                    console.log("error", res.data.error);
-                    return false;
+                    return this.onCatch(res);
                 }
                 return res.data;
             })
@@ -205,7 +201,7 @@ class Api {
     }
 
     public trackPhone(phone: string, electionId: string): Promise<Vote> {
-        let post = {
+        const post = {
             method: "post",
             url: this.apiPath + "trackPhone",
             data: { phone, electionId }
@@ -213,8 +209,7 @@ class Api {
         return axios(Object.assign(post, this.getHeader()))
             .then(function(res) {
                 if (res.data.error) {
-                    console.log("error", res.data.error);
-                    return false;
+                    return this.onCatch(res);
                 }
                 return res.data;
             })
@@ -226,7 +221,7 @@ class Api {
         return axios
             .get(this.apiPath + "getVotes/?id=" + electionId, this.getHeader())
             .then(function(res) {
-                let votes = [];
+                const votes = [];
                 res.data.forEach(vote => {
                     votes.push(
                         new Vote(

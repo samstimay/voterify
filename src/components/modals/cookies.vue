@@ -39,7 +39,9 @@ export default class CookiesModal extends Vue {
     onClickOk() {
         const instance = this as any;
         instance.showModal = false;
-        if (instance.callBackFn) instance.callBackFn();
+        if (instance.callBackFn) {
+            instance.callBackFn();
+        }
     }
 }
 </script>

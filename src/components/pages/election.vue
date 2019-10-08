@@ -106,7 +106,9 @@ export default class ElectionPage extends Vue {
     }
 
     created() {
-        if (!firebaseAuth.isAuthorized()) this.$router.push("/");
+        if (!firebaseAuth.isAuthorized()) {
+            this.$router.push("/");
+        }
         this.loadElection();
     }
 
@@ -129,7 +131,7 @@ export default class ElectionPage extends Vue {
 
     private async loadCandidates(election: Election) {
         const instance = this as any;
-        let candidates = await api.getCandidates(election.id);
+        const candidates = await api.getCandidates(election.id);
         election.candidates = candidates;
         instance.setElection(election);
     }
@@ -143,7 +145,7 @@ export default class ElectionPage extends Vue {
     }
 
     public processForm() {
-        let election = session.getElection();
+        const election = session.getElection();
         const vote = new Vote(
             election.id,
             this.candidateId,

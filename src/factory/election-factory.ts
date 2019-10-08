@@ -18,7 +18,9 @@ class ElectionFactory {
 
     async getElection(): Promise<Election> {
         let election = session.getElection();
-        if (election.id) return election;
+        if (election.id) {
+            return election;
+        }
         election = await this.getDefaultElection();
         session.setElection(election);
         return election;
@@ -41,7 +43,7 @@ class ElectionFactory {
                 return data;
             })
             .catch(function(data) {
-                return false;
+                return false
             });
     }
 }

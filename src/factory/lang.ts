@@ -13,22 +13,24 @@ class Lang {
     }
 
     public init() {
-        const instance = this,
-            fileName = "lang/" + this.currentLang() + ".json";
+        const instance = this;
+        const fileName = "lang/" + this.currentLang() + ".json";
         return axios
             .get(fileName)
             .then(function(res) {
                 instance.userLang = res.data;
             })
             .catch(function(res) {
+                // tslint:disable-next-line
                 console.log("api init failed", res);
             });
     }
 
     public content(key: string, fallback: string, interpolate?: any): string {
         let value = this.value(this.userLang, key) || fallback;
-        if (interpolate)
+        if (interpolate) {
             value = value.replace(constants.interpolate, interpolate);
+        }
         return value;
     }
 
