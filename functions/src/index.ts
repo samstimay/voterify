@@ -5,6 +5,7 @@ import { CandidateApi } from "./api/candidates";
 import { PhoneApi } from "./api/phones";
 import { VoteApi } from "./api/votes";
 import { VoterApi } from "./api/voters";
+import { SystemApi } from "./api/system";
 import FirebaseQueue  from "./firebase/queue"
 import admin from "./firebase/firebaseAdmin-provider";
 const cors = require("cors");
@@ -29,6 +30,7 @@ app.get("/", function(req: any, res: any) {
 logger.debug("API loading...");
 
 // Setup Endpoints
+SystemApi.createEndpoints(app);
 PhoneApi.createEndpoints(app);
 CandidateApi.createEndpoints(app);
 ElectionApi.createEndpoints(app);

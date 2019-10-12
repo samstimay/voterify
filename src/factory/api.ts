@@ -38,7 +38,7 @@ class Api {
 
     public init() {
         const instance = this
-        const fileName = "settings.json";
+        const fileName = "/settings.json";
         return axios
             .get(fileName)
             .then(function(res) {
@@ -48,7 +48,6 @@ class Api {
                     res.data.apiPath;
             })
             .catch(function(res) {
-                // tslint:disable-next-line
                 console.log("api init failed", res);
             });
     }

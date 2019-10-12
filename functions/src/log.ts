@@ -34,12 +34,12 @@ class Errors {
     }
 
     public static onCrash(res: Response, error: any, msg?: string) {
-        console.log("onCrash", error, msg);
+        console.log('\x1b[31m%s\x1b[0m', "onCrash", error, msg);
         this.trace();
         return res.json({ status: "crash", error: error });
     }
     public static onCatch(res?: Response, error?: any, msg?: string) {
-        console.log("onCatch", error, msg);
+        console.log('\x1b[36m%s\x1b[0m', "onCatch", error, msg);
         this.trace();
         if(res)
             return res.json({ status: "fail", error: error });

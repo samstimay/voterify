@@ -44,6 +44,7 @@ class VoterApi {
                 return result;
             })
             .catch((err: any) => {
+                Errors.onCatch(res, err)
                 return { exists: false, err: err };
             });
     }
