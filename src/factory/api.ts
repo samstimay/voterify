@@ -110,19 +110,18 @@ class Api {
     public getVoter(): Promise<Voter> {
         const user = this.user;
         return axios
-            .get(this.apiPath + "getVoter/?id=" + user.phone, this.getHeader())
+            .get(this.apiPath + "getVoter/", this.getHeader())
             .then(function(res) {
                 if (res.data.error) {
                     return this.onCatch(res);
                 }
                 if (res.data.exists) {
                     return new Voter(
-                        res.data.phone,
                         res.data.uid,
                         res.data.voterId
                     );
                 } else {
-                    return new Voter(user.phone, user.uid, "");
+                    return new Voter(user.uid, "");
                 }
             })
             .catch(this.onCatch);
@@ -150,11 +149,7 @@ class Api {
     public createVoter(voter: Voter) {
         return axios
             .get(
-                this.apiPath +
-                    "createVoter/?id=" +
-                    voter.phone +
-                    "&uid=" +
-                    voter.uid,
+                this.apiPath + "createVoter/",
                 this.getHeader()
             )
             .then(function(res) {
@@ -199,11 +194,11 @@ class Api {
             .catch(this.onCatch);
     }
 
-    public trackPhone(phone: string, electionId: string): Promise<Vote> {
+    public trackUID(electionId: string): Promise<Vote> {
         const post = {
             method: "post",
-            url: this.apiPath + "trackPhone",
-            data: { phone, electionId }
+            url: this.apiPath + "trackUID",
+            data: { electionId }
         };
         return axios(Object.assign(post, this.getHeader()))
             .then(function(res) {

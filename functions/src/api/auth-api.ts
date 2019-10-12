@@ -11,18 +11,19 @@ class AuthApi {
         return token;
     }
 
-    public firebaseTokenAuth(req: Request): Promise<string | null> {
+    // return the firebase uid based upon the request
+    public firebaseTokenAuth(req: Request): Promise<string> {
         const token = this.getToken(req);
         return admin
             .auth()
             .verifyIdToken(token)
             .then(function(data) {
                 if (data.uid && data.uid.length) return data.uid;
-                return null;
+                return '';
             })
             .catch(function(msg: any) {
                 logger.error("auth failed", msg);
-                return null;
+                return '';
             });
     }
 

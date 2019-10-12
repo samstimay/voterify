@@ -10,7 +10,7 @@ class VoterApi {
     public static createEndpoints(app: Application) {
         app.get("/getVoter", function(req: Request, res: Response) {
             logger.message("GET /getVoter", logger.parseExpress(req, res));
-            return VoterApi.getVoter(req.query.id, res);
+            return VoterApi.getVoter(req, res);
         });
         app.get("/createVoter", function(req: Request, res: Response) {
             logger.message("GET /createVoter", logger.parseExpress(req, res));
@@ -26,17 +26,16 @@ class VoterApi {
         });
     }
 
-    public static getVoter(phone: string, res?: Response): Promise<object> {
-        const phoneKey = phone.replace(/[^0-9\.]+/g, "").trim();
+    public static async getVoter(req: Request, res?: Response): Promise<object> {
+        const uid = await authApi.firebaseTokenAuth(req)
         return firebaseApi
             .firestore()
             .collection("voters")
-            .doc(phoneKey)
+            .doc(uid)
             .get()
             .then((data: DocumentSnapshot) => {
                 const result = {
                     exists: data.exists,
-                    phone: data.get("phone"),
                     uid: data.get("uid"),
                     voterId: data.get("voterId")
                 };
@@ -80,13 +79,12 @@ class VoterApi {
         });
     }
 
-    public static createVoter(req: Request, res: Response) {
+    public static async createVoter(req: Request, res: Response) {
         try {
-            const uid = req.query.uid,
-                phone = req.query.id.trim();
+            const uid = await authApi.firebaseTokenAuth(req);
 
             // if the voter exists
-            return this.getVoter(phone).then(data => {
+            return this.getVoter(req).then(data => {
                 const existingVoter = data as any;
                 // if Voter already exists, return that
                 if (
@@ -100,7 +98,6 @@ class VoterApi {
                     return VoterApi.newVoterId(0)
                         .then(function(voterId) {
                             const voter = {
-                                phone: phone,
                                 uid: uid.trim(),
                                 voterId: voterId.trim()
                             };
@@ -113,7 +110,7 @@ class VoterApi {
                             return firebaseApi
                                 .firestore()
                                 .collection("voters")
-                                .doc(phone)
+                                .doc(uid)
                                 .set(voter)
                                 .then(() => {
                                     return res.json(voter);

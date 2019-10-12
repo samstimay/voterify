@@ -14,15 +14,11 @@ class Session {
     private voteStatus: string;
 
     constructor() {
-        this.voter = new Voter("", "", "");
+        this.voter = new Voter("", "");
         this.vote = new Vote();
         this.election = new Election("", "", "");
         this.fbUser = new FbUser("", "", "", "");
         this.voteStatus = null;
-    }
-
-    public set phone(phone: string) {
-        this.voter.phone = phone;
     }
 
     public registerVote(vote: Vote) {
@@ -37,6 +33,7 @@ class Session {
         this.fbUser = fbUser;
     }
 
+    // TODO: should FbUser be in the app?
     public getUser(): FbUser {
         return this.fbUser;
     }

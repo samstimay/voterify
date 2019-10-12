@@ -2,7 +2,6 @@ import * as functions from "firebase-functions";
 import { logger } from "./log";
 import { ElectionApi } from "./api/elections";
 import { CandidateApi } from "./api/candidates";
-import { PhoneApi } from "./api/phones";
 import { VoteApi } from "./api/votes";
 import { VoterApi } from "./api/voters";
 import { SystemApi } from "./api/system";
@@ -31,7 +30,6 @@ logger.debug("API loading...");
 
 // Setup Endpoints
 SystemApi.createEndpoints(app);
-PhoneApi.createEndpoints(app);
 CandidateApi.createEndpoints(app);
 ElectionApi.createEndpoints(app);
 VoteApi.createEndpoints(app);

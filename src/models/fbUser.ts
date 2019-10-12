@@ -1,3 +1,4 @@
+// Firebase User data
 export default class FbUser {
     public phone: string;
     public token: string;

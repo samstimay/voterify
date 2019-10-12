@@ -25,24 +25,6 @@
                             @click="onClickTrack"
                         />
                     </div>
-                    <!-- <hr/> -->
-                    <!--<div class="field">-->
-                    <!--{{ $content("track-phone", "Using your phone number") }}-->
-                    <!--<br/>-->
-                    <!--<vue-tel-input-->
-                    <!--class="phone-number-input"-->
-                    <!--v-model="trackingPhone"-->
-                    <!--:defaultCountry="'us'"-->
-                    <!--:placeholder="$ui('phone-number', 'Phone Number')"-->
-                    <!--&gt;</vue-tel-input>-->
-                    <!--<br/>-->
-                    <!--<input-->
-                    <!--class="button is-large is-centered is-link"-->
-                    <!--type="button"-->
-                    <!--:value="$ui('send', 'Send')"-->
-                    <!--@click="onClickPhone"-->
-                    <!--/>-->
-                    <!--</div>-->
                     <div v-show="trackingNotFound">
                         {{
                             $content(
@@ -172,8 +154,7 @@ export default class TrackPage extends Vue {
 
     async onClickPhone() {
         // todo: validation
-        const vote = await api.trackPhone(
-            (this as any).trackingPhone,
+        const vote = await api.trackUID(
             this.electionId
         );
         if (!vote || !vote.voterId) {

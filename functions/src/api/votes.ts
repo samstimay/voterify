@@ -42,9 +42,9 @@ class VoteApi {
             logger.message("POST /trackVote", logger.parseExpress(req, res));
             return VoteApi.trackVote(req, res);
         });
-        app.post("/trackPhone", function(req: Request, res: Response) {
-            logger.message("POST /trackPhone", logger.parseExpress(req, res));
-            return VoteApi.trackPhone(req, res);
+        app.post("/trackUID", function(req: Request, res: Response) {
+            logger.message("POST /trackUID", logger.parseExpress(req, res));
+            return VoteApi.trackUID(req, res);
         });
         app.post("/createVote", function(req: Request, res: Response) {
             logger.message("POST /createVote", logger.parseExpress(req, res));
@@ -199,14 +199,11 @@ class VoteApi {
     }
 
     public static async createVote(req: Request, res: Response, uid: string) {
-        // get the user, phone and voter from the auth token uid
-        const user = await authApi.getUser(uid);
-        if (!user.phoneNumber || user.phoneNumber.length === 0)
+        if (!uid || uid.length === 0)
             return Errors.onCatch(res, "User not found after auth.");
-        const phone = user.phoneNumber.replace(/[^0-9\.]+/g, "").trim();
-        const voter = await VoterApi.getVoter(phone);
+        const voter = await VoterApi.getVoter(req);
         if (!(voter as any).exists)
-            return Errors.onCatch(res, "Voter not found after auth: " + phone);
+            return Errors.onCatch(res, "Voter not found after auth.");
 
         let vote = {};
 
@@ -261,19 +258,19 @@ class VoteApi {
     }
 
     public static trackVote(req: Request, res: Response) {
-        let tracking = {};
+        let reqBody = {};
         try {
-            tracking = JSON.parse(req.body);
+            reqBody = JSON.parse(req.body);
         } catch {
-            tracking = req.body;
+            reqBody = req.body;
         }
 
         try {
             return firebaseApi
                 .firestore()
                 .collection("votes")
-                .where("voterId", "==", (tracking as any).voterId)
-                .where("electionId", "==", (tracking as any).electionId)
+                .where("voterId", "==", (reqBody as any).voterId)
+                .where("electionId", "==", (reqBody as any).electionId)
                 .get()
                 .then((querySnapshot: QuerySnapshot) => {
                     if (querySnapshot.docs[0])
@@ -289,30 +286,26 @@ class VoteApi {
         }
     }
 
-    public static async trackPhone(req: Request, res: Response) {
-        let tracking = {};
+    public static async trackUID(req: Request, res: Response) {
+        let reqBody = {};
         try {
-            tracking = JSON.parse(req.body);
+            reqBody = JSON.parse(req.body);
         } catch {
-            tracking = req.body;
+            reqBody = req.body;
         }
-        console.log("trackPhone", tracking);
+        console.log("trackUID", reqBody);
 
         try {
             // todo: need to auth before call this
             // remove non-digit
-            const phoneNumber = (tracking as any).phone.replace(/\D+/g, "");
-            const voter = (await VoterApi.getVoter(
-                phoneNumber,
-                undefined
-            )) as any;
+            const voter = (await VoterApi.getVoter(req)) as any;
             const voterId = voter && voter.voterId ? voter.voterId : null;
             if (!voterId) return res.json({});
             return firebaseApi
                 .firestore()
                 .collection("votes")
                 .where("voterId", "==", voterId)
-                .where("electionId", "==", (tracking as any).electionId)
+                .where("electionId", "==", (reqBody as any).electionId)
                 .get()
                 .then((querySnapshot: QuerySnapshot) => {
                     if (querySnapshot.docs[0])
