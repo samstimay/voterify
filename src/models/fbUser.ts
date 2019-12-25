@@ -1,9 +1,9 @@
 // Firebase User data
 export default class FbUser {
-    public phone: string;
-    public token: string;
-    public refreshToken: string;
-    public uid: string;
+    public phone: string
+    public token: string
+    public refreshToken: string
+    public uid: string
 
     constructor(
         phone: string,
@@ -11,9 +11,9 @@ export default class FbUser {
         refreshToken: string,
         uid: string
     ) {
-        this.phone = phone || "";
-        this.token = token || "";
-        this.refreshToken = refreshToken || "";
-        this.uid = uid || "";
+        this.phone = phone || ''
+        this.token = token || ''
+        this.refreshToken = refreshToken || ''
+        this.uid = uid || ''
     }
 }

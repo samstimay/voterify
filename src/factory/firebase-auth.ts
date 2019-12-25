@@ -1,32 +1,32 @@
-import firebase from "./firebase-provider";
-import ApplicationVerifier = firebase.auth.ApplicationVerifier;
+import firebase from './firebase-provider'
+import ApplicationVerifier = firebase.auth.ApplicationVerifier
 class FirebaseAuth {
     public phone(phoneNumber: string, appVerifier: ApplicationVerifier) {
         return firebase
             .auth()
             .signInWithPhoneNumber(phoneNumber, appVerifier)
             .then(function(confirmationResult) {
-                (window as any).confirmationResult = confirmationResult;
-            });
+                ;(window as any).confirmationResult = confirmationResult
+            })
     }
 
     public getAuthToken() {
-        return firebase.auth().currentUser.getIdToken(true);
+        return firebase.auth().currentUser.getIdToken(true)
     }
 
     public isAuthorized(): boolean {
-        return firebase.auth().currentUser != null;
+        return firebase.auth().currentUser != null
     }
 
     public get confirmation() {
-        return (window as any).confirmationResult;
+        return (window as any).confirmationResult
     }
 
     public signOut() {
-        return firebase.auth().signOut();
+        return firebase.auth().signOut()
     }
 }
 
-const firebaseAuth = new FirebaseAuth();
+const firebaseAuth = new FirebaseAuth()
 
-export default firebaseAuth;
+export default firebaseAuth

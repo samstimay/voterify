@@ -1,6 +1,6 @@
 const constants = {
-    appName: "Votery",
-    interpolate: "%%"
-};
+    appName: 'Votery',
+    interpolate: '%%'
+}
 
-export { constants };
+export { constants }

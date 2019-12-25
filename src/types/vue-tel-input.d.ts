@@ -1,1 +1,1 @@
-declare module "vue-tel-input";
+declare module 'vue-tel-input'
