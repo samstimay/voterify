@@ -5,7 +5,7 @@ import 'core-js'
 import 'core-js/shim'
 import '@babel/polyfill'
 import Vue from 'vue'
-import Vuex from 'vuex'
+import store from './store'
 import App from './App.vue'
 import Router from './router'
 import VueRouter from 'vue-router'
@@ -22,7 +22,6 @@ firebase.auth()
 
 Vue.config.productionTip = false
 
-Vue.use(Vuex)
 Vue.use(VueRouter)
 Vue.use(VueTelInput, {
     defaultCountry: 'US',
@@ -37,6 +36,7 @@ Vue.component('vuetable-pagination', VuetablePagination)
 window['VfyEnvironment'] = process.env.NODE_ENV
 
 const app = new Vue({
+    store,
     router: Router,
     render: h => h(App)
 }).$mount('#app')
