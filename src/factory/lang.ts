@@ -1,4 +1,4 @@
-import axios from "axios";
+import http from "@/services/http"
 import { constants } from "@/factory/constants";
 
 class Lang {
@@ -15,7 +15,7 @@ class Lang {
     public init() {
         const instance = this;
         const fileName = "lang/" + this.currentLang() + ".json";
-        return axios
+        return http
             .get(fileName)
             .then(function(res) {
                 instance.userLang = res.data;

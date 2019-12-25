@@ -6,6 +6,7 @@ import 'core-js'
 import 'core-js/shim'
 import '@babel/polyfill'
 import Vue from "vue";
+import Vuex from 'vuex';
 import App from "./App.vue";
 import Router from "./router";
 import VueRouter from "vue-router";
@@ -22,8 +23,10 @@ firebase.auth();
 
 Vue.config.productionTip = false;
 
+
+Vue.use(Vuex);
 Vue.use(VueRouter);
-Vue.use(VueTelInput,  {
+Vue.use(VueTelInput, {
     defaultCountry: 'US',
     enabledFlags: false,
     onlyCountries: ['US']

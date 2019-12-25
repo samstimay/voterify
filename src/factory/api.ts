@@ -1,5 +1,5 @@
 import { session } from "@/factory/session";
-import axios from "axios";
+import http from "@/services/http"
 import FbUser from "@/models/fbUser";
 import Voter from "@/models/voter";
 import Election from "@/models/election";
@@ -39,7 +39,7 @@ class Api {
     public init() {
         const instance = this
         const fileName = "/settings.json";
-        return axios
+        return http
             .get(fileName)
             .then(function(res) {
                 instance.apiPath =
@@ -53,7 +53,7 @@ class Api {
     }
 
     public getElections(): Promise<Election[]> {
-        return axios
+        return http
             .get(this.apiPath + "elections", this.getHeader())
             .then(function(res) {
                 const elections = [];
@@ -83,7 +83,7 @@ class Api {
     }
 
     public getCandidates(electionId: string): Promise<Candidate[]> {
-        return axios
+        return http
             .get(
                 this.apiPath + "candidates/?id=" + electionId,
                 this.getHeader()
@@ -109,7 +109,7 @@ class Api {
 
     public getVoter(): Promise<Voter> {
         const user = this.user;
-        return axios
+        return http
             .get(this.apiPath + "getVoter/", this.getHeader())
             .then(function(res) {
                 if (res.data.error) {
@@ -128,7 +128,7 @@ class Api {
     }
 
     public hasVoterVoted(voter: Voter, election: Election): Promise< Boolean > {
-        return axios
+        return http
             .get(
                 this.apiPath +
                     "checkVote/?id=" +
@@ -147,7 +147,7 @@ class Api {
     }
 
     public createVoter(voter: Voter) {
-        return axios
+        return http
             .get(
                 this.apiPath + "createVoter/",
                 this.getHeader()
@@ -168,7 +168,7 @@ class Api {
             url: this.apiPath + "createVote",
             data: vote
         };
-        return axios(Object.assign(post, this.getHeader()))
+        return http(Object.assign(post, this.getHeader()))
             .then(function(res) {
                 if (res.data.error) {
                     return this.onCatch(res);
@@ -184,7 +184,7 @@ class Api {
             url: this.apiPath + "trackVote",
             data: { voterId, electionId }
         };
-        return axios(Object.assign(post, this.getHeader()))
+        return http(Object.assign(post, this.getHeader()))
             .then(function(res) {
                 if (res.data.error) {
                     return this.onCatch(res);
@@ -200,7 +200,7 @@ class Api {
             url: this.apiPath + "trackUID",
             data: { electionId }
         };
-        return axios(Object.assign(post, this.getHeader()))
+        return http(Object.assign(post, this.getHeader()))
             .then(function(res) {
                 if (res.data.error) {
                     return this.onCatch(res);
@@ -212,7 +212,7 @@ class Api {
 
     public getVotes(electionId: string): Promise<Vote[]> {
         const user = this.user;
-        return axios
+        return http
             .get(this.apiPath + "getVotes/?id=" + electionId, this.getHeader())
             .then(function(res) {
                 const votes = [];
