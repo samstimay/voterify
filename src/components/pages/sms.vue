@@ -27,33 +27,27 @@
                     />
                 </div>
             </div>
-            <div
-                class="field is-grouped is-grouped-multiline"
-                v-show="!isValid"
-            >
+            <div class="field is-grouped is-grouped-multiline" v-show="!isValid">
                 <div class="is-size-8 is-light is-italic">
                     <p>
                         {{
-                            $content(
-                                "sms-instructions",
-                                "Enter your 6 digit SMS code."
-                            )
+                        $content(
+                        "sms-instructions",
+                        "Enter your 6 digit SMS code."
+                        )
                         }}
                     </p>
                     <p>
                         {{
-                            $content(
-                                "sms-didnot",
-                                "If you did not receive a code."
-                            )
+                        $content(
+                        "sms-didnot",
+                        "If you did not receive a code."
+                        )
                         }}
                     </p>
                 </div>
             </div>
-            <div
-                class="field is-grouped is-grouped-multiline"
-                v-show="!isValid"
-            >
+            <div class="field is-grouped is-grouped-multiline" v-show="!isValid">
                 <div class="is-size-8 is-light is-italic">
                     <hr />
                     <p>
@@ -72,51 +66,41 @@
                     <p>{{ $content("sms-incorrect", "Incorrect SMS code") }}</p>
                     <p>
                         {{
-                            $content(
-                                "sms-tries",
-                                "You have %% chances to enter the correct SMS code.",
-                                maxTries - tries
-                            )
+                        $content(
+                        "sms-tries",
+                        "You have %% chances to enter the correct SMS code.",
+                        maxTries - tries
+                        )
                         }}
                     </p>
                     <p>
                         <i>
                             {{
-                                $content(
-                                    "sms-didyou",
-                                    "Did you receive a text message on your cell phone?"
-                                )
+                            $content(
+                            "sms-didyou",
+                            "Did you receive a text message on your cell phone?"
+                            )
                             }}
                         </i>
                     </p>
                 </div>
             </div>
             <div class="page-counter">
-                <progress-counter
-                    currentPage="1"
-                    pageCount="4"
-                ></progress-counter>
+                <progress-counter currentPage="1" pageCount="4"></progress-counter>
             </div>
         </Bubble>
     </div>
 </template>
 
 <script lang="ts">
-import "@/styles/pages/home.scss";
-import { EventHub } from "@/factory/event-hub";
-import {
-    Bubble,
-    Button,
-    TextInput,
-    ProgressCounter
-} from "@/components/ui/all";
-import { Component, Prop, Vue } from "vue-property-decorator";
-import { voterFactory } from "@/factory/voter-factory";
-import { electionFactory } from "@/factory/election-factory";
-import { session } from "@/factory/session";
-import { api } from "@/factory/api";
-import firebaseAuth from "@/factory/firebase-auth";
-import "bulma-pageloader";
+import '@/styles/pages/home.scss'
+import { EventHub } from '@/factory/event-hub'
+import { Bubble, Button, TextInput, ProgressCounter } from '@/components/ui/all'
+import { Component, Prop, Vue } from 'vue-property-decorator'
+import { session } from '@/factory/session'
+import { api } from '@/factory/api'
+import firebaseAuth from '@/factory/firebase-auth'
+import 'bulma-pageloader'
 
 @Component({
     components: {
@@ -127,124 +111,135 @@ import "bulma-pageloader";
     }
 })
 export default class SMSPage extends Vue {
-    private isPhoneRegistered: boolean = false;
+    private isPhoneRegistered: boolean = false
 
     public data() {
         return {
-            sms: "",
+            sms: '',
             newSmsText: (this as any).$ui(
-                "sms-new-code",
-                "I need a new SMS Code"
+                'sms-new-code',
+                'I need a new SMS Code'
             ),
             tries: 0,
             maxTries: 5,
             isValid: false
-        };
+        }
     }
 
     public created() {
-        EventHub.$emit("showPageLoader", {
+        EventHub.$emit('showPageLoader', {
             message: (this as any).$content(
-                "sms-sending",
-                "Sending you an SMS code, check your text messages..."
+                'sms-sending',
+                'Sending you an SMS code, check your text messages...'
             ),
             timeout: 2000,
             callBackFn: this.onPageReady
-        });
+        })
     }
 
     public onPageReady() {
-        document.getElementById("sms-input").focus();
+        document.getElementById('sms-input').focus()
     }
 
     public onChange() {
-        (this as any).isValid = (this as any).sms.match(/\b\d{6}\b/g);
+        ;(this as any).isValid = (this as any).sms.match(/\b\d{6}\b/g)
     }
 
     public onClick() {
-        const instance = this;
-        const code = (this as any).sms;
-        const confirmation = firebaseAuth.confirmation;
+        const instance = this
+        const code = (this as any).sms
+        const confirmation = firebaseAuth.confirmation
 
         if (!confirmation) {
-            instance.onPhoneError();
+            instance.onPhoneError()
         }
 
         confirmation
             .confirm(code)
             .then(data => {
-                EventHub.$emit("showPageLoader", {
+                EventHub.$emit('showPageLoader', {
                     message: (instance as any).$content(
-                        "sms-confirmed",
-                        "SMS confirmed, checking your voter status..."
+                        'sms-confirmed',
+                        'SMS confirmed, checking your voter status...'
                     )
-                });
+                })
 
-                voterFactory
-                    .onVoterAuth(data)
+                this.onVoterAuth(data.user)
                     .then(() => {
-                        instance.onPhoneCheck();
+                        instance.onPhoneCheck()
                     })
                     .catch(() => {
-                        instance.onPhoneError();
-                    });
+                        instance.onPhoneError()
+                    })
             })
-            .catch(instance.retrySms);
+            .catch(instance.retrySms)
+    }
+
+    async onVoterAuth(user) {
+        const token = await firebaseAuth.getAuthToken()
+        const fbUser = await this.$store.dispatch('user/onAuth', {
+            user,
+            token
+        })
+        session.setUser(fbUser)
+        return await this.$store.dispatch('user/get').then(function(voter) {
+            session.setVoter(voter)
+            return voter
+        })
     }
 
     public retrySms(data: any) {
-        const instance = this as any;
-        instance.sms = "";
-        instance.tries++;
+        const instance = this as any
+        instance.sms = ''
+        instance.tries++
         if (instance.tries >= instance.maxTries) {
-            instance.onRestartSms();
+            instance.onRestartSms()
         }
     }
 
     public async onRestartSms() {
-        await firebaseAuth.signOut();
-        (window as any).recaptchaVerifier.reset();
-        this.$router.push("/");
+        await firebaseAuth.signOut()
+        ;(window as any).recaptchaVerifier.reset()
+        this.$router.push('/')
     }
 
     public async onPhoneCheck() {
-        EventHub.$emit("hidePageLoader");
-        const voter = await voterFactory.getVoter();
-        const instance = this;
+        EventHub.$emit('hidePageLoader')
+        const voter = session.getVoter()
+        const instance = this
         // voter exists, have they voted?
         if (voter.voterId && voter.uid) {
-            this.$router.push("/chose");
-        // voter does not exist, create them
+            this.$router.push('/chose')
+            // voter does not exist, create them
         } else {
-            voterFactory.createVoter(
-                function() {
-                    instance.$router.push("/chose");
-                },
-                function() {
-                    instance.onVoterCreateError();
+            this.$store.dispatch('user/create').then(newVoter => {
+                if (newVoter.voterId) {
+                    instance.$router.push('/chose')
+                } else {
+                    instance.onVoterCreateError()
                 }
-            );
+            })
         }
     }
     public onPhoneError() {
-        EventHub.$emit("showPageLoader", {
+        EventHub.$emit('showPageLoader', {
             message: (this as any).$content(
-                "sms-restart",
-                "Need to restart SMS process..."
+                'sms-restart',
+                'Need to restart SMS process...'
             ),
             timeout: 2000,
             callBackFn: this.onRestartSms
-        });
+        })
     }
     public onVoterCreateError() {
-        EventHub.$emit("showPageLoader", {
+        EventHub.$emit('showPageLoader', {
             message: (this as any).$content(
-                "voter-create-failed",
-                "Creating a new voter failed..."
+                'voter-create-failed',
+                'Creating a new voter failed...'
             ),
             timeout: 2000,
             callBackFn: this.onRestartSms
-        });
+        })
     }
 }
 </script>

@@ -1,231 +1,38 @@
 import { session } from '@/factory/session'
 import http from '@/services/http'
-import FbUser from '@/models/fbUser'
-import Voter from '@/models/voter'
-import Election from '@/models/election'
-import Candidate from '@/models/candidate'
-import Vote from '@/models/vote'
+import { AxiosResponse } from 'axios'
 
 class Api {
     private apiPath: string
 
-    public getApiPath() {
+    public setPath(path: string) {
+        this.apiPath = path
+    }
+
+    public path(): string {
         return this.apiPath
     }
 
-    private get user(): FbUser {
-        return session.getUser()
+    public get(path): Promise<AxiosResponse<any>> {
+        return http.get(api.path() + path, this.getHeader())
     }
 
-    private onCatch(res: any): Boolean {
-        // tslint:disable-next-line
-        console.log('api failed', res)
-        return false
+    public post(path, data): Promise<AxiosResponse<any>> {
+        const post = {
+            method: 'post',
+            url: this.apiPath + path,
+            data
+        }
+        return http(Object.assign(post, this.getHeader()))
     }
 
     private getHeader(): object {
-        const user = this.user
+        const user = session.getUser()
         if (!user || !user.token) {
             return { headers: { Authorization: 'anonymous' } }
         }
         const token = user.token
         return { headers: { Authorization: 'Bearer ' + token } }
-    }
-
-    private env() {
-        return window['VfyEnvironment'] || 'development'
-    }
-
-    public init() {
-        const instance = this
-        const fileName = '/settings.json'
-        return http
-            .get(fileName)
-            .then(function(res) {
-                instance.apiPath =
-                    res.data.apiHost +
-                    (res.data.apiPort ? ':' + res.data.apiPort : '') +
-                    res.data.apiPath
-            })
-            .catch(function(res) {
-                console.log('api init failed', res)
-            })
-    }
-
-    public getElections(): Promise<Election[]> {
-        return http
-            .get(this.apiPath + 'elections', this.getHeader())
-            .then(function(res) {
-                const elections = []
-                res.data.forEach(election => {
-                    elections.push(
-                        new Election(
-                            election.name,
-                            election.id,
-                            election.region,
-                            election.date,
-                            []
-                        )
-                    )
-                })
-                return elections
-            })
-            .catch(function() {
-                return []
-            })
-    }
-
-    public getDefaultElection(): Promise<Election> {
-        return this.getElections().then(function(elections) {
-            // todo: smarter default election
-            return elections[0]
-        })
-    }
-
-    public getCandidates(electionId: string): Promise<Candidate[]> {
-        return http
-            .get(
-                this.apiPath + 'candidates/?id=' + electionId,
-                this.getHeader()
-            )
-            .then(function(res) {
-                const candidates = []
-                res.data.forEach(candidate => {
-                    candidates.push(
-                        new Candidate(
-                            candidate.name,
-                            candidate.id,
-                            candidate.party,
-                            candidate.electionId
-                        )
-                    )
-                })
-                return candidates
-            })
-            .catch(function() {
-                return []
-            })
-    }
-
-    public getVoter(): Promise<Voter> {
-        const user = this.user
-        return http
-            .get(this.apiPath + 'getVoter/', this.getHeader())
-            .then(function(res) {
-                if (res.data.error) {
-                    return this.onCatch(res)
-                }
-                if (res.data.exists) {
-                    return new Voter(res.data.uid, res.data.voterId)
-                } else {
-                    return new Voter(user.uid, '')
-                }
-            })
-            .catch(this.onCatch)
-    }
-
-    public hasVoterVoted(voter: Voter, election: Election): Promise<Boolean> {
-        return http
-            .get(
-                this.apiPath +
-                    'checkVote/?id=' +
-                    election.id +
-                    '&voterId=' +
-                    voter.voterId,
-                this.getHeader()
-            )
-            .then(function(res) {
-                if (res.data.error) {
-                    return this.onCatch(res)
-                }
-                return res.data.exists === true
-            })
-            .catch(this.onCatch)
-    }
-
-    public createVoter(voter: Voter) {
-        return http
-            .get(this.apiPath + 'createVoter/', this.getHeader())
-            .then(function(res) {
-                if (res.data.error) {
-                    return this.onCatch(res)
-                }
-                voter.voterId = res.data.voterId
-                return voter
-            })
-            .catch(this.onCatch)
-    }
-
-    public createVote(vote: Vote) {
-        const post = {
-            method: 'post',
-            url: this.apiPath + 'createVote',
-            data: vote
-        }
-        return http(Object.assign(post, this.getHeader()))
-            .then(function(res) {
-                if (res.data.error) {
-                    return this.onCatch(res)
-                }
-                return res.data
-            })
-            .catch(this.onCatch)
-    }
-
-    public trackVote(voterId: string, electionId: string): Promise<Vote> {
-        const post = {
-            method: 'post',
-            url: this.apiPath + 'trackVote',
-            data: { voterId, electionId }
-        }
-        return http(Object.assign(post, this.getHeader()))
-            .then(function(res) {
-                if (res.data.error) {
-                    return this.onCatch(res)
-                }
-                return res.data
-            })
-            .catch(this.onCatch)
-    }
-
-    public trackUID(electionId: string): Promise<Vote> {
-        const post = {
-            method: 'post',
-            url: this.apiPath + 'trackUID',
-            data: { electionId }
-        }
-        return http(Object.assign(post, this.getHeader()))
-            .then(function(res) {
-                if (res.data.error) {
-                    return this.onCatch(res)
-                }
-                return res.data
-            })
-            .catch(this.onCatch)
-    }
-
-    public getVotes(electionId: string): Promise<Vote[]> {
-        const user = this.user
-        return http
-            .get(this.apiPath + 'getVotes/?id=' + electionId, this.getHeader())
-            .then(function(res) {
-                const votes = []
-                res.data.forEach(vote => {
-                    votes.push(
-                        new Vote(
-                            electionId,
-                            vote.candidateId,
-                            vote.candidate,
-                            vote.voterId,
-                            vote.date
-                        )
-                    )
-                })
-                return votes
-            })
-            .catch(function() {
-                return []
-            })
     }
 }
 

@@ -2,9 +2,7 @@
     <div class="hello">
         <Bubble text class="bubble-outline">
             <div class="home-bubble-container content" v-show="isReady">
-                <election-chooser
-                    :onChange="onElectionChange"
-                ></election-chooser>
+                <election-chooser :onChange="onElectionChange"></election-chooser>
                 {{ $content("track-header", "Track your vote") }}
                 <div v-show="!hasTrackingInfo">
                     <div class="field">
@@ -27,10 +25,10 @@
                     </div>
                     <div v-show="trackingNotFound">
                         {{
-                            $content(
-                                "track-not-found",
-                                "Your tracking number was not found in the database."
-                            )
+                        $content(
+                        "track-not-found",
+                        "Your tracking number was not found in the database."
+                        )
                         }}
                     </div>
                 </div>
@@ -54,14 +52,13 @@
                 </div>
                 <hr />
                 <div class="padded">
-                    <router-link class="button is-link" to="/count">
-                        {{ $ui("count", "Count all Votes") }}
-                    </router-link>
+                    <router-link
+                        class="button is-link"
+                        to="/count"
+                    >{{ $ui("count", "Count all Votes") }}</router-link>
                 </div>
                 <div class="padded">
-                    <router-link class="button is-link" to="/">
-                        {{ $ui("home", "Home") }}
-                    </router-link>
+                    <router-link class="button is-link" to="/">{{ $ui("home", "Home") }}</router-link>
                 </div>
             </div>
         </Bubble>
@@ -75,15 +72,16 @@ import {
     TextInput,
     ProgressCounter,
     ElectionChooser
-} from "@/components/ui/all";
-import { Component, Prop, Vue } from "vue-property-decorator";
-import { session } from "@/factory/session";
-import { electionFactory } from "@/factory/election-factory";
-import { api } from "@/factory/api";
-import Vote from "@/models/vote";
-import "@/styles/pages/track.scss";
-import Election from "@/models/election";
-import moment from "moment";
+} from '@/components/ui/all'
+import { Component, Prop, Vue } from 'vue-property-decorator'
+import { session } from '@/factory/session'
+import { api } from '@/factory/api'
+import Vote from '@/models/vote'
+import '@/styles/pages/track.scss'
+import Election from '@/models/election'
+import moment from 'moment'
+
+import { mapState } from 'vuex'
 
 @Component({
     components: {
@@ -92,78 +90,80 @@ import moment from "moment";
         TextInput,
         ProgressCounter,
         ElectionChooser
-    }
+    },
+    computed: mapState('elections', ['currentElection'])
 })
 export default class TrackPage extends Vue {
-    private electionId: string = "";
-    private _election: Election;
+    private electionId: string = ''
+    private _election: Election
+    public currentElection!: Election
 
     data() {
         return {
             isReady: false as boolean,
-            trackingNumber: "" as string,
-            trackingPhone: "" as string,
+            trackingNumber: '' as string,
+            trackingPhone: '' as string,
             hasTrackingInfo: false as boolean,
             trackingNotFound: false as boolean,
             vote: null as Vote,
-            electionName: "" as string
-        };
+            electionName: '' as string
+        }
     }
 
     created() {
-        this.getElections();
-        const voterId = (this.$route.query as any).voterId;
+        this.getElections()
+        const voterId = (this.$route.query as any).voterId
         if (voterId && voterId.length) {
-            (this as any).trackingNumber = voterId;
+            ;(this as any).trackingNumber = voterId
         }
     }
 
     date() {
-        return moment((this as any).vote.date).format("LLLL");
+        return moment((this as any).vote.date).format('LLLL')
     }
 
     onElectionChange(election: Election) {
-        this.electionId = election.id;
-        this._election = election;
-        (this as any).electionName = election.name;
-        this.onClickTrack();
+        this.electionId = election.id
+        this._election = election
+        ;(this as any).electionName = election.name
+        this.onClickTrack()
     }
 
     async getElections() {
-        const election = await electionFactory.getDefaultElection();
-        this.electionId = election.id;
-        (this as any).isReady = true;
-        (this as any).electionName = election.name;
+        const instance = this as any
+        instance.electionId = this.currentElection.id
+        instance.isReady = true
+        instance.electionName = this.currentElection.name
     }
 
     async onClickTrack() {
         // todo: validation
-        const vote = await api.trackVote(
-            (this as any).trackingNumber,
-            this.electionId
-        );
+        const vote = await this.$store.dispatch('votes/trackVote', {
+            voterId: (this as any).trackingNumber,
+            electionId: this.electionId
+        })
         if (!vote || !vote.voterId) {
-            (this as any).trackingNotFound = true;
-            (this as any).hasTrackingInfo = false;
+            ;(this as any).trackingNotFound = true
+            ;(this as any).hasTrackingInfo = false
         } else {
-            (this as any).trackingNotFound = false;
-            (this as any).hasTrackingInfo = true;
-            (this as any).vote = vote;
+            ;(this as any).trackingNotFound = false
+            ;(this as any).hasTrackingInfo = true
+            ;(this as any).vote = vote
         }
     }
 
     async onClickPhone() {
         // todo: validation
-        const vote = await api.trackUID(
-            this.electionId
-        );
+        const vote = await this.$store.dispatch('votes/trackVote', {
+            electionId: this.electionId
+        })
         if (!vote || !vote.voterId) {
-            (this as any).trackingNotFound = true;
-            (this as any).hasTrackingInfo = false;
+            ;(this as any).trackingNotFound = true
+            ;(this as any).hasTrackingInfo = false
         } else {
-            (this as any).trackingNotFound = false;
-            (this as any).hasTrackingInfo = true;
-            (this as any).vote = vote;
+            ;(this as any).trackingNotFound = false
+            ;(this as any).hasTrackingInfo = true
+            ;(this as any).vote = vote
         }
     }
 }

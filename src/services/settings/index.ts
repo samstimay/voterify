@@ -1,4 +1,5 @@
 import http from '@/services/http'
+import { api } from '@/factory/api'
 const fileName = '/settings.json'
 
 export default {
@@ -26,6 +27,7 @@ export default {
                 payload.data.apiHost +
                 (payload.data.apiPort ? ':' + payload.data.apiPort : '') +
                 payload.data.apiPath
+            api.setPath(state.apiPath)
         }
     },
     getters: {

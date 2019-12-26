@@ -25,19 +25,12 @@
                                         />
                                     </td>
                                     <td>
-                                        <p class="party-name">
-                                            {{ candidate.party }}
-                                        </p>
-                                        <p class="candidate-name">
-                                            {{ candidate.name }}
-                                        </p>
+                                        <p class="party-name">{{ candidate.party }}</p>
+                                        <p class="candidate-name">{{ candidate.name }}</p>
                                     </td>
                                 </tr>
                                 <tr style="background:inherit">
-                                    <td
-                                        colspan="2"
-                                        class="is-centered has-text-centered"
-                                    >
+                                    <td colspan="2" class="is-centered has-text-centered">
                                         <input
                                             :disabled="isValid() == false"
                                             class="button is-large is-centered is-link"
@@ -52,35 +45,30 @@
                     </div>
                 </div>
             </div>
-            <div v-show="!isLoaded" class="home-bubble-container content">
-                {{ $content("loading-election", "Loading election...") }}
-            </div>
+            <div
+                v-show="!isLoaded"
+                class="home-bubble-container content"
+            >{{ $content("loading-election", "Loading election...") }}</div>
             <div class="page-counter">
-                <progress-counter
-                    currentPage="2"
-                    pageCount="4"
-                ></progress-counter>
+                <progress-counter currentPage="2" pageCount="4"></progress-counter>
             </div>
         </Bubble>
     </div>
 </template>
 
 <script lang="ts">
-import "@/styles/global.scss";
-import "@/styles/pages/election.scss";
-import {
-    Bubble,
-    Button,
-    TextInput,
-    ProgressCounter
-} from "@/components/ui/all";
-import { Component, Prop, Vue } from "vue-property-decorator";
-import Candidate from "@/models/candidate";
-import Election from "@/models/election";
-import Vote from "@/models/vote";
-import { session } from "@/factory/session";
-import { api } from "@/factory/api";
-import firebaseAuth from "@/factory/firebase-auth";
+import '@/styles/global.scss'
+import '@/styles/pages/election.scss'
+import { Bubble, Button, TextInput, ProgressCounter } from '@/components/ui/all'
+import { Component, Prop, Vue } from 'vue-property-decorator'
+import Candidate from '@/models/candidate'
+import Election from '@/models/election'
+import Vote from '@/models/vote'
+import { session } from '@/factory/session'
+import { api } from '@/factory/api'
+import firebaseAuth from '@/factory/firebase-auth'
+
+import { mapState } from 'vuex'
 
 @Component({
     components: {
@@ -88,73 +76,78 @@ import firebaseAuth from "@/factory/firebase-auth";
         Button,
         TextInput,
         ProgressCounter
-    }
+    },
+    computed: mapState('elections', ['currentElection'])
 })
 export default class ElectionPage extends Vue {
-    private candidateId: string = "";
+    private candidateId: string = ''
+    public currentElection!: Election
 
     public data() {
         return {
-            candidateId: "",
+            candidateId: '',
             isLoaded: false,
             election: {},
             candidates: [],
             isValid() {
-                return this.candidateId && this.candidateId.length > 0;
+                return this.candidateId && this.candidateId.length > 0
             }
-        };
+        }
     }
 
     created() {
         if (!firebaseAuth.isAuthorized()) {
-            this.$router.push("/");
+            this.$router.push('/')
         }
-        this.loadElection();
+        this.loadElection()
     }
 
     public async loadElection() {
-        let election = session.getElection();
-        if (!election || !election.name || election.name === "") {
-            election = await api.getDefaultElection();
-            session.setElection(election);
+        let election = session.getElection()
+        if (!election || !election.name || election.name === '') {
+            election = this.currentElection
+            session.setElection(election)
         }
-        this.loadCandidates(election);
+        this.loadCandidates(election)
     }
 
     private setElection(election: Election) {
-        const instance = this as any;
-        instance.isLoaded = true;
-        session.setElection(election);
-        instance.election = election;
-        instance.candidates = election.candidates;
+        const instance = this as any
+        instance.isLoaded = true
+        session.setElection(election)
+        instance.election = election
+        instance.candidates = election.candidates
     }
 
     private async loadCandidates(election: Election) {
-        const instance = this as any;
-        const candidates = await api.getCandidates(election.id);
-        election.candidates = candidates;
-        instance.setElection(election);
+        const instance = this as any
+        const candidates = await this.$store.dispatch(
+            'elections/getCandidates',
+            { electionId: election.id }
+        )
+        election.candidates = candidates
+        instance.setElection(election)
     }
 
     public onClick(candidateId: string) {
-        this.candidateId = candidateId;
+        this.candidateId = candidateId
     }
 
     public isChosen(candidateId: string) {
-        return this.candidateId === candidateId;
+        return this.candidateId === candidateId
     }
 
     public processForm() {
-        const election = session.getElection();
+        const election = session.getElection()
         const vote = new Vote(
             election.id,
             this.candidateId,
             election.candidateName(this.candidateId),
             session.getVoter().voterId,
             new Date()
-        );
-        session.registerVote(vote);
-        this.$router.push("/vote");
+        )
+        session.setVote(vote)
+        this.$router.push('/vote')
     }
 }
 </script>

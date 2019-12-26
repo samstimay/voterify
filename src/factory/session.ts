@@ -21,7 +21,7 @@ class Session {
         this.voteStatus = null
     }
 
-    public registerVote(vote: Vote) {
+    public setVote(vote: Vote) {
         this.vote = vote
     }
 

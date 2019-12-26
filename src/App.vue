@@ -72,8 +72,8 @@ export default class App extends Vue {
         const instance = this as any
         lang.init().then(function() {
             instance.$store.dispatch('settings/get').then(function() {
-                api.getElections().then(function(data) {
-                    ;(instance as any).isLoaded = true
+                instance.$store.dispatch('elections/get').then(function(data) {
+                    instance.isLoaded = true
                 })
             })
         })
