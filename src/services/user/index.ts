@@ -1,4 +1,5 @@
 import actions from './actions'
+import { session } from '@/factory/session'
 
 export default {
     namespaced: true,
@@ -10,9 +11,11 @@ export default {
     mutations: {
         user(state, payload) {
             state.user = payload
+            session.setUser(state.user)
         },
         voter(state, payload) {
             state.voter = payload
+            session.setVoter(state.voter)
         }
     },
     getters: {}

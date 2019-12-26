@@ -1,5 +1,4 @@
 import { api } from '@/factory/api'
-import { session } from '@/factory/session'
 import Vote from '@/models/vote'
 
 export default {
@@ -9,7 +8,6 @@ export default {
                 throw res
             }
             commit('vote', res.data)
-            session.setVote(res.data)
             return res.data
         })
     },

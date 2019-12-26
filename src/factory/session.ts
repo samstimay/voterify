@@ -2,8 +2,6 @@ import Voter from '@/models/voter'
 import Vote from '@/models/vote'
 import FbUser from '@/models/fbUser'
 import Election from '@/models/election'
-import * as firebase from 'firebase'
-import User = firebase.User
 import Candidate from '@/models/candidate'
 
 class Session {
@@ -33,7 +31,6 @@ class Session {
         this.fbUser = fbUser
     }
 
-    // TODO: should FbUser be in the app?
     public getUser(): FbUser {
         return this.fbUser
     }

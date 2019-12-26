@@ -1,5 +1,4 @@
 import { api } from '@/factory/api'
-import { session } from '@/factory/session'
 import Voter from '@/models/voter'
 import FbUser from '@/models/fbUser'
 
@@ -9,7 +8,6 @@ export default {
             if (res.data.exists) {
                 const voter = new Voter(res.data.uid, res.data.voterId)
                 commit('voter', voter)
-                session.setVoter(voter)
                 return voter
             } else {
                 throw res
@@ -24,7 +22,6 @@ export default {
                 if (res.data.exists) {
                     const voter = new Voter(res.data.uid, res.data.voterId)
                     commit('voter', voter)
-                    session.setVoter(voter)
                     return voter
                 } else {
                     throw res
@@ -41,7 +38,6 @@ export default {
             user.uid
         )
         commit('user', fbUser)
-        session.setUser(fbUser)
         return fbUser
     }
 }
