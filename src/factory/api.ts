@@ -18,7 +18,7 @@ class Api {
     }
 
     public post(path, data): Promise<AxiosResponse<any>> {
-        let post = {
+        const post = {
             method: 'post',
             url: this.apiPath + path,
             data
