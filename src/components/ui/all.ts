@@ -6,6 +6,7 @@ import TextInput from './text-input.vue'
 import DateDisplay from './date.vue'
 import ElectionChooser from './election-chooser.vue'
 import Spinner from './spinner.vue'
+import Error from './error.vue'
 
 export {
     Bubble,
@@ -15,5 +16,6 @@ export {
     TextInput,
     DateDisplay,
     ElectionChooser,
-    Spinner
+    Spinner,
+    Error
 }

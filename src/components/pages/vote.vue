@@ -96,7 +96,7 @@ export default class VotePage extends Vue {
     }
     onClickYes() {
         const vote = session.getVote()
-        this.$store.dispatch('votes/create', vote).then(data => {
+        this.$store.dispatch('votes/create', { vote }).then(data => {
             session.setVoteStatus((data as any).status)
             this.$router.push('/thanks')
         })

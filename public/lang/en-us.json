@@ -20,6 +20,8 @@
     "chose-election": "Chose your election.",
     "selected": "Selected",
     "progress": "Progress",
+    "login-instructions": "Login with one of the providers below.",
+    "login-button": "Use an account to login",
     "manifesto": "Manifesto",
     "manifesto-lines": [
         "Voters ARE anonymous.",

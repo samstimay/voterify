@@ -10,7 +10,7 @@ import AlreadyPage from './components/pages/already.vue'
 import TrackPage from './components/pages/track.vue'
 import CountPage from './components/pages/count.vue'
 import ChosePage from './components/pages/chose.vue'
-import Vote from './models/vote'
+import LoginPage from './components/pages/login.vue'
 
 export default new Router({
     routes: [
@@ -69,6 +69,11 @@ export default new Router({
             path: '/chose',
             name: 'Chose',
             component: ChosePage
+        },
+        {
+            path: '/login',
+            name: 'Login',
+            component: LoginPage
         }
     ]
 })

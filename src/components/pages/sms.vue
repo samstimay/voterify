@@ -181,7 +181,6 @@ export default class SMSPage extends Vue {
             user,
             token
         })
-        session.setUser(fbUser)
         return await this.$store.dispatch('user/get').then(function(voter) {
             session.setVoter(voter)
             return voter
