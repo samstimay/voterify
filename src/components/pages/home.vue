@@ -1,41 +1,53 @@
 <template>
     <div class="hello">
         <Bubble text class="bubble-outline" v-show="isLoaded">
-            <div class="field">
-                <div class="control">
-                    <vue-tel-input
-                        class="phone-number-input"
-                        v-model="phoneNumber"
-                        @onInput="onInput"
-                        :placeholder="$ui('phone-number', 'Phone Number')"
-                    ></vue-tel-input>
+            <div v-if="!isLoggedIn">
+                <div class="field">
+                    <div class="control">
+                        <vue-tel-input
+                            class="phone-number-input"
+                            v-model="phoneNumber"
+                            @onInput="onInput"
+                            :placeholder="$ui('phone-number', 'Phone Number')"
+                        ></vue-tel-input>
+                    </div>
+                </div>
+
+                <div class="field is-grouped is-grouped-centered">
+                    <div class="control" v-show="isValid">
+                        <input
+                            id="send-sms-button"
+                            class="button is-large is-centered"
+                            type="button"
+                            :value="$ui('send', 'Send')"
+                            @click="onClick"
+                        />
+                    </div>
+                    <div v-show="!isValid" class="is-size-8 is-light is-italic">
+                        {{
+                        $content(
+                        "home-begin",
+                        "To begin enter your valid US cell phone number."
+                        )
+                        }}
+                        <p>
+                            <button
+                                class="button"
+                                @click="$router.push('/login')"
+                            >{{ $content('login-button', 'Use an account to login') }}</button>
+                        </p>
+                    </div>
                 </div>
             </div>
 
-            <div class="field is-grouped is-grouped-centered">
-                <div class="control" v-show="isValid">
-                    <input
-                        id="send-sms-button"
-                        class="button is-large is-centered"
-                        type="button"
-                        :value="$ui('send', 'Send')"
-                        @click="onClick"
-                    />
-                </div>
-                <div v-show="!isValid" class="is-size-8 is-light is-italic">
-                    {{
-                    $content(
-                    "home-begin",
-                    "To begin enter your valid US cell phone number."
-                    )
-                    }}
-                    <p>
-                        Or
-                        <button
-                            @click="$router.push('/login')"
-                        >{{ $content('login-button', 'Use an account to login') }}</button>
-                    </p>
-                </div>
+            <div v-show="isLoggedIn">
+                {{ $content('already-logged-in', 'You are already logged in, you many continue to vote.')}}
+                <p>
+                    <button
+                        class="button is-large is-centered is-link"
+                        @click="$router.push('/chose')"
+                    >{{$ui('vote', 'Vote') }}</button>
+                </p>
             </div>
 
             <div v-show="!isValid">
@@ -84,6 +96,7 @@ import { Bubble, TextInput, ProgressCounter } from '@/components/ui/all'
 import { Component, Prop, Vue } from 'vue-property-decorator'
 import firebase from '@/factory/firebase-provider'
 import { constants } from '@/factory/constants'
+import { session } from '@/factory/session'
 import firebaseAuth from '@/factory/firebase-auth'
 import CookiesModal from '@/components/modals/cookies.vue'
 import Phone from '@/mixins/phone'
@@ -105,7 +118,8 @@ export default class HomePage extends Vue {
             constants: constants,
             phoneNumber: this.phone,
             isLoaded: false,
-            isValid: false
+            isValid: false,
+            isLoggedIn: false
         }
     }
 
@@ -135,6 +149,12 @@ export default class HomePage extends Vue {
         const phoneInput: Element = document.querySelectorAll('[type="tel"]')[0]
         ;(phoneInput as any).focus()
         instance.isLoaded = true
+
+        const user = session.getUser()
+        const voter = session.getVoter()
+        if (user && voter.voterId) {
+            instance.isLoggedIn = true
+        }
     }
 
     public onInput({ number, isValid, country }) {
