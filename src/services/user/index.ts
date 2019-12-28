@@ -1,4 +1,5 @@
 import actions from './actions'
+import Permissions from '@/models/permissions'
 import { session } from '@/factory/session'
 
 export default {
@@ -6,7 +7,7 @@ export default {
     state: {
         user: {}, // the firebase user
         voter: {}, // the voter
-        permissions: {}
+        permissions: new Permissions('')
     },
     actions,
     mutations: {

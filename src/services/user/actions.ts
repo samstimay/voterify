@@ -1,6 +1,7 @@
 import { api } from '@/factory/api'
 import Voter from '@/models/voter'
 import FbUser from '@/models/fbUser'
+import Permissions from '@/models/permissions'
 import { onCatch } from '@/plugins/errors'
 
 export default {
@@ -64,6 +65,6 @@ export default {
     },
 
     setPermissions({ commit }, { permissions }) {
-        commit('permissions', permissions)
+        commit('permissions', new Permissions(permissions.type))
     }
 }

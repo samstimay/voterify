@@ -64,5 +64,28 @@ export default {
                 return res.data.exists === true
             })
             .catch(onCatch)
+    },
+
+    getEditable({ state }): Promise<Election[]> {
+        return api
+            .get('elections/edit')
+            .then(function(res) {
+                console.log('TCL: res', res)
+                let elections = []
+                res.data.forEach(election => {
+                    elections.push(
+                        new Election(
+                            election.name,
+                            election.id,
+                            election.region,
+                            election.date,
+                            election.candidates
+                        )
+                    )
+                })
+
+                return elections
+            })
+            .catch(onCatch)
     }
 }
