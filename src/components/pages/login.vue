@@ -41,8 +41,10 @@ export default class LoginPage extends Vue {
     }
 
     private onVoterCreated(voter) {
-        this.$store.dispatch('user/setVoter', voter)
-        this.$router.push('/chose')
+        this.$store.dispatch('user/getPermissions').then(() => {
+            this.$store.dispatch('user/setVoter', voter)
+            this.$router.push('/chose')
+        })
     }
 
     public onVoterCreateError() {

@@ -77,7 +77,17 @@
                     >{{ $ui("track-link", "Track your Vote") }}</router-link>
                 </div>
                 <div clas="padded">&nbsp;</div>
-
+                <div v-if="isLoggedIn && isAdmin" class="is-2">
+                    <router-link
+                        tag="button"
+                        to="/admin"
+                        class="button is-link"
+                    >{{ $ui("admin", "Admin") }}</router-link>
+                </div>
+                <div v-if="isLoggedIn" clas="padded">&nbsp;</div>
+                <div class="is-2" v-if="isLoggedIn">
+                    <button @click="onLogout" class="button is-link">{{ $ui("logout", "Logout") }}</button>
+                </div>
                 <hr />
                 <div class="is-2">{{ $content("home-footer", "Voting made whole.") }}</div>
             </div>
@@ -100,6 +110,9 @@ import { session } from '@/factory/session'
 import firebaseAuth from '@/factory/firebase-auth'
 import CookiesModal from '@/components/modals/cookies.vue'
 import Phone from '@/mixins/phone'
+import Permissions from '@/models/permissions'
+
+import { mapState } from 'vuex'
 
 @Component({
     components: {
@@ -107,11 +120,15 @@ import Phone from '@/mixins/phone'
         TextInput,
         ProgressCounter
     },
-    mixins: [Phone]
+    mixins: [Phone],
+    computed: {
+        ...mapState('user', ['permissions'])
+    }
 })
 export default class HomePage extends Vue {
     @Prop() private msg!: string
     @Prop() private phone!: string
+    private permissions!: Permissions
 
     public data() {
         return {
@@ -205,6 +222,16 @@ export default class HomePage extends Vue {
             callBackFn: instance.load,
             timeout: 1000
         })
+    }
+
+    public onLogout() {
+        ;(this as any).isLoggedIn = false
+        EventHub.$emit('logout')
+        this.$store.dispatch('user/setPermissions', { permissions: {} })
+    }
+
+    public get isAdmin() {
+        return this.permissions.type === 'admin'
     }
 }
 </script>

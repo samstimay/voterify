@@ -3,7 +3,9 @@
         <div v-if="isLoaded">
             <PageLoader></PageLoader>
             <h2 class="has-background-info has-text-centered is-0-fullhd">Beta Version of Site</h2>
-            <h1>{{ lang("app-name") }}</h1>
+            <h1>
+                <router-link to="/">{{ lang("app-name") }}</router-link>
+            </h1>
             <router-view></router-view>
 
             <div class="modal-container">

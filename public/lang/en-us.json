@@ -13,7 +13,9 @@
         "sms-new-code": "I need a new SMS Code",
         "back-election": "Back to Election",
         "loading": "Loading...",
-        "ok": "Ok"
+        "ok": "Ok",
+        "admin": "Admin",
+        "logout": "Logout"
     },
     "home-begin": "To begin enter your valid US cell phone number.",
     "home-footer": "The people's voting box.",

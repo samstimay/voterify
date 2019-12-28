@@ -47,5 +47,23 @@ export default {
         )
         commit('user', fbUser)
         return fbUser
+    },
+
+    getPermissions({ commit }) {
+        return api
+            .get('permission')
+            .then(function(res) {
+                if (res.status === 200) {
+                    commit('permissions', res.data)
+                    return res.data
+                } else {
+                    throw res
+                }
+            })
+            .catch(onCatch)
+    },
+
+    setPermissions({ commit }, { permissions }) {
+        commit('permissions', permissions)
     }
 }

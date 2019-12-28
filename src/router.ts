@@ -11,6 +11,7 @@ import TrackPage from './components/pages/track.vue'
 import CountPage from './components/pages/count.vue'
 import ChosePage from './components/pages/chose.vue'
 import LoginPage from './components/pages/login.vue'
+import AdminPage from './components/pages/admin/admin.vue'
 
 export default new Router({
     routes: [
@@ -74,6 +75,11 @@ export default new Router({
             path: '/login',
             name: 'Login',
             component: LoginPage
+        },
+        {
+            path: '/admin',
+            name: 'Admin',
+            component: AdminPage
         }
     ]
 })
