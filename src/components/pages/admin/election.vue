@@ -3,12 +3,7 @@
         <div class="field">
             <label class="label">ID</label>
             <div class="control">
-                <input
-                    class="input"
-                    type="text"
-                    v-model="id"
-                    :disabled="isEditMode"
-                />
+                <input class="input" type="text" v-model="id" :disabled="isEditMode" />
             </div>
         </div>
         <div class="field">
@@ -25,15 +20,20 @@
         </div>
         <div class="field">
             <label class="label">Candidates</label>
+            <button
+                class="button"
+                @click="onAddCandidate"
+            >{{ $ui('add-candidate', 'Add Candidate') }}</button>
             <div class="control">
-                <div
-                    class="card"
-                    v-for="candidate in candidates"
-                    :key="candidate.id"
-                >
+                <div class="card" v-for="candidate in candidates" :key="candidate.id">
                     <div class="card-footer">
                         <div class="card-footer-item">{{ candidate.name }}</div>
-                        <div class="card-footer-item">Edit</div>
+                        <div class="card-footer-item">
+                            <button
+                                class="button"
+                                @click="onEditCandidate(candidate)"
+                            >{{ $ui('edit', 'Edit') }}</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -53,14 +53,10 @@
         <div class="field">
             <div class="columns is-multiline is-mobile">
                 <div class="column is-one-quarter">
-                    <button class="button" @click="onSave">
-                        {{ $ui('save', 'Save') }}
-                    </button>
+                    <button class="button" @click="onSave">{{ $ui('save', 'Save') }}</button>
                 </div>
                 <div class="column is-one-quarter">
-                    <button class="button" @click="$router.push('/admin')">
-                        {{ $ui('back', 'Back') }}
-                    </button>
+                    <button class="button" @click="$router.push('/admin')">{{ $ui('back', 'Back') }}</button>
                 </div>
             </div>
         </div>
@@ -113,6 +109,12 @@ export default class EditElectionPage extends Vue {
                 'elections/getCandidates',
                 { electionId: instance.currentElection.id }
             )
+        } else {
+            instance.id = ''
+            instance.name = ''
+            instance.region = ''
+            instance.active = true
+            instance.candidates = []
         }
     }
 
@@ -129,6 +131,18 @@ export default class EditElectionPage extends Vue {
         this.$store.dispatch('elections/save', { election }).then(() => {
             this.$toasted.show('Saved')
         })
+    }
+
+    public onAddCandidate() {
+        this.$router.push('/admin/candidate/new')
+    }
+
+    public onEditCandidate(candidate) {
+        this.$store
+            .dispatch('elections/setCurrentCandidate', { candidate })
+            .then(() => {
+                this.$router.push('/admin/candidate')
+            })
     }
 }
 </script>

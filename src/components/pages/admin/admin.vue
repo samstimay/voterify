@@ -3,30 +3,26 @@
         <Bubble text class="box bubble bubble-outline">
             Admin
             <div>
-                <button class="button" @click="onNewElection">
-                    {{ $ui('new-election', 'New Election') }}
-                </button>
+                <button
+                    class="button"
+                    @click="onNewElection"
+                >{{ $ui('new-election', 'New Election') }}</button>
             </div>
             <p>&nbsp;</p>
             <table class="table">
-                <tr
-                    v-for="election in elections"
-                    :key="election.id"
-                    class="card"
-                >
+                <tr v-for="election in elections" :key="election.id" class="card">
                     <td>
                         <span class="subtitle is-4">{{ election.name }}</span>
                         <br />
                         <span class="is-6">{{ election.region }}</span>
                     </td>
                     <td>
-                        <button class="button" @click="onEdit(election)">
-                            {{ $ui('edit', 'Edit') }}
-                        </button>
+                        <button class="button" @click="onEdit(election)">{{ $ui('edit', 'Edit') }}</button>
 
-                        <button class="button" @click="onDelete(election)">
-                            {{ $ui('delete', 'Delete') }}
-                        </button>
+                        <button
+                            class="button"
+                            @click="onDelete(election)"
+                        >{{ $ui('delete', 'Delete') }}</button>
                     </td>
                 </tr>
             </table>
@@ -56,10 +52,16 @@ export default class AdminPage extends Vue {
         }
     }
 
-    public created() {
+    public async created() {
         const instance = this as any
-        this.$store.dispatch('elections/getEditable').then(elections => {
+        await this.$store.dispatch('elections/getEditable').then(elections => {
             instance.elections = elections
+            instance.elections.forEach(async election => {
+                election.candidates = await this.$store.dispatch(
+                    'elections/getCandidates',
+                    { electionId: election.id }
+                )
+            })
         })
     }
 

@@ -4,6 +4,7 @@ export default {
     namespaced: true,
     state: {
         currentElection: {},
+        currentCandidate: {},
         elections: [],
         candidates: []
     },
@@ -17,6 +18,9 @@ export default {
         },
         currentElection(state, payload) {
             state.currentElection = payload
+        },
+        currentCandidate(state, payload) {
+            state.currentCandidate = payload
         }
     },
     getters: {

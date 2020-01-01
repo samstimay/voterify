@@ -103,6 +103,7 @@ export default class App extends Vue {
                 showModal: true
             })
         })
+        EventHub.$on('logout', this.onLogout)
     }
 
     public onLogout() {

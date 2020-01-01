@@ -8,6 +8,7 @@ import QueryDocumentSnapshot = firebase.firestore.QueryDocumentSnapshot
 import DocumentData = firebase.firestore.DocumentData
 import Permissions from '../models/permissions'
 import Election from '../models/election'
+import { CandidateApi } from './candidates'
 
 class ElectionApi {
     public static createEndpoints(app: Application) {
@@ -127,7 +128,7 @@ class ElectionApi {
             req.body.id,
             req.body.region,
             req.body.date,
-            [],
+            req.body.candidates || [],
             req.body.active
         )
 
@@ -174,6 +175,13 @@ class ElectionApi {
                             })
                         }
                     })
+                election.candidates.forEach(async candidate => {
+                    if (errors.length) return
+                    const err = await CandidateApi.addEditCandidate(candidate)
+                    if (err.length) {
+                        errors.push(err)
+                    }
+                })
             }
             if (errors.length) return res.json({ errors })
             else return res.json(election)

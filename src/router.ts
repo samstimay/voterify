@@ -13,6 +13,7 @@ import ChosePage from './components/pages/chose.vue'
 import LoginPage from './components/pages/login.vue'
 import AdminPage from './components/pages/admin/admin.vue'
 import EditElectionPage from './components/pages/admin/election.vue'
+import EditCandidatePage from './components/pages/admin/candidate.vue'
 
 export default new Router({
     routes: [
@@ -106,6 +107,18 @@ export default new Router({
             name: 'new-election',
             component: EditElectionPage,
             meta: { title: 'New Election' }
+        },
+        {
+            path: '/admin/candidate',
+            name: 'edit-candidate',
+            component: EditCandidatePage,
+            meta: { title: 'Edit Candidate' }
+        },
+        {
+            path: '/admin/candidate/new',
+            name: 'new-candidate',
+            component: EditCandidatePage,
+            meta: { title: 'New Candidate' }
         }
     ]
 })

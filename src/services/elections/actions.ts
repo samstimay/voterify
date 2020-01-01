@@ -2,6 +2,7 @@ import { api } from '@/factory/api'
 import Election from '@/models/election'
 import Candidate from '@/models/candidate'
 import { onCatch } from '@/plugins/errors'
+import { deepCopy } from '@/plugins/util'
 
 // getElections
 // getDefaultElection
@@ -111,5 +112,27 @@ export default {
                 return result
             })
             .catch(onCatch)
+    },
+
+    addCandidate({ commit, state }, { candidate }) {
+        const election = deepCopy(state.currentElection)
+        election.candidates.push(candidate)
+        commit('currentElection', election)
+    },
+
+    editCandidate({ commit, state }, { candidate }) {
+        const election = deepCopy(state.currentElection)
+        election.candidates.forEach(c => {
+            if (c.id === candidate.id) {
+                c.name = candidate.name
+                c.party = candidate.party
+                c.active = candidate.active
+            }
+        })
+        commit('currentElection', election)
+    },
+
+    setCurrentCandidate({ commit }, { candidate }) {
+        commit('currentCandidate', candidate)
     }
 }
