@@ -119,7 +119,7 @@ class ElectionApi {
         uid: string,
         permissions: Permissions
     ) {
-        let errors = []
+        const errors = []
         if (!permissions.isAdmin()) return res.json([])
 
         const election = new Election(

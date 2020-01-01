@@ -43,7 +43,8 @@ export default {
                             candidate.name,
                             candidate.id,
                             candidate.party,
-                            candidate.electionId
+                            candidate.electionId,
+                            candidate.active
                         )
                     )
                 })
