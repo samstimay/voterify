@@ -12,74 +12,100 @@ import CountPage from './components/pages/count.vue'
 import ChosePage from './components/pages/chose.vue'
 import LoginPage from './components/pages/login.vue'
 import AdminPage from './components/pages/admin/admin.vue'
+import EditElectionPage from './components/pages/admin/election.vue'
 
 export default new Router({
     routes: [
         {
             path: '/',
-            name: 'Home',
-            component: HomePage
+            name: 'home',
+            component: HomePage,
+            meta: { title: 'Home' }
         },
         {
             path: '/manifesto',
-            name: 'Manifesto',
-            component: ManifestoPage
+            name: 'manifesto',
+            component: ManifestoPage,
+            meta: { title: 'Manifesto' }
         },
         {
             path: '/instructions',
-            name: 'Instructions',
-            component: InstructionsPage
+            name: 'instructions',
+            component: InstructionsPage,
+            meta: { title: 'Instructions' }
         },
         {
             path: '/sms',
-            name: 'SMS',
-            component: SMSPage
+            name: 'sms',
+            component: SMSPage,
+            meta: { title: 'SMS' }
         },
         {
             path: '/election',
-            name: 'Election',
-            component: ElectionPage
+            name: 'election',
+            component: ElectionPage,
+            meta: { title: 'Election' }
         },
         {
             path: '/vote',
-            name: 'Vote',
+            name: 'vote',
             component: VotePage,
-            props: { Vote: false }
+            props: { Vote: false },
+            meta: { title: 'Vote' }
         },
         {
             path: '/thanks',
-            name: 'Thanks',
-            component: ThanksPage
+            name: 'thanks',
+            component: ThanksPage,
+            meta: { title: 'Thanks' }
         },
         {
             path: '/already',
-            name: 'Already',
-            component: AlreadyPage
+            name: 'already',
+            component: AlreadyPage,
+            meta: { title: 'Already' }
         },
         {
             path: '/track',
-            name: 'Track',
-            component: TrackPage
+            name: 'track',
+            component: TrackPage,
+            meta: { title: 'Track' }
         },
         {
             path: '/count',
-            name: 'Count',
-            component: CountPage
+            name: 'count',
+            component: CountPage,
+            meta: { title: 'Count' }
         },
         {
             path: '/chose',
-            name: 'Chose',
-            component: ChosePage
+            name: 'chose',
+            component: ChosePage,
+            meta: { title: 'Chose' }
         },
         {
             path: '/login',
-            name: 'Login',
-            component: LoginPage
+            name: 'login',
+            component: LoginPage,
+            meta: { title: 'Login' }
         },
         {
             path: '/admin',
-            name: 'Admin',
-            component: AdminPage
+            name: 'admin',
+            component: AdminPage,
+            meta: { title: 'Admin' }
+        },
+        {
+            path: '/admin/election',
+            name: 'edit-election',
+            component: EditElectionPage,
+            meta: { title: 'Edit Election' }
+        },
+        {
+            path: '/admin/election/new',
+            name: 'new-election',
+            component: EditElectionPage,
+            meta: { title: 'New Election' }
         }
     ]
 })

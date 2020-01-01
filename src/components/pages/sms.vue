@@ -177,7 +177,7 @@ export default class SMSPage extends Vue {
 
     async onVoterAuth(user) {
         const token = await firebaseAuth.getAuthToken()
-        const fbUser = await this.$store.dispatch('user/onAuth', {
+        const fbUser = await this.$store.dispatch('user/setUser', {
             user,
             token
         })

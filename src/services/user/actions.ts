@@ -39,7 +39,7 @@ export default {
         commit('voter', voter)
     },
 
-    onAuth({ commit }, { user, token }) {
+    setUser({ commit }, { user, token }) {
         const fbUser = new FbUser(
             user.phoneNumber,
             token,

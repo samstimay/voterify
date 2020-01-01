@@ -43,7 +43,7 @@ export default class GoogleLogin extends Vue {
             .signInWithPopup(this.provider)
             .then(async function(result) {
                 const token = await firebaseAuth.getAuthToken()
-                const fbUser = await instance.$store.dispatch('user/onAuth', {
+                const fbUser = await instance.$store.dispatch('user/setUser', {
                     user: result.user,
                     token
                 })

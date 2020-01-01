@@ -2,7 +2,15 @@
     <div id="app">
         <div v-if="isLoaded">
             <PageLoader></PageLoader>
-            <h2 class="has-background-info has-text-centered is-0-fullhd">Beta Version of Site</h2>
+            <h2 class="has-background-info has-text-centered is-0-fullhd">
+                Beta Version of Site
+                <a
+                    v-if="!isLoggedIn"
+                    class="link"
+                    @click="$router.push('/login')"
+                >{{ $content('login-button', 'Login') }}</a>
+                <a v-if="isLoggedIn" class="link" @click="onLogout">{{ $ui("logout", "Logout") }}</a>
+            </h2>
             <h1>
                 <router-link to="/">{{ lang("app-name") }}</router-link>
             </h1>
@@ -33,15 +41,25 @@ import PageLoader from './components/ui/page-loader.vue'
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
 import { constants } from '@/factory/constants'
 import { api } from '@/factory/api'
+import firebase from '@/factory/firebase-provider'
 import { lang, Lang } from '@/factory/lang'
 import { EventHub } from '@/factory/event-hub'
+import FbUser from '@/models/fbUser'
+import Voter from '@/models/voter'
+import { session } from '@/factory/session'
+import { mapState } from 'vuex'
 
 @Component({
     components: {
         PageLoader
+    },
+    computed: {
+        ...mapState('user', ['isLoggedIn'])
     }
 })
 export default class App extends Vue {
+    public isLoggedIn!: Boolean
+
     public data() {
         return {
             isLoaded: false,
@@ -85,6 +103,19 @@ export default class App extends Vue {
                 showModal: true
             })
         })
+    }
+
+    public onLogout() {
+        firebase
+            .auth()
+            .signOut()
+            .then(() => {
+                this.$store.dispatch('user/setPermissions', { permissions: {} })
+                this.$store.dispatch('user/setUser', { user: {}, token: '' })
+                session.setUser(new FbUser('', '', '', ''))
+                session.setVoter(new Voter('', ''))
+                this.$router.push('/')
+            })
     }
 }
 </script>

@@ -14,6 +14,9 @@ export default {
         },
         candidates(state, payload) {
             state.candidates = payload
+        },
+        currentElection(state, payload) {
+            state.currentElection = payload
         }
     },
     getters: {

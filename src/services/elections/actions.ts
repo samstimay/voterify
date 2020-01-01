@@ -21,7 +21,8 @@ export default {
                             election.id,
                             election.region,
                             election.date,
-                            []
+                            [],
+                            election.active
                         )
                     )
                 })
@@ -70,8 +71,7 @@ export default {
         return api
             .get('elections/edit')
             .then(function(res) {
-                console.log('TCL: res', res)
-                let elections = []
+                const elections = []
                 res.data.forEach(election => {
                     elections.push(
                         new Election(
@@ -79,12 +79,35 @@ export default {
                             election.id,
                             election.region,
                             election.date,
-                            election.candidates
+                            election.candidates,
+                            election.active
                         )
                     )
                 })
 
                 return elections
+            })
+            .catch(onCatch)
+    },
+
+    setCurrent({ commit }, { election }) {
+        commit('currentElection', election)
+    },
+
+    save({ commit }, { election }) {
+        return api
+            .post('elections/edit', election)
+            .then(function(res) {
+                const result = new Election(
+                    res.data.name,
+                    res.data.id,
+                    res.data.region,
+                    res.data.date,
+                    res.data.candidates,
+                    res.data.active
+                )
+                commit('currentElection', result)
+                return result
             })
             .catch(onCatch)
     }

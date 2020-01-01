@@ -5,6 +5,7 @@ import { session } from '@/factory/session'
 export default {
     namespaced: true,
     state: {
+        isLoggedIn: false,
         user: {}, // the firebase user
         voter: {}, // the voter
         permissions: new Permissions('')
@@ -13,6 +14,7 @@ export default {
     mutations: {
         user(state, payload) {
             state.user = payload
+            state.isLoggedIn = state.user.uid && state.user.uid.length
             session.setUser(state.user)
         },
         voter(state, payload) {

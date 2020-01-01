@@ -2,18 +2,34 @@
     <div class="hello">
         <Bubble text class="box bubble bubble-outline">
             Admin
-            <div v-for="election in elections" :key="election.id" class="card">
-                <div class="card-content">
-                    <div class="media-content">
-                        <span class="subtitle is-4">{{ election.name }}</span>
-                        <span class="is-6">: {{ election.region}}</span>
-                    </div>
-                </div>
-                <footer class="card-footer">
-                    <a href="#" class="card-footer-item">Edit</a>
-                    <a href="#" class="card-footer-item">Delete</a>
-                </footer>
+            <div>
+                <button class="button" @click="onNewElection">
+                    {{ $ui('new-election', 'New Election') }}
+                </button>
             </div>
+            <p>&nbsp;</p>
+            <table class="table">
+                <tr
+                    v-for="election in elections"
+                    :key="election.id"
+                    class="card"
+                >
+                    <td>
+                        <span class="subtitle is-4">{{ election.name }}</span>
+                        <br />
+                        <span class="is-6">{{ election.region }}</span>
+                    </td>
+                    <td>
+                        <button class="button" @click="onEdit(election)">
+                            {{ $ui('edit', 'Edit') }}
+                        </button>
+
+                        <button class="button" @click="onDelete(election)">
+                            {{ $ui('delete', 'Delete') }}
+                        </button>
+                    </td>
+                </tr>
+            </table>
         </Bubble>
     </div>
 </template>
@@ -45,6 +61,20 @@ export default class AdminPage extends Vue {
         this.$store.dispatch('elections/getEditable').then(elections => {
             instance.elections = elections
         })
+    }
+
+    public onEdit(election: Election) {
+        this.$store.dispatch('elections/setCurrent', { election }).then(() => {
+            this.$router.push('/admin/election')
+        })
+    }
+
+    public onDelete(election: Election) {
+        this.$store.dispatch('elections/setCurrent', { election })
+    }
+
+    public onNewElection() {
+        this.$router.push('/admin/election/new')
     }
 }
 </script>

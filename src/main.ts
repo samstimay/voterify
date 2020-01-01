@@ -16,6 +16,7 @@ import './styles/global.scss'
 import firebase from './factory/firebase-provider'
 import Translate from './plugins/translate'
 import { Vuetable, VuetablePagination } from 'vuetable-2'
+import Toasted from 'vue-toasted'
 import '@fortawesome/fontawesome-free/css/fontawesome.css'
 
 firebase.auth()
@@ -30,6 +31,12 @@ Vue.use(VueTelInput, {
 })
 Vue.use(VueAwesomeSwiper)
 Vue.use(Translate)
+Vue.use(Toasted, {
+    position: 'top-right',
+    duration: 2000,
+    theme: 'bubble',
+    singleton: true
+})
 Vue.component('vuetable', Vuetable)
 Vue.component('vuetable-pagination', VuetablePagination)
 

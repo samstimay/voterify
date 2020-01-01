@@ -23,8 +23,10 @@ export default class Election {
         this.active = active === true
 
         this.candidates = []
-        for (const c in candidates) {
-            this.candidates.push(candidates[c])
+        if (candidates) {
+            candidates.forEach(candidate => {
+                this.candidates.push(candidate)
+            })
         }
     }
 

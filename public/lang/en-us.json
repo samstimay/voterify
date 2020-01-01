@@ -12,10 +12,13 @@
         "manifesto-link": "The Votery Manifesto",
         "sms-new-code": "I need a new SMS Code",
         "back-election": "Back to Election",
+        "new-election": "New Election",
         "loading": "Loading...",
         "ok": "Ok",
         "admin": "Admin",
-        "logout": "Logout"
+        "logout": "Logout",
+        "edit": "Edit",
+        "delete": "Delete"
     },
     "home-begin": "To begin enter your valid US cell phone number.",
     "home-footer": "The people's voting box.",
@@ -23,7 +26,7 @@
     "selected": "Selected",
     "progress": "Progress",
     "login-instructions": "Login with one of the providers below.",
-    "login-button": "Use an account to login",
+    "login-button": "Login",
     "already-logged-in": "You are already logged in, you many continue to vote.",
     "manifesto": "Manifesto",
     "manifesto-lines": [

@@ -1,11 +1,17 @@
 <template>
     <div v-if="isLoaded">
-        <div
-            class="is-size-8 is-light is-italic"
-        >{{ $content("chose-election", "Chose your election.") }}</div>
+        <div class="is-size-8 is-light is-italic">
+            {{ $content('chose-election', 'Chose your election.') }}
+        </div>
         <div class="drop-down is-fullwidth">
-            <select class="is-fullwidth" v-model="selected" @change="onChangeElection($event)">
-                <option :value="option.value" v-for="option in electionNames()">{{ option.label }}</option>
+            <select
+                class="is-fullwidth"
+                v-model="selected"
+                @change="onChangeElection($event)"
+            >
+                <option :value="option.value" v-for="option in electionNames()">
+                    {{ option.label }}
+                </option>
             </select>
         </div>
     </div>
@@ -47,9 +53,13 @@ export default class ElectionChooser extends Vue {
     }
 
     electionNames() {
-        return this.elections.map((x: Election) => {
-            return { label: x.name, value: x.id }
-        })
+        return this.elections
+            .filter((x: Election) => {
+                return x.active
+            })
+            .map((x: Election) => {
+                return { label: x.name, value: x.id }
+            })
     }
 
     onChangeElection(evt) {

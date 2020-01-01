@@ -1,7 +1,7 @@
 <template>
     <div class="hello">
         <Bubble text class="bubble-outline" v-show="isLoaded">
-            <div v-if="!isLoggedIn">
+            <div v-show="!isLoggedIn">
                 <div class="field">
                     <div class="control">
                         <vue-tel-input
@@ -30,12 +30,6 @@
                         "To begin enter your valid US cell phone number."
                         )
                         }}
-                        <p>
-                            <button
-                                class="button"
-                                @click="$router.push('/login')"
-                            >{{ $content('login-button', 'Use an account to login') }}</button>
-                        </p>
                     </div>
                 </div>
             </div>
@@ -77,16 +71,12 @@
                     >{{ $ui("track-link", "Track your Vote") }}</router-link>
                 </div>
                 <div clas="padded">&nbsp;</div>
-                <div v-if="isLoggedIn && isAdmin" class="is-2">
+                <div v-show="isLoggedIn && isAdmin" class="is-2">
                     <router-link
                         tag="button"
                         to="/admin"
                         class="button is-link"
                     >{{ $ui("admin", "Admin") }}</router-link>
-                </div>
-                <div v-if="isLoggedIn" clas="padded">&nbsp;</div>
-                <div class="is-2" v-if="isLoggedIn">
-                    <button @click="onLogout" class="button is-link">{{ $ui("logout", "Logout") }}</button>
                 </div>
                 <hr />
                 <div class="is-2">{{ $content("home-footer", "Voting made whole.") }}</div>
@@ -122,21 +112,21 @@ import { mapState } from 'vuex'
     },
     mixins: [Phone],
     computed: {
-        ...mapState('user', ['permissions'])
+        ...mapState('user', ['permissions', 'isLoggedIn'])
     }
 })
 export default class HomePage extends Vue {
     @Prop() private msg!: string
     @Prop() private phone!: string
     private permissions!: Permissions
+    public isLoggedIn!: Boolean
 
     public data() {
         return {
             constants: constants,
             phoneNumber: this.phone,
             isLoaded: false,
-            isValid: false,
-            isLoggedIn: false
+            isValid: false
         }
     }
 
@@ -169,9 +159,6 @@ export default class HomePage extends Vue {
 
         const user = session.getUser()
         const voter = session.getVoter()
-        if (user && voter.voterId) {
-            instance.isLoggedIn = true
-        }
     }
 
     public onInput({ number, isValid, country }) {
@@ -222,12 +209,6 @@ export default class HomePage extends Vue {
             callBackFn: instance.load,
             timeout: 1000
         })
-    }
-
-    public onLogout() {
-        ;(this as any).isLoggedIn = false
-        EventHub.$emit('logout')
-        this.$store.dispatch('user/setPermissions', { permissions: {} })
     }
 
     public get isAdmin() {

@@ -7,6 +7,7 @@ import * as firebase from 'firebase'
 import QueryDocumentSnapshot = firebase.firestore.QueryDocumentSnapshot
 import DocumentData = firebase.firestore.DocumentData
 import Permissions from '../models/permissions'
+import Election from '../models/election'
 
 class ElectionApi {
     public static createEndpoints(app: Application) {
@@ -25,6 +26,31 @@ class ElectionApi {
                             uid
                         )
                         return ElectionApi.getEditElections(
+                            req,
+                            res,
+                            uid,
+                            permission
+                        )
+                    } else return Errors.authFailed(req, res)
+                })
+                .catch((msg: any) => {
+                    return Errors.onCatch(res, msg)
+                })
+        })
+        app.post('/elections/edit', function(req: Request, res: Response) {
+            logger.message(
+                'POST /elections/edit',
+                logger.parseExpress(req, res)
+            )
+
+            return authApi
+                .firebaseTokenAuth(req)
+                .then(async uid => {
+                    if (uid) {
+                        const permission = await PermissionsApi.getPermissions(
+                            uid
+                        )
+                        return ElectionApi.editElection(
                             req,
                             res,
                             uid,
@@ -82,6 +108,75 @@ class ElectionApi {
                 .catch(function(err: any) {
                     return Errors.onCatch(res, err)
                 })
+        } catch (error) {
+            return Errors.onCrash(res, error)
+        }
+    }
+
+    public static async editElection(
+        req: Request,
+        res: Response,
+        uid: string,
+        permissions: Permissions
+    ) {
+        let errors = []
+        if (!permissions.isAdmin()) return res.json([])
+
+        const election = new Election(
+            req.body.name,
+            req.body.id,
+            req.body.region,
+            req.body.date,
+            [],
+            req.body.active
+        )
+
+        if (!election.id) errors.push('No election ID')
+
+        try {
+            if (errors.length === 0) {
+                await firebaseApi
+                    .firestore()
+                    .collection('elections')
+                    .where('id', '==', election.id)
+                    .get()
+                    .then(async function(querySnapshot) {
+                        if (querySnapshot.empty || querySnapshot.size === 0) {
+                            await firebaseApi
+                                .firestore()
+                                .collection('elections')
+                                .doc(election.id)
+                                .set({
+                                    id: election.id,
+                                    name: election.name,
+                                    region: election.region,
+                                    date: new Date(),
+                                    admin: uid,
+                                    active: true
+                                })
+                        } else {
+                            querySnapshot.forEach(async function(doc) {
+                                if (doc.get('admin') === uid) {
+                                    await firebaseApi
+                                        .firestore()
+                                        .collection('elections')
+                                        .doc(doc.id)
+                                        .update({
+                                            name: election.name,
+                                            region: election.region,
+                                            active: election.active
+                                        })
+                                } else {
+                                    errors.push(
+                                        'You are not the admin of this election.'
+                                    )
+                                }
+                            })
+                        }
+                    })
+            }
+            if (errors.length) return res.json({ errors })
+            else return res.json(election)
         } catch (error) {
             return Errors.onCrash(res, error)
         }
