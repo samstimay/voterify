@@ -55,14 +55,9 @@ export default {
             .catch(onCatch)
     },
 
-    hasVoterVoted({ state }, { voter }) {
+    hasVoterVoted({ state }, { electionId, voter }) {
         return api
-            .get(
-                'checkVote/?id=' +
-                    state.currentElection.id +
-                    '&voterId=' +
-                    voter.voterId
-            )
+            .get('checkVote/?id=' + electionId + '&voterId=' + voter.voterId)
             .then(function(res) {
                 return res.data.exists === true
             })

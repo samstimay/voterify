@@ -78,12 +78,13 @@ export default class ChosePage extends Vue {
         this._election = election
     }
 
-    async onSelect() {
+    public onSelect() {
         const selected = this.getSelected()
         const voter = session.getVoter()
+        const electionId = selected.id
         session.setElection(selected)
         this.$store
-            .dispatch('elections/hasVoterVoted', { voter: voter })
+            .dispatch('elections/hasVoterVoted', { voter, electionId })
             .then(voted => {
                 if (voted) {
                     this.$router.push('/already')
