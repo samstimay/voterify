@@ -1,6 +1,6 @@
 const Phone = {
     methods: {
-        phoneToRecaptcha: function(phone) {
+        phoneToRecaptcha: function (phone) {
             return '+1 ' + phone.match(/\d+/g).join(' ')
         }
     }

@@ -13,9 +13,9 @@ export default {
     get({ commit }) {
         return api
             .get('elections')
-            .then(function(res) {
+            .then(function (res) {
                 const elections = []
-                res.data.forEach(election => {
+                res.data.forEach((election) => {
                     elections.push(
                         new Election(
                             election.name,
@@ -36,9 +36,9 @@ export default {
     getCandidates({ commit }, { electionId }) {
         return api
             .get('candidates/?id=' + electionId)
-            .then(function(res) {
+            .then(function (res) {
                 const candidates = []
-                res.data.forEach(candidate => {
+                res.data.forEach((candidate) => {
                     candidates.push(
                         new Candidate(
                             candidate.name,
@@ -58,7 +58,7 @@ export default {
     hasVoterVoted({ state }, { electionId, voter }) {
         return api
             .get('checkVote/?id=' + electionId + '&voterId=' + voter.voterId)
-            .then(function(res) {
+            .then(function (res) {
                 return res.data.exists === true
             })
             .catch(onCatch)
@@ -67,9 +67,9 @@ export default {
     getEditable({ state }): Promise<Election[]> {
         return api
             .get('elections/edit')
-            .then(function(res) {
+            .then(function (res) {
                 const elections = []
-                res.data.forEach(election => {
+                res.data.forEach((election) => {
                     elections.push(
                         new Election(
                             election.name,
@@ -94,7 +94,7 @@ export default {
     save({ commit }, { election }) {
         return api
             .post('elections/edit', election)
-            .then(function(res) {
+            .then(function (res) {
                 const result = new Election(
                     res.data.name,
                     res.data.id,
@@ -117,7 +117,7 @@ export default {
 
     editCandidate({ commit, state }, { candidate }) {
         const election = deepCopy(state.currentElection)
-        election.candidates.forEach(c => {
+        election.candidates.forEach((c) => {
             if (c.id === candidate.id) {
                 c.name = candidate.name
                 c.party = candidate.party

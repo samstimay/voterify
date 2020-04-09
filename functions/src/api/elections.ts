@@ -12,16 +12,16 @@ import { CandidateApi } from './candidates'
 
 class ElectionApi {
     public static createEndpoints(app: Application) {
-        app.get('/elections', function(req: Request, res: Response) {
+        app.get('/elections', function (req: Request, res: Response) {
             logger.message('GET /elections', logger.parseExpress(req, res))
             return ElectionApi.getElections(req, res)
         })
-        app.get('/elections/edit', function(req: Request, res: Response) {
+        app.get('/elections/edit', function (req: Request, res: Response) {
             logger.message('GET /elections/edit', logger.parseExpress(req, res))
 
             return authApi
                 .firebaseTokenAuth(req)
-                .then(async uid => {
+                .then(async (uid) => {
                     if (uid) {
                         const permission = await PermissionsApi.getPermissions(
                             uid
@@ -38,7 +38,7 @@ class ElectionApi {
                     return Errors.onCatch(res, msg)
                 })
         })
-        app.post('/elections/edit', function(req: Request, res: Response) {
+        app.post('/elections/edit', function (req: Request, res: Response) {
             logger.message(
                 'POST /elections/edit',
                 logger.parseExpress(req, res)
@@ -46,7 +46,7 @@ class ElectionApi {
 
             return authApi
                 .firebaseTokenAuth(req)
-                .then(async uid => {
+                .then(async (uid) => {
                     if (uid) {
                         const permission = await PermissionsApi.getPermissions(
                             uid
@@ -70,14 +70,14 @@ class ElectionApi {
                 .firestore()
                 .collection('elections')
                 .get()
-                .then(function(data: any) {
+                .then(function (data: any) {
                     const elections: DocumentData[] = []
-                    data.docs.forEach(function(doc: QueryDocumentSnapshot) {
+                    data.docs.forEach(function (doc: QueryDocumentSnapshot) {
                         elections.push(doc.data())
                     })
                     return res.json(elections)
                 })
-                .catch(function(err: any) {
+                .catch(function (err: any) {
                     return Errors.onCatch(res, err)
                 })
         } catch (error) {
@@ -99,14 +99,14 @@ class ElectionApi {
                 .collection('elections')
                 .where('admin', '==', uid)
                 .get()
-                .then(function(data: any) {
+                .then(function (data: any) {
                     const elections: DocumentData[] = []
-                    data.docs.forEach(function(doc: QueryDocumentSnapshot) {
+                    data.docs.forEach(function (doc: QueryDocumentSnapshot) {
                         elections.push(doc.data())
                     })
                     return res.json(elections)
                 })
-                .catch(function(err: any) {
+                .catch(function (err: any) {
                     return Errors.onCatch(res, err)
                 })
         } catch (error) {
@@ -141,7 +141,7 @@ class ElectionApi {
                     .collection('elections')
                     .where('id', '==', election.id)
                     .get()
-                    .then(async function(querySnapshot) {
+                    .then(async function (querySnapshot) {
                         if (querySnapshot.empty || querySnapshot.size === 0) {
                             await firebaseApi
                                 .firestore()
@@ -156,7 +156,7 @@ class ElectionApi {
                                     active: true
                                 })
                         } else {
-                            querySnapshot.forEach(async function(doc) {
+                            querySnapshot.forEach(async function (doc) {
                                 if (doc.get('admin') === uid) {
                                     await firebaseApi
                                         .firestore()
@@ -175,7 +175,7 @@ class ElectionApi {
                             })
                         }
                     })
-                election.candidates.forEach(async candidate => {
+                election.candidates.forEach(async (candidate) => {
                     if (errors.length) return
                     const err = await CandidateApi.addEditCandidate(candidate)
                     if (err.length) {

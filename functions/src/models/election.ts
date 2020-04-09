@@ -24,7 +24,7 @@ export default class Election {
 
         this.candidates = []
         if (candidates) {
-            candidates.forEach(candidate => {
+            candidates.forEach((candidate) => {
                 this.candidates.push(candidate)
             })
         }
@@ -32,7 +32,7 @@ export default class Election {
 
     public candidateName(candidateId: string): string {
         const result = this.candidates.filter(
-            candidate => candidate.id === candidateId
+            (candidate) => candidate.id === candidateId
         )
         return result[0] ? result[0].name : ''
     }

@@ -8,11 +8,11 @@ import DocumentSnapshot = firebase.firestore.DocumentSnapshot
 
 class PermissionsApi {
     public static createEndpoints(app: Application) {
-        app.get('/permission', function(req: Request, res: Response) {
+        app.get('/permission', function (req: Request, res: Response) {
             logger.message('GET /permission', logger.parseExpress(req, res))
             return authApi
                 .firebaseTokenAuth(req)
-                .then(uid => {
+                .then((uid) => {
                     if (uid)
                         return PermissionsApi.getPermissionsResponse(
                             req,
@@ -40,7 +40,7 @@ class PermissionsApi {
                     return new Permissions('')
                 }
             })
-            .catch(function(err: any) {
+            .catch(function (err: any) {
                 throw err
             })
     }
@@ -52,10 +52,10 @@ class PermissionsApi {
     ) {
         try {
             return this.getPermissions(uid)
-                .then(permissions => {
+                .then((permissions) => {
                     return res.json(permissions)
                 })
-                .catch(function(err: any) {
+                .catch(function (err: any) {
                     throw err
                 })
         } catch (error) {

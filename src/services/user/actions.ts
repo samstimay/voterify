@@ -8,7 +8,7 @@ export default {
     get({ commit }) {
         return api
             .get('getVoter/')
-            .then(function(res) {
+            .then(function (res) {
                 if (res.data.exists) {
                     const voter = new Voter(res.data.uid, res.data.voterId)
                     commit('voter', voter)
@@ -23,7 +23,7 @@ export default {
     create({ commit }) {
         return api
             .get('createVoter/')
-            .then(function(res) {
+            .then(function (res) {
                 if (res.status === 200 && res.data.voterId) {
                     const voter = new Voter(res.data.uid, res.data.voterId)
                     commit('voter', voter)
@@ -53,7 +53,7 @@ export default {
     getPermissions({ commit }) {
         return api
             .get('permission')
-            .then(function(res) {
+            .then(function (res) {
                 if (res.status === 200) {
                     commit('permissions', res.data)
                     return res.data

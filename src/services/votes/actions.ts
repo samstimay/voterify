@@ -6,7 +6,7 @@ export default {
     create({ commit }, { vote }) {
         return api
             .post('createVote', vote)
-            .then(function(res) {
+            .then(function (res) {
                 if (res.data.error) {
                     throw res
                 }
@@ -19,7 +19,7 @@ export default {
     trackVote({ commit }, { voterId, electionId }) {
         return api
             .post('trackVote', { voterId, electionId })
-            .then(function(res) {
+            .then(function (res) {
                 if (res.data.error) {
                     throw res
                 }
@@ -31,7 +31,7 @@ export default {
     trackUID({ commit }, { electionId }) {
         return api
             .post('trackUID', { electionId })
-            .then(function(res) {
+            .then(function (res) {
                 if (res.data.error) {
                     throw res
                 }
@@ -43,9 +43,9 @@ export default {
     getVotes({ commit }, { electionId }) {
         return api
             .get('getVotes/?id=' + electionId)
-            .then(function(res) {
+            .then(function (res) {
                 const votes = []
-                res.data.forEach(vote => {
+                res.data.forEach((vote) => {
                     votes.push(
                         new Vote(
                             electionId,
