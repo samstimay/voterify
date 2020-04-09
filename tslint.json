@@ -1,14 +1,28 @@
 {
     "defaultSeverity": "warning",
-    "extends": ["tslint:recommended"],
+    "extends": [
+        "tslint:recommended"
+    ],
     "linterOptions": {
-        "exclude": ["node_modules/**"]
+        "exclude": [
+            "node_modules/**"
+        ]
     },
     "rules": {
-        "align": [true, "parameters", "arguments", "members", "elements"],
+        "align": [
+            true,
+            "parameters",
+            "arguments",
+            "members",
+            "elements"
+        ],
         "arrow-parens": false,
         "forin": false,
-        "indent": [true, "spaces", 2],
+        "indent": [
+            true,
+            "spaces",
+            2
+        ],
         "interface-name": false,
         "member-access": false,
         "no-consecutive-blank-lines": false,
@@ -19,6 +33,7 @@
         "only-arrow-functions": false,
         "quotemark": false,
         "semicolon": false,
+        "space-before-function-paren": false,
         "trailing-comma": false,
         "member-ordering": false,
         "ban-types": false,

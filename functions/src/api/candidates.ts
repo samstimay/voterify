@@ -8,7 +8,7 @@ import Candidate from '../models/candidate'
 
 class CandidateApi {
     public static createEndpoints(app: Application) {
-        app.get('/candidates', function(req: Request, res: Response) {
+        app.get('/candidates', function (req: Request, res: Response) {
             logger.message('GET /candidates', logger.parseExpress(req, res))
             return CandidateApi.getCandidates(req, res)
         })
@@ -22,14 +22,14 @@ class CandidateApi {
                 .collection('candidates')
                 .where('electionId', '==', electionId)
                 .get()
-                .then(function(data: any) {
+                .then(function (data: any) {
                     const candidates: DocumentData[] = []
-                    data.docs.forEach(function(doc: QueryDocumentSnapshot) {
+                    data.docs.forEach(function (doc: QueryDocumentSnapshot) {
                         candidates.push(doc.data())
                     })
                     return res.json(candidates)
                 })
-                .catch(function(err: any) {
+                .catch(function (err: any) {
                     return Errors.onCatch(res, err)
                 })
         } catch (error) {
@@ -46,7 +46,7 @@ class CandidateApi {
                 .collection('candidates')
                 .where('id', '==', candidate.id)
                 .get()
-                .then(async function(querySnapshot) {
+                .then(async function (querySnapshot) {
                     if (querySnapshot.empty || querySnapshot.size === 0) {
                         await firebaseApi
                             .firestore()
@@ -60,7 +60,7 @@ class CandidateApi {
                                 active: true
                             })
                     } else {
-                        querySnapshot.forEach(async function(doc) {
+                        querySnapshot.forEach(async function (doc) {
                             await firebaseApi
                                 .firestore()
                                 .collection('candidates')

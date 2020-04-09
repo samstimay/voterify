@@ -45,7 +45,7 @@ window['VfyEnvironment'] = process.env.NODE_ENV
 const app = new Vue({
     store,
     router: Router,
-    render: h => h(App)
+    render: (h) => h(App)
 }).$mount('#app')
 
 export default app

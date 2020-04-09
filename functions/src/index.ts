@@ -16,14 +16,14 @@ const express = require('express')
 const app = express()
 app.use(cors({ credentials: true, origin: true }))
 app.use(bodyParser.json())
-app.use(function(req: any, res: any, next: any) {
+app.use(function (req: any, res: any, next: any) {
     if (!req.headers.authorization) {
         return res.status(403).json({ error: 'No credentials sent!' })
     }
     next()
 })
 
-app.get('/', function(req: any, res: any) {
+app.get('/', function (req: any, res: any) {
     return res.json({ hi: 'there' })
 })
 

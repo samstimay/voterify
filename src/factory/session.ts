@@ -45,7 +45,7 @@ class Session {
 
     public setElection(election: Election) {
         const candidates = []
-        election.candidates.forEach(candidate => {
+        election.candidates.forEach((candidate) => {
             candidates.push(
                 new Candidate(
                     candidate.name,

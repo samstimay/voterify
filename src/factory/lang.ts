@@ -17,10 +17,10 @@ class Lang {
         const fileName = 'lang/' + this.currentLang() + '.json'
         return http
             .get(fileName)
-            .then(function(res) {
+            .then(function (res) {
                 instance.userLang = res.data
             })
-            .catch(function(res) {
+            .catch(function (res) {
                 // tslint:disable-next-line
                 console.log('api init failed', res)
             })

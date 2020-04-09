@@ -5,7 +5,7 @@ class FirebaseAuth {
         return firebase
             .auth()
             .signInWithPhoneNumber(phoneNumber, appVerifier)
-            .then(function(confirmationResult) {
+            .then(function (confirmationResult) {
                 ;(window as any).confirmationResult = confirmationResult
             })
     }
