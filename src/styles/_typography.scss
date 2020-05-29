@@ -1,2 +1,20 @@
 // fonts
 $font-family: 'Avenir', 'Times', serif;
+
+$font: 1.2rem 'Avenir', 'Times', serif;
+
+$line-height: 1.4rem;
+
+.votery-font {
+  font: $font;
+  line-height: $line-height;
+}
+
+.pad-y {
+  padding-bottom: $line-height/2;
+  padding-top: $line-height/2;
+}
+
+.pad-b {
+  padding-bottom: $line-height;
+}
