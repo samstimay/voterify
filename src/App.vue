@@ -8,16 +8,23 @@
                     v-if="!isLoggedIn"
                     class="link"
                     @click="$router.push('/login')"
-                >{{ $content('login-button', 'Login') }}</a>
-                <a v-if="isLoggedIn" class="link" @click="onLogout">{{ $ui("logout", "Logout") }}</a>
+                >
+                    {{ $content('login-button', 'Login') }}
+                </a>
+                <a v-if="isLoggedIn" class="link" @click="onLogout">
+                    {{ $ui('logout', 'Logout') }}
+                </a>
             </h2>
-            <h1>
-                <router-link to="/">{{ lang("app-name") }}</router-link>
+            <h1 class="votery-font pad-y">
+                <router-link to="/">{{ lang('app-name') }}</router-link>
             </h1>
             <router-view></router-view>
 
             <div class="modal-container">
-                <component :is="currentModal" v-bind="currentModalParams"></component>
+                <component
+                    :is="currentModal"
+                    v-bind="currentModalParams"
+                ></component>
             </div>
 
             <swiper class="quotes-slider" :options="swiperOption">
@@ -25,7 +32,9 @@
                     class="is-italic"
                     v-for="(quote, index) in quotes"
                     :key="index"
-                >{{ quote }}</swiper-slide>
+                >
+                    {{ quote }}
+                </swiper-slide>
             </swiper>
         </div>
     </div>

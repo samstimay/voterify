@@ -4,10 +4,19 @@
   width:320px;
   height:auto;
   margin:auto;
+  font: $font;
+  line-height: $line-height;
+  p {
+    padding-bottom: $line-height;
+  }
 }
 
 .home-bubble-container {
-  font: 16px $font-family;
+  font: $font;
+  line-height: $line-height;
+  p {
+    padding-bottom: $line-height;
+  }
 
   a {
     color:white;

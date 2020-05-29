@@ -1,6 +1,26 @@
 <template>
     <div class="hello">
         <Bubble text class="bubble-outline" v-show="isLoaded">
+            <div v-show="isLoggedIn">
+                <p>
+                    {{
+                        $content(
+                            'already-logged-in',
+                            'You are already logged in, you many continue to vote.'
+                        )
+                    }}
+                </p>
+
+                <p>
+                    <button
+                        class="button is-large is-centered is-link"
+                        @click="$router.push('/chose')"
+                    >
+                        {{ $ui('vote', 'Vote') }}
+                    </button>
+                </p>
+            </div>
+
             <div v-show="!isLoggedIn">
                 <div class="field">
                     <div class="control">
@@ -25,23 +45,13 @@
                     </div>
                     <div v-show="!isValid" class="is-size-8 is-light is-italic">
                         {{
-                        $content(
-                        "home-begin",
-                        "To begin enter your valid US cell phone number."
-                        )
+                            $content(
+                                'home-begin',
+                                'To begin enter your valid US cell phone number.'
+                            )
                         }}
                     </div>
                 </div>
-            </div>
-
-            <div v-show="isLoggedIn">
-                {{ $content('already-logged-in', 'You are already logged in, you many continue to vote.')}}
-                <p>
-                    <button
-                        class="button is-large is-centered is-link"
-                        @click="$router.push('/chose')"
-                    >{{$ui('vote', 'Vote') }}</button>
-                </p>
             </div>
 
             <div v-show="!isValid">
@@ -52,7 +62,9 @@
                         tag="button"
                         to="/manifesto"
                         class="button is-link"
-                    >{{ $ui("manifesto-link", "The Voterify Manifesto") }}</router-link>
+                    >
+                        {{ $ui('manifesto-link', 'The Voterify Manifesto') }}
+                    </router-link>
                 </div>
                 <div clas="padded">&nbsp;</div>
                 <div class="is-2">
@@ -60,7 +72,9 @@
                         tag="button"
                         to="/instructions"
                         class="button is-link"
-                    >{{ $ui("instructions-link", "How to use Voterify") }}</router-link>
+                    >
+                        {{ $ui('instructions-link', 'How to use Voterify') }}
+                    </router-link>
                 </div>
                 <div clas="padded">&nbsp;</div>
                 <div class="is-2">
@@ -68,7 +82,9 @@
                         tag="button"
                         to="/track"
                         class="button is-link"
-                    >{{ $ui("track-link", "Track your Vote") }}</router-link>
+                    >
+                        {{ $ui('track-link', 'Track your Vote') }}
+                    </router-link>
                 </div>
                 <div clas="padded">&nbsp;</div>
                 <div v-show="isLoggedIn && isAdmin" class="is-2">
@@ -76,14 +92,21 @@
                         tag="button"
                         to="/admin"
                         class="button is-link"
-                    >{{ $ui("admin", "Admin") }}</router-link>
+                    >
+                        {{ $ui('admin', 'Admin') }}
+                    </router-link>
                 </div>
                 <hr />
-                <div class="is-2">{{ $content("home-footer", "Voting made whole.") }}</div>
+                <div class="is-2">
+                    {{ $content('home-footer', 'Voting made whole.') }}
+                </div>
             </div>
 
             <div class="page-counter" v-show="isValid">
-                <progress-counter currentPage="0" pageCount="4"></progress-counter>
+                <progress-counter
+                    currentPage="0"
+                    pageCount="4"
+                ></progress-counter>
             </div>
         </Bubble>
     </div>

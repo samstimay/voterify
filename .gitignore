@@ -2,6 +2,7 @@ node_modules/
 .firebaserc
 .firebase/
 .secrets/
+secrets/
 .idea/
 *.log
 dist/
