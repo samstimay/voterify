@@ -3,27 +3,13 @@
         "**/.git": true,
         "**/.DS_Store": true,
         "**/*.js.map": true,
-        "**/*.js": {"when": "$(basename).ts"}
+        "**/*.js": { "when": "$(basename).ts" }
     },
-    "tslint.typeCheck": true,
-    "eslint.validate": [
-        {  
-          "language": "vue",  
-          "autoFix": true  
-        },  
-        {  
-          "language": "javascript",  
-          "autoFix": true  
-        },  
-        {  
-          "language": "typescript",  
-          "autoFix": true  
-        }  
-      ],  
-      "eslint.autoFixOnSave": true,  
-      "editor.formatOnSave": true,  
-      "vetur.validation.template": false,  
-      "javascript.format.enable": false,  
-      "files.autoSave": "off",  
-      "eslint.trace.server": "messages",
+
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "vetur.validation.template": false,
+    "javascript.format.enable": false,
+    "files.autoSave": "off",
+    "eslint.trace.server": "messages"
 }

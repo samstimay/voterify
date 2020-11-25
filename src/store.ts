@@ -10,7 +10,7 @@ const debug = process.env.NODE_ENV !== 'production'
 
 Vue.use(VueX)
 
-const store = new VueX.Store({
+const store = VueX.createStore({
     modules: {
         settings,
         user,

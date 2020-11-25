@@ -45,7 +45,7 @@
 
 import './styles/global.scss'
 import 'swiper/dist/css/swiper.css'
-import { Component, Vue, Prop } from 'vue-property-decorator'
+import { Options, Vue } from 'vue-class-component'
 import PageLoader from './components/ui/page-loader.vue'
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
 import { constants } from '@/factory/constants'
@@ -58,7 +58,7 @@ import Voter from '@/models/voter'
 import { session } from '@/factory/session'
 import { mapState } from 'vuex'
 
-@Component({
+@Options({
     components: {
         PageLoader
     },

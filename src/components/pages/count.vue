@@ -1,7 +1,9 @@
 <template>
     <div class="hello">
         <div class="padded">
-            <router-link class="button is-link" to="/">{{ $ui("home", "Home") }}</router-link>
+            <router-link class="button is-link" to="/">
+                {{ $ui('home', 'Home') }}
+            </router-link>
         </div>
         <div class="box bubble-outline votes-table-container has-text-centered">
             <election-chooser :onChange="onChangeElection"></election-chooser>
@@ -9,7 +11,7 @@
                 <spinner></spinner>
             </div>
             <div class="home-bubble-container content" v-show="isReady">
-                {{ $content("count-header", "Vote Counts") }}
+                {{ $content('count-header', 'Vote Counts') }}
                 <div class="padded" v-if="isMounted" v-show="isReady">
                     <vuetable-pagination
                         @vuetable-pagination:change-page="onChangePage"
@@ -53,7 +55,7 @@ import Candidate from '@/models/candidate'
 import moment from 'moment'
 import '@/styles/pages/count.scss'
 import CssForBootstrap4 from '@/components/ui/VuetableCss.js'
-import { Vuetable, VuetablePagination } from 'vuetable-2'
+import Vuetable from 'vuetable-2'
 
 @Component({
     components: {
