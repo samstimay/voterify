@@ -1,6 +1,6 @@
-import Vue from 'vue'
-import VueX from 'vuex'
-import createLogger from '@/plugins/logger'
+// https://medium.com/@mario.brendel1990/vue-3-the-new-store-a7569d4a546f
+
+import { createStore, createLogger } from 'vuex'
 import settings from '@/services/settings'
 import user from '@/services/user'
 import votes from '@/services/votes'
@@ -8,9 +8,7 @@ import elections from '@/services/elections'
 
 const debug = process.env.NODE_ENV !== 'production'
 
-Vue.use(VueX)
-
-const store = VueX.createStore({
+export default createStore({
     modules: {
         settings,
         user,
@@ -24,5 +22,3 @@ const store = VueX.createStore({
     strict: debug,
     plugins: debug ? [createLogger()] : []
 })
-
-export default store

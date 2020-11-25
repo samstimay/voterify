@@ -27,9 +27,10 @@
 import '@/styles/global.scss'
 import Bubble from '@/components/ui/bubble.vue'
 import Button from '@/components/ui/button.vue'
-import { Component, Prop, Vue } from 'vue-property-decorator'
+import { Options, Vue } from 'vue-class-component'
+import { Prop } from 'vue-property-decorator'
 
-@Component({
+@Options({
     components: {
         Bubble,
         Button

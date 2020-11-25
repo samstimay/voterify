@@ -23,7 +23,7 @@ class Api {
             url: this.apiPath + path,
             data
         }
-        return http(Object.assign(post, this.getHeader()))
+        return http(Object.assign(post, this.getHeader()) as Object)
     }
 
     private getHeader(): object {

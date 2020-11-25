@@ -4,7 +4,7 @@
         <div class="modal-card">
             <header class="modal-card-head">
                 <p class="modal-card-title">
-                    {{ $content("cookies", "Cookies") }}
+                    {{ $content('cookies', 'Cookies') }}
                 </p>
                 <button
                     class="delete"
@@ -15,14 +15,14 @@
             <section class="modal-card-body">
                 {{
                     $content(
-                        "cookies-required",
-                        "This site requires cookies, please enable them in your browser."
+                        'cookies-required',
+                        'This site requires cookies, please enable them in your browser.'
                     )
                 }}
             </section>
             <footer class="modal-card-foot space-evenly">
                 <button class="button is-success" @click="onClickOk">
-                    {{ $ui("ok", "OK") }}
+                    {{ $ui('ok', 'OK') }}
                 </button>
             </footer>
         </div>
@@ -30,17 +30,18 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-@Component({})
+import { Vue } from 'vue-class-component'
+import { Prop } from 'vue-property-decorator'
+
 export default class CookiesModal extends Vue {
-    @Prop() callBackFn: Function;
-    @Prop() showModal: Boolean;
+    @Prop() callBackFn: Function
+    @Prop() showModal: Boolean
 
     onClickOk() {
-        const instance = this as any;
-        instance.showModal = false;
+        const instance = this as any
+        instance.showModal = false
         if (instance.callBackFn) {
-            instance.callBackFn();
+            instance.callBackFn()
         }
     }
 }

@@ -12,10 +12,10 @@ export default {
         get({ commit }) {
             return http
                 .get(fileName)
-                .then(function (res) {
+                .then(function(res) {
                     commit('getSettings', res)
                 })
-                .catch(function (res) {
+                .catch(function(res) {
                     console.log('api init failed', res)
                 })
         }
@@ -31,7 +31,7 @@ export default {
         }
     },
     getters: {
-        apiPath: (state) => state.apiPath,
-        settings: (state) => state.settings
+        apiPath: state => state.apiPath,
+        settings: state => state.settings
     }
 }

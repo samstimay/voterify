@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="is-2 is-italic">
-            {{ $content("progress", "Progress") }}
+            {{ $content('progress', 'Progress') }}
         </div>
         <progress
             class="progress is-info is-medium"
@@ -14,18 +14,18 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Vue } from 'vue-class-component'
+import { Prop } from 'vue-property-decorator'
 
-@Component({})
 export default class ProgressCounter extends Vue {
-    @Prop() pageCount: Number;
-    @Prop() currentPage: Number;
+    @Prop() pageCount: Number
+    @Prop() currentPage: Number
 
     data() {
         return {
             count: this.pageCount as Number,
             current: this.currentPage as Number
-        };
+        }
     }
 }
 </script>

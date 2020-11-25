@@ -27,7 +27,7 @@
                 ></component>
             </div>
 
-            <swiper class="quotes-slider" :options="swiperOption">
+            <!-- <swiper class="quotes-slider" :options="swiperOption">
                 <swiper-slide
                     class="is-italic"
                     v-for="(quote, index) in quotes"
@@ -35,7 +35,7 @@
                 >
                     {{ quote }}
                 </swiper-slide>
-            </swiper>
+            </swiper> -->
         </div>
     </div>
 </template>
@@ -47,7 +47,7 @@ import './styles/global.scss'
 import 'swiper/dist/css/swiper.css'
 import { Options, Vue } from 'vue-class-component'
 import PageLoader from './components/ui/page-loader.vue'
-import { swiper, swiperSlide } from 'vue-awesome-swiper'
+//import { swiper, swiperSlide } from 'vue-awesome-swiper'
 import { constants } from '@/factory/constants'
 import { api } from '@/factory/api'
 import firebase from '@/factory/firebase-provider'

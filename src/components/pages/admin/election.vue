@@ -3,7 +3,12 @@
         <div class="field">
             <label class="label">ID</label>
             <div class="control">
-                <input class="input" type="text" v-model="id" :disabled="isEditMode" />
+                <input
+                    class="input"
+                    type="text"
+                    v-model="id"
+                    :disabled="isEditMode"
+                />
             </div>
         </div>
         <div class="field">
@@ -20,19 +25,24 @@
         </div>
         <div class="field">
             <label class="label">Candidates</label>
-            <button
-                class="button"
-                @click="onAddCandidate"
-            >{{ $ui('add-candidate', 'Add Candidate') }}</button>
+            <button class="button" @click="onAddCandidate">
+                {{ $ui('add-candidate', 'Add Candidate') }}
+            </button>
             <div class="control">
-                <div class="card" v-for="candidate in candidates" :key="candidate.id">
+                <div
+                    class="card"
+                    v-for="candidate in candidates"
+                    :key="candidate.id"
+                >
                     <div class="card-footer">
                         <div class="card-footer-item">{{ candidate.name }}</div>
                         <div class="card-footer-item">
                             <button
                                 class="button"
                                 @click="onEditCandidate(candidate)"
-                            >{{ $ui('edit', 'Edit') }}</button>
+                            >
+                                {{ $ui('edit', 'Edit') }}
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -53,10 +63,14 @@
         <div class="field">
             <div class="columns is-multiline is-mobile">
                 <div class="column is-one-quarter">
-                    <button class="button" @click="onSave">{{ $ui('save', 'Save') }}</button>
+                    <button class="button" @click="onSave">
+                        {{ $ui('save', 'Save') }}
+                    </button>
                 </div>
                 <div class="column is-one-quarter">
-                    <button class="button" @click="$router.push('/admin')">{{ $ui('back', 'Back') }}</button>
+                    <button class="button" @click="$router.push('/admin')">
+                        {{ $ui('back', 'Back') }}
+                    </button>
                 </div>
             </div>
         </div>
@@ -64,7 +78,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator'
+import { Options, Vue } from 'vue-class-component'
+import { Prop } from 'vue-property-decorator'
 import { session } from '@/factory/session'
 import { Bubble } from '@/components/ui/all'
 import { EventHub } from '@/factory/event-hub'
@@ -74,7 +89,7 @@ import Auth from '@/mixins/auth'
 
 import { mapState } from 'vuex'
 
-@Component({
+@Options({
     components: {
         Bubble
     },

@@ -7,7 +7,12 @@
         <div class="field">
             <label class="label">ID</label>
             <div class="control">
-                <input class="input" type="text" v-model="id" :disabled="isEditMode" />
+                <input
+                    class="input"
+                    type="text"
+                    v-model="id"
+                    :disabled="isEditMode"
+                />
             </div>
         </div>
         <div class="field">
@@ -37,13 +42,17 @@
         <div class="field">
             <div class="columns is-multiline is-mobile">
                 <div class="column is-one-quarter">
-                    <button class="button" @click="onSave">{{ $ui('save', 'Save') }}</button>
+                    <button class="button" @click="onSave">
+                        {{ $ui('save', 'Save') }}
+                    </button>
                 </div>
                 <div class="column is-one-quarter">
                     <button
                         class="button"
                         @click="$router.push('/admin/election')"
-                    >{{ $ui('back', 'Back') }}</button>
+                    >
+                        {{ $ui('back', 'Back') }}
+                    </button>
                 </div>
             </div>
         </div>
@@ -51,7 +60,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator'
+import { Options, Vue } from 'vue-class-component'
+import { Prop } from 'vue-property-decorator'
 import { session } from '@/factory/session'
 import { Bubble } from '@/components/ui/all'
 import { EventHub } from '@/factory/event-hub'
@@ -62,7 +72,7 @@ import Auth from '@/mixins/auth'
 import { mapState } from 'vuex'
 import Candidate from '../../../models/candidate'
 
-@Component({
+@Options({
     components: {
         Bubble
     },

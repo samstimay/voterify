@@ -8,17 +8,17 @@
 </template>
 
 <script lang="ts">
-import "../../styles/components/button.scss";
-import { Component, Prop, Vue } from "vue-property-decorator";
+import '../../styles/components/button.scss'
+import { Vue } from 'vue-class-component'
+import { Prop } from 'vue-property-decorator'
 
-@Component
 export default class Button extends Vue {
-    @Prop() private text!: string;
-    @Prop() private link!: string;
+    @Prop() private text!: string
+    @Prop() private link!: string
 
     private onClick(): void {
         if (this.link) {
-            this.$router.push(this.link);
+            this.$router.push(this.link)
         }
     }
 }

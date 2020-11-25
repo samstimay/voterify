@@ -1,5 +1,15 @@
-import { Vue } from 'vue-property-decorator'
+import { Vue } from 'vue-class-component'
 
-const EventHub = new Vue()
+class EventRelay {
+    public app: Vue
+    public $on(name, options = {}) {}
+    public $emit(name, options = {}) {}
+}
 
-export { EventHub }
+const EventHub = new EventRelay()
+
+const setEventHub = (app: Vue) => {
+    EventHub.app = app
+}
+
+export { EventHub, setEventHub }

@@ -10,18 +10,18 @@
 </template>
 
 <script lang="ts">
-import "../../styles/components/input.scss";
-import { Component, Prop, Vue } from "vue-property-decorator";
+import '../../styles/components/input.scss'
+import { Vue } from 'vue-class-component'
+import { Prop } from 'vue-property-decorator'
 
-@Component
 export default class TextInput extends Vue {
-    @Prop() private text!: string;
-    @Prop() private placeholder!: string;
+    @Prop() private text!: string
+    @Prop() private placeholder!: string
 
     public data() {
         return {
             input: this.text
-        };
+        }
     }
 }
 </script>

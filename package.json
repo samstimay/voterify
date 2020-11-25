@@ -29,7 +29,7 @@
         "vue-tel-input": "^4.0.0",
         "vue-toasted": "^1.1.27",
         "vuetable-2": "^1.7.5",
-        "vuex": "^4.0.0-alpha.1"
+        "vuex": "^4.0.0-rc.2"
     },
     "devDependencies": {
         "@fortawesome/fontawesome-free": "^5.8.1",
@@ -42,10 +42,10 @@
         "eslint-plugin-vue": "^5.0.0",
         "fibers": "^3.1.1",
         "lint-staged": "^8.1.0",
-        "node-sass": "^4.14.1",
+        "node-sass": "^5.0.0",
         "recursive-copy": "^2.0.10",
         "sass": "^1.26.11",
-        "sass-loader": "^7.1.0",
+        "sass-loader": "^10.1.0",
         "typescript": "^3.0.0"
     },
     "lint-staged": {

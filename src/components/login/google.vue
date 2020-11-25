@@ -12,12 +12,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator'
+import { Options, Vue } from 'vue-class-component'
 import { Error } from '@/components/ui/all'
 import firebase from '@/factory/firebase-provider'
 import firebaseAuth from '@/factory/firebase-auth'
 
-@Component({
+@Options({
     components: {
         Error
     }

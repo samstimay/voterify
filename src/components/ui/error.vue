@@ -1,13 +1,14 @@
 <template>
     <article v-if="message" class="message is-danger">
-        <div class="message-body">{{message}}</div>
+        <div class="message-body">{{ message }}</div>
     </article>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator'
+import { Options, Vue } from 'vue-class-component'
+import { Prop } from 'vue-property-decorator'
 
-@Component({
+@Options({
     props: {
         message: {
             type: String,

@@ -3,26 +3,30 @@
         <Bubble text class="box bubble bubble-outline">
             Admin
             <div>
-                <button
-                    class="button"
-                    @click="onNewElection"
-                >{{ $ui('new-election', 'New Election') }}</button>
+                <button class="button" @click="onNewElection">
+                    {{ $ui('new-election', 'New Election') }}
+                </button>
             </div>
             <p>&nbsp;</p>
             <table class="table">
-                <tr v-for="election in elections" :key="election.id" class="card">
+                <tr
+                    v-for="election in elections"
+                    :key="election.id"
+                    class="card"
+                >
                     <td>
                         <span class="subtitle is-4">{{ election.name }}</span>
                         <br />
                         <span class="is-6">{{ election.region }}</span>
                     </td>
                     <td>
-                        <button class="button" @click="onEdit(election)">{{ $ui('edit', 'Edit') }}</button>
+                        <button class="button" @click="onEdit(election)">
+                            {{ $ui('edit', 'Edit') }}
+                        </button>
 
-                        <button
-                            class="button"
-                            @click="onDelete(election)"
-                        >{{ $ui('delete', 'Delete') }}</button>
+                        <button class="button" @click="onDelete(election)">
+                            {{ $ui('delete', 'Delete') }}
+                        </button>
                     </td>
                 </tr>
             </table>
@@ -31,7 +35,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator'
+import { Options, Vue } from 'vue-class-component'
+import { Prop } from 'vue-property-decorator'
 import { Bubble } from '@/components/ui/all'
 import { session } from '@/factory/session'
 import { EventHub } from '@/factory/event-hub'
@@ -39,7 +44,7 @@ import Election from '@/models/election'
 import firebase from 'firebase'
 import Auth from '@/mixins/auth'
 
-@Component({
+@Options({
     components: {
         Bubble
     },

@@ -5,7 +5,10 @@
                 <spinner></spinner>
             </div>
             <div v-show="isLoaded">
-                <election-chooser :onChange="onElectionChanged" :onLoaded="onElectionLoaded"></election-chooser>
+                <election-chooser
+                    :onChange="onElectionChanged"
+                    :onLoaded="onElectionLoaded"
+                ></election-chooser>
                 <p>&nbsp;</p>
                 <p>
                     <input
@@ -30,7 +33,8 @@ import {
     ElectionChooser,
     Spinner
 } from '@/components/ui/all'
-import { Component, Prop, Vue } from 'vue-property-decorator'
+import { Options, Vue } from 'vue-class-component'
+import { Prop } from 'vue-property-decorator'
 import Election from '@/models/election'
 import Vote from '@/models/vote'
 import { session } from '@/factory/session'
@@ -39,7 +43,7 @@ import firebaseAuth from '@/factory/firebase-auth'
 
 import auth from '@/mixins/auth'
 
-@Component({
+@Options({
     components: {
         Bubble,
         Button,

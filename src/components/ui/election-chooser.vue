@@ -18,11 +18,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator'
+import { Options, Vue } from 'vue-class-component'
+import { Prop } from 'vue-property-decorator'
 import Election from '@/models/election'
 import { mapState } from 'vuex'
 
-@Component({
+@Options({
     computed: mapState('elections', ['currentElection', 'elections'])
 })
 export default class ElectionChooser extends Vue {

@@ -116,7 +116,8 @@
 import '@/styles/pages/home.scss'
 import { EventHub } from '@/factory/event-hub'
 import { Bubble, TextInput, ProgressCounter } from '@/components/ui/all'
-import { Component, Prop, Vue } from 'vue-property-decorator'
+import { Options, Vue } from 'vue-class-component'
+import { Prop } from 'vue-property-decorator'
 import firebase from '@/factory/firebase-provider'
 import { constants } from '@/factory/constants'
 import { session } from '@/factory/session'
@@ -127,7 +128,7 @@ import Permissions from '@/models/permissions'
 
 import { mapState } from 'vuex'
 
-@Component({
+@Options({
     components: {
         Bubble,
         TextInput,

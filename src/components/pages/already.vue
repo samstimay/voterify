@@ -5,8 +5,8 @@
                 <p>
                     {{
                         $content(
-                            "voted-already",
-                            "You have already voted in this election."
+                            'voted-already',
+                            'You have already voted in this election.'
                         )
                     }}
                 </p>
@@ -19,12 +19,12 @@
                         class="button is-centered is-link"
                         :to="{ path: '/track', query: { voterId: voterId() } }"
                     >
-                        {{ $ui("track-link", "Track your Vote") }}
+                        {{ $ui('track-link', 'Track your Vote') }}
                     </router-link>
                 </p>
                 <div class="padded">
                     <router-link class="button is-centered is-link" to="/">
-                        {{ $ui("home", "Home") }}
+                        {{ $ui('home', 'Home') }}
                     </router-link>
                 </div>
             </div>
@@ -33,13 +33,14 @@
 </template>
 
 <script lang="ts">
-import "@/styles/pages/thanks.scss";
-import Bubble from "@/components/ui/bubble.vue";
-import { session } from "@/factory/session";
-import { Component, Prop, Vue } from "vue-property-decorator";
-import firebaseAuth from "@/factory/firebase-auth";
+import '@/styles/pages/thanks.scss'
+import Bubble from '@/components/ui/bubble.vue'
+import { session } from '@/factory/session'
+import { Options, Vue } from 'vue-class-component'
+import { Prop } from 'vue-property-decorator'
+import firebaseAuth from '@/factory/firebase-auth'
 
-@Component({
+@Options({
     components: {
         Bubble
     }
@@ -47,16 +48,16 @@ import firebaseAuth from "@/factory/firebase-auth";
 export default class AlreadyPage extends Vue {
     created() {
         if (!firebaseAuth.isAuthorized()) {
-            this.$router.push("/");
+            this.$router.push('/')
         }
     }
 
     voterId() {
-        return session.getVoter().voterId;
+        return session.getVoter().voterId
     }
 
     electionName() {
-        return session.getElection().name;
+        return session.getElection().name
     }
 }
 </script>

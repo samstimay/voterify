@@ -27,27 +27,33 @@
                     />
                 </div>
             </div>
-            <div class="field is-grouped is-grouped-multiline" v-show="!isValid">
+            <div
+                class="field is-grouped is-grouped-multiline"
+                v-show="!isValid"
+            >
                 <div class="is-size-8 is-light is-italic">
                     <p>
                         {{
-                        $content(
-                        "sms-instructions",
-                        "Enter your 6 digit SMS code."
-                        )
+                            $content(
+                                'sms-instructions',
+                                'Enter your 6 digit SMS code.'
+                            )
                         }}
                     </p>
                     <p>
                         {{
-                        $content(
-                        "sms-didnot",
-                        "If you did not receive a code."
-                        )
+                            $content(
+                                'sms-didnot',
+                                'If you did not receive a code.'
+                            )
                         }}
                     </p>
                 </div>
             </div>
-            <div class="field is-grouped is-grouped-multiline" v-show="!isValid">
+            <div
+                class="field is-grouped is-grouped-multiline"
+                v-show="!isValid"
+            >
                 <div class="is-size-8 is-light is-italic">
                     <hr />
                     <p>
@@ -63,30 +69,33 @@
             </div>
             <div class="field is-grouped has-text-left">
                 <div class="is-size-8 is-light is-italic" v-show="tries > 0">
-                    <p>{{ $content("sms-incorrect", "Incorrect SMS code") }}</p>
+                    <p>{{ $content('sms-incorrect', 'Incorrect SMS code') }}</p>
                     <p>
                         {{
-                        $content(
-                        "sms-tries",
-                        "You have %% chances to enter the correct SMS code.",
-                        maxTries - tries
-                        )
+                            $content(
+                                'sms-tries',
+                                'You have %% chances to enter the correct SMS code.',
+                                maxTries - tries
+                            )
                         }}
                     </p>
                     <p>
                         <i>
                             {{
-                            $content(
-                            "sms-didyou",
-                            "Did you receive a text message on your cell phone?"
-                            )
+                                $content(
+                                    'sms-didyou',
+                                    'Did you receive a text message on your cell phone?'
+                                )
                             }}
                         </i>
                     </p>
                 </div>
             </div>
             <div class="page-counter">
-                <progress-counter currentPage="1" pageCount="4"></progress-counter>
+                <progress-counter
+                    currentPage="1"
+                    pageCount="4"
+                ></progress-counter>
             </div>
         </Bubble>
     </div>
@@ -96,13 +105,14 @@
 import '@/styles/pages/home.scss'
 import { EventHub } from '@/factory/event-hub'
 import { Bubble, Button, TextInput, ProgressCounter } from '@/components/ui/all'
-import { Component, Prop, Vue } from 'vue-property-decorator'
+import { Options, Vue } from 'vue-class-component'
+import { Prop } from 'vue-property-decorator'
 import { session } from '@/factory/session'
 import { api } from '@/factory/api'
 import firebaseAuth from '@/factory/firebase-auth'
 import 'bulma-pageloader'
 
-@Component({
+@Options({
     components: {
         Bubble,
         Button,

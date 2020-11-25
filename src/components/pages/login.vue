@@ -1,21 +1,28 @@
 <template>
     <div class="hello">
         <Bubble text class="box bubble bubble-outline">
-            <div>{{ $content("login-instructions", "Login with one of the providers below.") }}</div>
+            <div>
+                {{
+                    $content(
+                        'login-instructions',
+                        'Login with one of the providers below.'
+                    )
+                }}
+            </div>
             <GoogleLogin @auth-success="onAuthSuccess" />
         </Bubble>
     </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator'
+import { Options, Vue } from 'vue-class-component'
 import { Bubble } from '@/components/ui/all'
 import { session } from '@/factory/session'
 import { EventHub } from '@/factory/event-hub'
 import firebase from 'firebase'
 import GoogleLogin from '@/components/login/google.vue'
 
-@Component({
+@Options({
     components: {
         Bubble,
         GoogleLogin

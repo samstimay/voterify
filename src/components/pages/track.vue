@@ -2,11 +2,13 @@
     <div class="hello">
         <Bubble text class="bubble-outline">
             <div class="home-bubble-container content" v-show="isReady">
-                <election-chooser :onChange="onElectionChange"></election-chooser>
-                {{ $content("track-header", "Track your vote") }}
+                <election-chooser
+                    :onChange="onElectionChange"
+                ></election-chooser>
+                {{ $content('track-header', 'Track your vote') }}
                 <div v-show="!hasTrackingInfo">
                     <div class="field">
-                        {{ $content("track-number", "Using tracking number") }}
+                        {{ $content('track-number', 'Using tracking number') }}
                         <br />
                         <input
                             id="track-input"
@@ -25,10 +27,10 @@
                     </div>
                     <div v-show="trackingNotFound">
                         {{
-                        $content(
-                        "track-not-found",
-                        "Your tracking number was not found in the database."
-                        )
+                            $content(
+                                'track-not-found',
+                                'Your tracking number was not found in the database.'
+                            )
                         }}
                     </div>
                 </div>
@@ -52,13 +54,14 @@
                 </div>
                 <hr />
                 <div class="padded">
-                    <router-link
-                        class="button is-link"
-                        to="/count"
-                    >{{ $ui("count", "Count all Votes") }}</router-link>
+                    <router-link class="button is-link" to="/count">
+                        {{ $ui('count', 'Count all Votes') }}
+                    </router-link>
                 </div>
                 <div class="padded">
-                    <router-link class="button is-link" to="/">{{ $ui("home", "Home") }}</router-link>
+                    <router-link class="button is-link" to="/">
+                        {{ $ui('home', 'Home') }}
+                    </router-link>
                 </div>
             </div>
         </Bubble>
@@ -73,7 +76,8 @@ import {
     ProgressCounter,
     ElectionChooser
 } from '@/components/ui/all'
-import { Component, Prop, Vue } from 'vue-property-decorator'
+import { Options, Vue } from 'vue-class-component'
+import { Prop } from 'vue-property-decorator'
 import { session } from '@/factory/session'
 import { api } from '@/factory/api'
 import Vote from '@/models/vote'
@@ -83,7 +87,7 @@ import moment from 'moment'
 
 import { mapState } from 'vuex'
 
-@Component({
+@Options({
     components: {
         Bubble,
         Button,

@@ -9,7 +9,7 @@ import store from './store'
 import App from './App.vue'
 import Router from './router'
 import VueTelInput from 'vue-tel-input'
-import VueAwesomeSwiper from 'vue-awesome-swiper'
+// import VueAwesomeSwiper from 'vue-awesome-swiper'
 import 'bulma/css/bulma.css'
 import './styles/global.scss'
 import firebase from './factory/firebase-provider'
@@ -17,12 +17,13 @@ import Translate from './plugins/translate'
 import Vuetable from 'vuetable-2'
 import Toasted from 'vue-toasted'
 import '@fortawesome/fontawesome-free/css/fontawesome.css'
+import { setEventHub } from '@/factory/event-hub'
 
 firebase.auth()
 
 window['VfyEnvironment'] = process.env.NODE_ENV
 
-export default createApp(App)
+const app = createApp(App)
     .use(store)
     .use(Router)
     .use(VueTelInput, {
@@ -30,7 +31,7 @@ export default createApp(App)
         enabledFlags: false,
         onlyCountries: ['US']
     })
-    .use(VueAwesomeSwiper)
+    // .use(VueAwesomeSwiper)
     .use(Vuetable)
     .use(Translate)
     .use(Toasted, {
@@ -40,3 +41,7 @@ export default createApp(App)
         singleton: true
     })
     .mount('#app')
+
+setEventHub(app)
+
+export default app

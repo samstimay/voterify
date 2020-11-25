@@ -45,7 +45,8 @@ import {
     ElectionChooser,
     Spinner
 } from '@/components/ui/all'
-import { Component, Prop, Vue } from 'vue-property-decorator'
+import { Options, Vue } from 'vue-class-component'
+import { Prop } from 'vue-property-decorator'
 import { session } from '@/factory/session'
 import { EventHub } from '@/factory/event-hub'
 import { api } from '@/factory/api'
@@ -57,7 +58,7 @@ import '@/styles/pages/count.scss'
 import CssForBootstrap4 from '@/components/ui/VuetableCss.js'
 import Vuetable from 'vuetable-2'
 
-@Component({
+@Options({
     components: {
         ElectionChooser,
         Bubble,
