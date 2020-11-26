@@ -144,7 +144,7 @@ export default class EditElectionPage extends Vue {
             instance.active
         )
         this.$store.dispatch('elections/save', { election }).then(() => {
-            this.$toasted.show('Saved')
+            ;(this as any).$toasted.show('Saved')
         })
     }
 

@@ -44,7 +44,7 @@
 ///<reference path="./types/vue-awesome-swiper.d.ts" />
 
 import './styles/global.scss'
-import 'swiper/dist/css/swiper.css'
+//import 'swiper/dist/css/swiper.css'
 import { Options, Vue } from 'vue-class-component'
 import PageLoader from './components/ui/page-loader.vue'
 //import { swiper, swiperSlide } from 'vue-awesome-swiper'

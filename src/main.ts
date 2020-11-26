@@ -15,7 +15,7 @@ import './styles/global.scss'
 import firebase from './factory/firebase-provider'
 import Translate from './plugins/translate'
 import Vuetable from 'vuetable-2'
-import Toasted from 'vue-toasted'
+import Toasted from './plugins/toasted'
 import '@fortawesome/fontawesome-free/css/fontawesome.css'
 import { setEventHub } from '@/factory/event-hub'
 

@@ -50,7 +50,9 @@ export default class LoginPage extends Vue {
     private onVoterCreated(voter) {
         this.$store.dispatch('user/getPermissions').then(permissions => {
             if (permissions.type !== 'admin') {
-                this.$toasted.show('Sorry, you are not a registered user.')
+                ;(this as any).$toasted.show(
+                    'Sorry, you are not a registered user.'
+                )
                 EventHub.$emit('logout')
                 return
             }

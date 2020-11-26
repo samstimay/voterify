@@ -133,9 +133,7 @@ export default class EditCandidatePage extends Vue {
 
         this.$store
             .dispatch('elections/save', { election: this.currentElection })
-            .then(() => {
-                this.$toasted.show('Saved')
-            })
+            .then(() => (this as any).$toasted.show('Saved'))
     }
 }
 </script>
