@@ -3,7 +3,7 @@ const Swagger = require('swagger-client')
 import SecretsProvider from '../src/services/secrets-provider'
 const secrets = SecretsProvider.Azure()
 
-class BlockchainApi {
+export default class BlockchainApi {
     private AUTHORITY = secrets.authority
     private WORKBENCH_API_URL = secrets.workbench_api_url
     private RESOURCE = secrets.resource
@@ -11,23 +11,18 @@ class BlockchainApi {
     private CLIENT_SECRET = secrets.client_secret
 
     // Getting token from AAD
-    acquireTokenWithClientCredentials = async (
-        resource,
-        clientId,
-        clientSecret,
-        authority
-    ) => {
+    public acquireTokenWithClientCredentials = async () => {
         const requestBody = {
-            resource: resource,
-            client_id: clientId,
-            client_secret: clientSecret,
+            resource: this.RESOURCE,
+            client_id: this.CLIENT_APP_Id,
+            client_secret: this.CLIENT_SECRET,
             grant_type: 'client_credentials'
         }
         console.log(this)
 
         const response = await axios({
             method: 'POST',
-            url: `${authority}/oauth2/token`,
+            url: `${this.AUTHORITY}/oauth2/token`,
             data: JSON.stringify(requestBody),
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         })
@@ -37,12 +32,7 @@ class BlockchainApi {
 
     public send = async message => {
         try {
-            const token = await this.acquireTokenWithClientCredentials(
-                this.RESOURCE,
-                this.CLIENT_APP_Id,
-                this.CLIENT_SECRET,
-                this.AUTHORITY
-            )
+            const token = await this.acquireTokenWithClientCredentials()
 
             const request = {
                 url: `${this.WORKBENCH_API_URL}/api/v2/contracts?workflowId=1&contractCodeId=1&connectionId=1`,

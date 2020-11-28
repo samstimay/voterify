@@ -21,7 +21,7 @@ class AzureSecrets {
 
 export default class SecretsProvider {
     public static Azure = (): AzureSecrets => {
-        return require('../secrets/azure-secrets.json')
+        return require('../../secrets/azure-secrets.json')
     }
 
     public static Firebase = (): FirebaseSecrets => {
