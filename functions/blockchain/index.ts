@@ -18,8 +18,6 @@ export default class BlockchainApi {
             client_secret: this.CLIENT_SECRET,
             grant_type: 'client_credentials'
         }
-        console.log(this)
-
         const response = await axios({
             method: 'POST',
             url: `${this.AUTHORITY}/oauth2/token`,
@@ -30,7 +28,7 @@ export default class BlockchainApi {
         return response.data
     }
 
-    public send = async message => {
+    public send = async (message: string) => {
         try {
             const token = await this.acquireTokenWithClientCredentials()
 
