@@ -12,6 +12,7 @@
   "main": "lib/index.js",
   "dependencies": {
     "@google-cloud/functions-framework": "^1.5.1",
+    "axios": "^0.21.0",
     "body-parser": "^1.18.3",
     "cors": "^2.8.5",
     "crypto-js": "^4.0.0",
@@ -20,7 +21,8 @@
     "firebase-admin": "^8.10.0",
     "firebase-functions": "^3.6.0",
     "firebase-queue": "^1.6.1",
-    "shortid": "^2.2.14"
+    "shortid": "^2.2.14",
+    "swagger-client": "^3.12.1"
   },
   "devDependencies": {
     "@types/express": "^4.17.5",

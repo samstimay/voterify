@@ -1,7 +1,9 @@
 // Initialize Firebase admin
 import { logger } from '../log'
+import SecretsProvider from '../services/secrets-provider'
+
 const admin = require('firebase-admin')
-const serviceAccount = require('../../secrets/firebase-secrets.json')
+const serviceAccount = SecretsProvider.Firebase()
 
 logger.message('Firebase Admin Service Account: ' + serviceAccount.project_id)
 
