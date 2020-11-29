@@ -7,11 +7,11 @@ import { authApi } from './auth-api'
 import QuerySnapshot = firebase.firestore.QuerySnapshot
 import QueryDocumentSnapshot = firebase.firestore.QueryDocumentSnapshot
 import { VoterApi } from './voters'
-// import { BlockInfo } from "../blockchain/blockService"
+import BlockchainApi from '../blockchain'
 const cors = require('cors')
 
 class VoteApi {
-    public static blockchainQueue: any
+    public static blockchain: BlockchainApi = new BlockchainApi()
 
     public static voteId(voterId: string, electionId: string): string {
         return electionId + '-' + voterId
@@ -26,13 +26,17 @@ class VoteApi {
             logger.message('GET /getVotes', logger.parseExpress(req, res))
             return VoteApi.getVotes(req, res)
         })
-        app.get('/getVotesTable', cors(), function (
-            req: Request,
-            res: Response
-        ) {
-            logger.message('GET /getVotesTable', logger.parseExpress(req, res))
-            return VoteApi.getVotesTable(req, res)
-        })
+        app.get(
+            '/getVotesTable',
+            cors(),
+            function (req: Request, res: Response) {
+                logger.message(
+                    'GET /getVotesTable',
+                    logger.parseExpress(req, res)
+                )
+                return VoteApi.getVotesTable(req, res)
+            }
+        )
         app.get('/tallyVotes', function (req: Request, res: Response) {
             logger.message('GET /tallyVotes', logger.parseExpress(req, res))
             return VoteApi.tallyVotes(req, res)
@@ -237,14 +241,12 @@ class VoteApi {
                             .doc(voteId)
                             .set(vote)
                             .then(() => {
+                                const encodedVote = JSON.stringify(vote)
                                 logger.message(
                                     '/createVote new vote',
-                                    JSON.stringify(vote)
+                                    encodedVote
                                 )
-                                // // @ts-ignore
-                                // TODO: integrate blockchain voting
-                                // const blockInfo = new BlockInfo(vote, "block-" + vote.electionId);
-                                // VoteApi.blockchainQueue.push(blockInfo);
+                                this.blockchain.send(encodedVote)
                                 return res.json(
                                     Object.assign(vote, { status: 'new-vote' })
                                 )

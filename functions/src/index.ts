@@ -6,8 +6,6 @@ import { VoteApi } from './api/votes'
 import { VoterApi } from './api/voters'
 import { SystemApi } from './api/system'
 import { PermissionsApi } from './api/permissions'
-import BlockchainApi from './blockchain/index'
-import FirebaseQueue from './firebase/queue'
 import admin from './firebase/firebaseAdmin-provider'
 const cors = require('cors')
 const bodyParser = require('body-parser')
@@ -39,8 +37,6 @@ VoterApi.createEndpoints(app)
 PermissionsApi.createEndpoints(app)
 
 admin.auth()
-
-VoteApi.blockchainQueue = new FirebaseQueue(admin)
 
 // Export App for use with Firebase Functions
 exports.voterifyApi = functions.https.onRequest(app)

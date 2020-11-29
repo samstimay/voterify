@@ -2,6 +2,7 @@ const Swagger = require('swagger-client')
 const AuthenticationContext = require('adal-node').AuthenticationContext
 import SecretsProvider from '../services/secrets-provider'
 const secrets = SecretsProvider.Azure()
+import { logger } from '../log'
 
 export default class BlockchainApi {
     private workbench_api_url = secrets.workbench_api_url
@@ -26,6 +27,7 @@ export default class BlockchainApi {
                     if (err) {
                         return reject(err)
                     } else {
+                        logger.debug('Blockchain api token created')
                         return resolve(tokenResponse)
                     }
                 }
