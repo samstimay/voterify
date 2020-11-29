@@ -45,8 +45,4 @@ VoteApi.blockchainQueue = new FirebaseQueue(admin)
 // Export App for use with Firebase Functions
 exports.voterifyApi = functions.https.onRequest(app)
 
-new BlockchainApi().acquireTokenWithClientCredentials().then((data) => {
-    logger.debug(data)
-})
-
 logger.debug('API loaded')

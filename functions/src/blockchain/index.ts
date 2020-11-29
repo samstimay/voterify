@@ -12,25 +12,25 @@ export default class BlockchainApi {
     private resource = secrets.resource
 
     // Getting token from AAD
-    public acquireTokenWithClientCredentials = async () => {
+    public acquireTokenWithClientCredentials = async (): Promise<any> => {
         var authorityUrl = `${this.authorityHostUrl}${this.tenant}`
 
-        console.log('BlockchainApi authorityUrl', authorityUrl)
         var context = new AuthenticationContext(authorityUrl)
 
-        return context.acquireTokenWithClientCredentials(
-            this.resource,
-            this.clientAppId,
-            this.clientSecret,
-            function (err: any, tokenResponse: any) {
-                if (err) {
-                    console.log("well that didn't work: " + err.stack)
-                } else {
-                    console.log('AZURE BLOCKCHAIN API TOKEN', tokenResponse)
-                    return tokenResponse
+        return new Promise((resolve, reject) => {
+            context.acquireTokenWithClientCredentials(
+                this.resource,
+                this.clientAppId,
+                this.clientSecret,
+                function (err: any, tokenResponse: any) {
+                    if (err) {
+                        return reject(err)
+                    } else {
+                        return resolve(tokenResponse)
+                    }
                 }
-            }
-        )
+            )
+        })
     }
 
     public send = async (message: string) => {
@@ -43,7 +43,7 @@ export default class BlockchainApi {
                 headers: {
                     'Content-Type':
                         'application/json;charset=utf-8;odata=verbose',
-                    Authorization: `Bearer ${token.access_token}`
+                    Authorization: `Bearer ${token.accessToken}`
                 },
                 body: {
                     workflowActionInput: {
