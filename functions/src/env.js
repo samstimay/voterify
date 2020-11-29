@@ -1,4 +1,7 @@
-const settings = require("../settings.json");
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Env = void 0;
+const settings = require('../settings.json');
 console.log(settings);
 class EnvironmentConfig {
     firebaseConfig() {
@@ -6,5 +9,5 @@ class EnvironmentConfig {
     }
 }
 const Env = new EnvironmentConfig();
-export { Env };
+exports.Env = Env;
 //# sourceMappingURL=env.js.map

@@ -1,59 +1,71 @@
-import { logger, Errors } from "../log";
-import { firebaseApi } from "../firebase/firebase-api";
-import { authApi } from "./auth-api";
-import { VoterApi } from "./voters";
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.VoteApi = void 0;
+const log_1 = require("../log");
+const firebase_api_1 = require("../firebase/firebase-api");
+const auth_api_1 = require("./auth-api");
+const voters_1 = require("./voters");
 // import { BlockInfo } from "../blockchain/blockService"
-const cors = require("cors");
+const cors = require('cors');
 class VoteApi {
     static voteId(voterId, electionId) {
-        return electionId + "-" + voterId;
+        return electionId + '-' + voterId;
     }
     static createEndpoints(app) {
-        app.get("/checkVote", function (req, res) {
-            logger.message("GET /checkVote", logger.parseExpress(req, res));
+        app.get('/checkVote', function (req, res) {
+            log_1.logger.message('GET /checkVote', log_1.logger.parseExpress(req, res));
             return VoteApi.checkVote(req, res);
         });
-        app.get("/getVotes", function (req, res) {
-            logger.message("GET /getVotes", logger.parseExpress(req, res));
+        app.get('/getVotes', function (req, res) {
+            log_1.logger.message('GET /getVotes', log_1.logger.parseExpress(req, res));
             return VoteApi.getVotes(req, res);
         });
-        app.get("/getVotesTable", cors(), function (req, res) {
-            logger.message("GET /getVotesTable", logger.parseExpress(req, res));
+        app.get('/getVotesTable', cors(), function (req, res) {
+            log_1.logger.message('GET /getVotesTable', log_1.logger.parseExpress(req, res));
             return VoteApi.getVotesTable(req, res);
         });
-        app.get("/tallyVotes", function (req, res) {
-            logger.message("GET /tallyVotes", logger.parseExpress(req, res));
+        app.get('/tallyVotes', function (req, res) {
+            log_1.logger.message('GET /tallyVotes', log_1.logger.parseExpress(req, res));
             return VoteApi.tallyVotes(req, res);
         });
-        app.post("/trackVote", function (req, res) {
-            logger.message("POST /trackVote", logger.parseExpress(req, res));
+        app.post('/trackVote', function (req, res) {
+            log_1.logger.message('POST /trackVote', log_1.logger.parseExpress(req, res));
             return VoteApi.trackVote(req, res);
         });
-        app.post("/trackPhone", function (req, res) {
-            logger.message("POST /trackPhone", logger.parseExpress(req, res));
-            return VoteApi.trackPhone(req, res);
+        app.post('/trackUID', function (req, res) {
+            log_1.logger.message('POST /trackUID', log_1.logger.parseExpress(req, res));
+            return VoteApi.trackUID(req, res);
         });
-        app.post("/createVote", function (req, res) {
-            logger.message("POST /createVote", logger.parseExpress(req, res));
-            return authApi
+        app.post('/createVote', function (req, res) {
+            log_1.logger.message('POST /createVote', log_1.logger.parseExpress(req, res));
+            return auth_api_1.authApi
                 .firebaseTokenAuth(req)
-                .then(uid => {
+                .then((uid) => {
                 if (uid)
                     return VoteApi.createVote(req, res, uid);
                 else
-                    return Errors.authFailed(req, res);
+                    return log_1.Errors.authFailed(req, res);
             })
                 .catch((msg) => {
-                return Errors.onCatch(res, msg);
+                return log_1.Errors.onCatch(res, msg);
             });
         });
     }
     static checkVote(req, res) {
-        const voterId = req.query.voterId, electionId = req.query.id, voteId = VoteApi.voteId(voterId, electionId);
+        const voterId = req.query.voterId.toString(), electionId = req.query.id.toString(), voteId = VoteApi.voteId(voterId, electionId);
         try {
-            return firebaseApi
+            return firebase_api_1.firebaseApi
                 .firestore()
-                .collection("votes")
+                .collection('votes')
                 .doc(voteId)
                 .get()
                 .then((data) => {
@@ -63,51 +75,51 @@ class VoteApi {
                 return res.json(result);
             })
                 .catch(function (err) {
-                return Errors.onCatch(res, err);
+                return log_1.Errors.onCatch(res, err);
             });
         }
         catch (error) {
-            return Errors.onCrash(res, error);
+            return log_1.Errors.onCrash(res, error);
         }
     }
     static getVotes(req, res) {
         const electionId = req.query.id;
         try {
-            return firebaseApi
+            return firebase_api_1.firebaseApi
                 .firestore()
-                .collection("votes")
-                .where("electionId", "==", electionId)
+                .collection('votes')
+                .where('electionId', '==', electionId)
                 .get()
                 .then((data) => {
                 const result = [];
                 data.docs.forEach(function (value) {
                     result.push({
-                        voterId: value.get("voterId"),
-                        candidateId: value.get("candidateId"),
-                        candidate: value.get("candidate"),
-                        date: value.get("date")
+                        voterId: value.get('voterId'),
+                        candidateId: value.get('candidateId'),
+                        candidate: value.get('candidate'),
+                        date: value.get('date')
                     });
                 });
                 return res.json(result);
             })
                 .catch(function (err) {
-                return Errors.onCatch(res, err);
+                return log_1.Errors.onCatch(res, err);
             });
         }
         catch (error) {
-            return Errors.onCrash(res, error);
+            return log_1.Errors.onCrash(res, error);
         }
     }
     static getVotesTable(req, res) {
         const electionId = req.query.id, page = Number(req.query.page), perPage = Number(req.query.per_page), startAt = 1 + (page - 1) * perPage;
         let sort = req.query.sort;
-        if (sort !== "electionId")
-            sort = "date";
+        if (sort !== 'electionId')
+            sort = 'date';
         try {
-            return firebaseApi
+            return firebase_api_1.firebaseApi
                 .firestore()
-                .collection("votes")
-                .where("electionId", "==", electionId)
+                .collection('votes')
+                .where('electionId', '==', electionId)
                 .orderBy(sort)
                 .startAt(startAt)
                 .limit(perPage)
@@ -116,10 +128,10 @@ class VoteApi {
                 const result = [];
                 data.docs.forEach(function (value) {
                     result.push({
-                        voterId: value.get("voterId"),
-                        candidateId: value.get("candidateId"),
-                        candidate: value.get("candidate"),
-                        date: value.get("date")
+                        voterId: value.get('voterId'),
+                        candidateId: value.get('candidateId'),
+                        candidate: value.get('candidate'),
+                        date: value.get('date')
                     });
                 });
                 const response = {
@@ -134,118 +146,121 @@ class VoteApi {
                 return res.jsonp(response);
             })
                 .catch(function (err) {
-                return Errors.onCatch(res, err);
+                return log_1.Errors.onCatch(res, err);
             });
         }
         catch (error) {
-            return Errors.onCrash(res, error);
+            return log_1.Errors.onCrash(res, error);
         }
     }
-    static async tallyVotes(req, res) {
-        const electionId = req.query.id;
-        try {
-            return firebaseApi
-                .firestore()
-                .collection("votes")
-                .where("electionId", "==", electionId)
-                .get()
-                .then((data) => {
-                const result = [];
-                data.docs.forEach(function (value) {
-                    const candidateId = value.get("candidateId");
-                    const existing = result.filter(function (x) {
-                        return x.candidateId === candidateId;
-                    });
-                    if (existing.length === 0) {
-                        result.push({
-                            candidateId,
-                            candidate: value.get("candidate"),
-                            count: 1
+    static tallyVotes(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const electionId = req.query.id;
+            try {
+                return firebase_api_1.firebaseApi
+                    .firestore()
+                    .collection('votes')
+                    .where('electionId', '==', electionId)
+                    .get()
+                    .then((data) => {
+                    const result = [];
+                    data.docs.forEach(function (value) {
+                        const candidateId = value.get('candidateId');
+                        const existing = result.filter(function (x) {
+                            return x.candidateId === candidateId;
                         });
+                        if (existing.length === 0) {
+                            result.push({
+                                candidateId,
+                                candidate: value.get('candidate'),
+                                count: 1
+                            });
+                        }
+                        else {
+                            ;
+                            existing[0].count++;
+                        }
+                    });
+                    return res.json(result);
+                })
+                    .catch(function (err) {
+                    return log_1.Errors.onCatch(res, err);
+                });
+            }
+            catch (error) {
+                return log_1.Errors.onCrash(res, error);
+            }
+        });
+    }
+    static createVote(req, res, uid) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!uid || uid.length === 0)
+                return log_1.Errors.onCatch(res, 'User not found after auth.');
+            const voter = yield voters_1.VoterApi.getVoter(req);
+            if (!voter.exists)
+                return log_1.Errors.onCatch(res, 'Voter not found after auth.');
+            let vote = {};
+            try {
+                vote = JSON.parse(req.body);
+            }
+            catch (_a) {
+                vote = req.body;
+            }
+            ;
+            vote.voterId = voter.voterId;
+            // @ts-ignore
+            const voteId = VoteApi.voteId(vote.voterId, vote.electionId);
+            try {
+                // first check that this voteId does not exist
+                return firebase_api_1.firebaseApi
+                    .firestore()
+                    .collection('votes')
+                    .doc(voteId)
+                    .get()
+                    .then((data) => {
+                    if (data.exists) {
+                        return res.json(Object.assign(vote, { status: 'already-voted' }));
                     }
                     else {
-                        existing[0].count++;
+                        // if not already exists, create it
+                        return firebase_api_1.firebaseApi
+                            .firestore()
+                            .collection('votes')
+                            .doc(voteId)
+                            .set(vote)
+                            .then(() => {
+                            log_1.logger.message('/createVote new vote', JSON.stringify(vote));
+                            // // @ts-ignore
+                            // TODO: integrate blockchain voting
+                            // const blockInfo = new BlockInfo(vote, "block-" + vote.electionId);
+                            // VoteApi.blockchainQueue.push(blockInfo);
+                            return res.json(Object.assign(vote, { status: 'new-vote' }));
+                        });
                     }
+                })
+                    .catch(function (err) {
+                    return log_1.Errors.onCatch(res, err);
                 });
-                return res.json(result);
-            })
-                .catch(function (err) {
-                return Errors.onCatch(res, err);
-            });
-        }
-        catch (error) {
-            return Errors.onCrash(res, error);
-        }
-    }
-    static async createVote(req, res, uid) {
-        // get the user, phone and voter from the auth token uid
-        const user = await authApi.getUser(uid);
-        if (!user.phoneNumber || user.phoneNumber.length === 0)
-            return Errors.onCatch(res, "User not found after auth.");
-        const phone = user.phoneNumber.replace(/[^0-9\.]+/g, "").trim();
-        const voter = await VoterApi.getVoter(phone);
-        if (!voter.exists)
-            return Errors.onCatch(res, "Voter not found after auth: " + phone);
-        let vote = {};
-        try {
-            vote = JSON.parse(req.body);
-        }
-        catch {
-            vote = req.body;
-        }
-        vote.voterId = voter.voterId;
-        // @ts-ignore
-        const voteId = VoteApi.voteId(vote.voterId, vote.electionId);
-        try {
-            // first check that this voteId does not exist
-            return firebaseApi
-                .firestore()
-                .collection("votes")
-                .doc(voteId)
-                .get()
-                .then((data) => {
-                if (data.exists) {
-                    return res.json(Object.assign(vote, { status: "already-voted" }));
-                }
-                else {
-                    // if not already exists, create it
-                    return firebaseApi
-                        .firestore()
-                        .collection("votes")
-                        .doc(voteId)
-                        .set(vote)
-                        .then(() => {
-                        logger.message("/createVote new vote", JSON.stringify(vote));
-                        // // @ts-ignore
-                        // TODO: integrate blockchain voting
-                        // const blockInfo = new BlockInfo(vote, "block-" + vote.electionId);
-                        // VoteApi.blockchainQueue.push(blockInfo);
-                        return res.json(Object.assign(vote, { status: "new-vote" }));
-                    });
-                }
-            })
-                .catch(function (err) {
-                return Errors.onCatch(res, err);
-            });
-        }
-        catch (error) {
-            return Errors.onCrash(res, error);
-        }
+            }
+            catch (error) {
+                return log_1.Errors.onCrash(res, error);
+            }
+        });
     }
     static trackVote(req, res) {
-        let tracking = {};
+        let reqBody = {};
         try {
-            tracking = JSON.parse(req.body);
+            reqBody = JSON.parse(req.body);
         }
-        catch {
-            tracking = req.body;
+        catch (_a) {
+            reqBody = req.body;
         }
         try {
-            return firebaseApi
+            return firebase_api_1.firebaseApi
                 .firestore()
-                .collection("votes")
-                .where("voterId", "==", tracking.voterId)
-                .where("electionId", "==", tracking.electionId)
+                .collection('votes')
+                .where('voterId', '==', reqBody.voterId)
+                .where('electionId', '==', reqBody.electionId)
                 .get()
                 .then((querySnapshot) => {
                 if (querySnapshot.docs[0])
@@ -253,49 +268,50 @@ class VoteApi {
                 return res.json({});
             })
                 .catch(function (err) {
-                return Errors.onCatch(res, err);
+                return log_1.Errors.onCatch(res, err);
             });
         }
         catch (error) {
-            return Errors.onCrash(res, error);
+            return log_1.Errors.onCrash(res, error);
         }
     }
-    static async trackPhone(req, res) {
-        let tracking = {};
-        try {
-            tracking = JSON.parse(req.body);
-        }
-        catch {
-            tracking = req.body;
-        }
-        console.log("trackPhone", tracking);
-        try {
-            // todo: need to auth before call this
-            // remove non-digit
-            const phoneNumber = tracking.phone.replace(/\D+/g, "");
-            const voter = (await VoterApi.getVoter(phoneNumber, undefined));
-            const voterId = voter && voter.voterId ? voter.voterId : null;
-            if (!voterId)
-                return res.json({});
-            return firebaseApi
-                .firestore()
-                .collection("votes")
-                .where("voterId", "==", voterId)
-                .where("electionId", "==", tracking.electionId)
-                .get()
-                .then((querySnapshot) => {
-                if (querySnapshot.docs[0])
-                    return res.json(querySnapshot.docs[0].data());
-                return res.json({});
-            })
-                .catch(function (err) {
-                return Errors.onCatch(res, err);
-            });
-        }
-        catch (error) {
-            return Errors.onCrash(res, error);
-        }
+    static trackUID(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let reqBody = {};
+            try {
+                reqBody = JSON.parse(req.body);
+            }
+            catch (_a) {
+                reqBody = req.body;
+            }
+            console.log('trackUID', reqBody);
+            try {
+                // todo: need to auth before call this
+                // remove non-digit
+                const voter = (yield voters_1.VoterApi.getVoter(req));
+                const voterId = voter && voter.voterId ? voter.voterId : null;
+                if (!voterId)
+                    return res.json({});
+                return firebase_api_1.firebaseApi
+                    .firestore()
+                    .collection('votes')
+                    .where('voterId', '==', voterId)
+                    .where('electionId', '==', reqBody.electionId)
+                    .get()
+                    .then((querySnapshot) => {
+                    if (querySnapshot.docs[0])
+                        return res.json(querySnapshot.docs[0].data());
+                    return res.json({});
+                })
+                    .catch(function (err) {
+                    return log_1.Errors.onCatch(res, err);
+                });
+            }
+            catch (error) {
+                return log_1.Errors.onCrash(res, error);
+            }
+        });
     }
 }
-export { VoteApi };
+exports.VoteApi = VoteApi;
 //# sourceMappingURL=votes.js.map

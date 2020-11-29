@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 let FirebaseQueueID = 1;
 class FirebaseQueue {
     constructor(firebaseAdminApp) {
@@ -8,5 +10,5 @@ class FirebaseQueue {
         this.ref.push(data);
     }
 }
-export default FirebaseQueue;
+exports.default = FirebaseQueue;
 //# sourceMappingURL=queue.js.map

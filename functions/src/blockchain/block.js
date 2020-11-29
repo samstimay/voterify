@@ -1,4 +1,6 @@
-const SHA256 = require("crypto-js/sha256");
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const SHA256 = require('crypto-js/sha256');
 class Block {
     constructor(timestamp, lastHash, hash, data) {
         this.timestamp = timestamp;
@@ -17,7 +19,7 @@ class Block {
         return Date.now().toString();
     }
     static genesis() {
-        return new this("Genesis time", "genesis", "genesis", []);
+        return new this('Genesis time', 'genesis', 'genesis', []);
     }
     static mineBlock(lastBlock, data) {
         const timestamp = Block.timestamp();
@@ -33,5 +35,5 @@ class Block {
         return Block.hash(timestamp, lastHash, data);
     }
 }
-export default Block;
+exports.default = Block;
 //# sourceMappingURL=block.js.map

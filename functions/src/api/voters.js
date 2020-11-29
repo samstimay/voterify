@@ -1,58 +1,70 @@
-import { logger, Errors } from "../log";
-import { firebaseApi } from "../firebase/firebase-api";
-import { authApi } from "./auth-api";
-const shortid = require("shortid");
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.VoterApi = void 0;
+const log_1 = require("../log");
+const firebase_api_1 = require("../firebase/firebase-api");
+const auth_api_1 = require("./auth-api");
+const shortid = require('shortid');
 class VoterApi {
     static createEndpoints(app) {
-        app.get("/getVoter", function (req, res) {
-            logger.message("GET /getVoter", logger.parseExpress(req, res));
-            return VoterApi.getVoter(req.query.id, res);
+        app.get('/getVoter', function (req, res) {
+            log_1.logger.message('GET /getVoter', log_1.logger.parseExpress(req, res));
+            return VoterApi.getVoter(req, res);
         });
-        app.get("/createVoter", function (req, res) {
-            logger.message("GET /createVoter", logger.parseExpress(req, res));
-            return authApi
+        app.get('/createVoter', function (req, res) {
+            log_1.logger.message('GET /createVoter', log_1.logger.parseExpress(req, res));
+            return auth_api_1.authApi
                 .firebaseTokenAuth(req)
-                .then(uid => {
+                .then((uid) => {
                 if (uid)
                     return VoterApi.createVoter(req, res);
                 else
-                    return Errors.authFailed(req, res);
+                    return log_1.Errors.authFailed(req, res);
             })
                 .catch((msg) => {
-                return Errors.onCatch(res, msg);
+                return log_1.Errors.onCatch(res, msg);
             });
         });
     }
-    static getVoter(phone, res) {
-        const phoneKey = phone.replace(/[^0-9\.]+/g, "").trim();
-        return firebaseApi
-            .firestore()
-            .collection("voters")
-            .doc(phoneKey)
-            .get()
-            .then((data) => {
-            const result = {
-                exists: data.exists,
-                phone: data.get("phone"),
-                uid: data.get("uid"),
-                voterId: data.get("voterId")
-            };
-            console.log("gvr", result);
-            console.log("res", res);
-            if (res)
-                return res.json(result);
-            return result;
-        })
-            .catch((err) => {
-            return { exists: false, err: err };
+    static getVoter(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const uid = yield auth_api_1.authApi.firebaseTokenAuth(req);
+            return firebase_api_1.firebaseApi
+                .firestore()
+                .collection('voters')
+                .doc(uid)
+                .get()
+                .then((data) => {
+                const result = {
+                    exists: data.exists,
+                    uid: data.get('uid'),
+                    voterId: data.get('voterId')
+                };
+                if (res)
+                    return res.json(result);
+                return result;
+            })
+                .catch((err) => {
+                log_1.Errors.onCatch(res, err);
+                return { exists: false, err: err };
+            });
         });
     }
     static voterIdExists(voterId) {
-        logger.debug("voterIdExists", voterId);
-        return firebaseApi
+        log_1.logger.debug('voterIdExists', voterId);
+        return firebase_api_1.firebaseApi
             .firestore()
-            .collection("voters")
-            .where("voterId", "==", voterId)
+            .collection('voters')
+            .where('voterId', '==', voterId)
             .get()
             .then((data) => {
             return data.docs && data.docs.length > 0;
@@ -64,13 +76,13 @@ class VoterApi {
     // recursive function to keep generating a voterId until it's unique
     static newVoterId(attempts) {
         if (attempts > 5) {
-            logger.error("newVoterId too many attempts.");
+            log_1.logger.error('newVoterId too many attempts.');
             return new Promise(() => {
-                return "";
+                return '';
             });
         }
         const voterId = shortid.generate();
-        return this.voterIdExists(voterId).then(exists => {
+        return this.voterIdExists(voterId).then((exists) => {
             if (!exists)
                 return voterId;
             else
@@ -78,48 +90,49 @@ class VoterApi {
         });
     }
     static createVoter(req, res) {
-        try {
-            const uid = req.query.uid, phone = req.query.id.trim();
-            // if the voter exists
-            return this.getVoter(phone).then(data => {
-                const existingVoter = data;
-                // if Voter already exists, return that
-                if (existingVoter.exists &&
-                    existingVoter.voterId &&
-                    existingVoter.voterId.length)
-                    return res.json(existingVoter);
-                // Voter does not exist, create a new unique voterId first
-                else
-                    return VoterApi.newVoterId(0)
-                        .then(function (voterId) {
-                        const voter = {
-                            phone: phone,
-                            uid: uid.trim(),
-                            voterId: voterId.trim()
-                        };
-                        logger.message("Creating new voter: " + JSON.stringify(voter));
-                        // now create the Voter
-                        return firebaseApi
-                            .firestore()
-                            .collection("voters")
-                            .doc(phone)
-                            .set(voter)
-                            .then(() => {
-                            return res.json(voter);
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const uid = yield auth_api_1.authApi.firebaseTokenAuth(req);
+                // if the voter exists
+                return this.getVoter(req).then((data) => {
+                    const existingVoter = data;
+                    // if Voter already exists, return that
+                    if (existingVoter.exists &&
+                        existingVoter.voterId &&
+                        existingVoter.voterId.length)
+                        return res.json(existingVoter);
+                    // Voter does not exist, create a new unique voterId first
+                    else
+                        return VoterApi.newVoterId(0)
+                            .then(function (voterId) {
+                            const voter = {
+                                uid: uid.trim(),
+                                voterId: voterId.trim()
+                            };
+                            log_1.logger.message('Creating new voter: ' + JSON.stringify(voter));
+                            // now create the Voter
+                            return firebase_api_1.firebaseApi
+                                .firestore()
+                                .collection('voters')
+                                .doc(uid)
+                                .set(voter)
+                                .then(() => {
+                                return res.json(voter);
+                            })
+                                .catch(function (err) {
+                                return log_1.Errors.onCatch(res, err);
+                            });
                         })
-                            .catch(function (err) {
-                            return Errors.onCatch(res, err);
+                            .catch(() => {
+                            return log_1.Errors.onCatch(res, req);
                         });
-                    })
-                        .catch(() => {
-                        return Errors.onCatch(res, req);
-                    });
-            });
-        }
-        catch (error) {
-            return Errors.onCrash(res, error);
-        }
+                });
+            }
+            catch (error) {
+                return log_1.Errors.onCrash(res, error);
+            }
+        });
     }
 }
-export { VoterApi };
+exports.VoterApi = VoterApi;
 //# sourceMappingURL=voters.js.map
