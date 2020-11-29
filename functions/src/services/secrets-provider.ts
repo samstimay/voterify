@@ -17,6 +17,7 @@ class AzureSecrets {
     resource = String
     client_api_id = String
     client_secret = String
+    tenant = String
 }
 
 export default class SecretsProvider {

@@ -6,7 +6,7 @@ import { VoteApi } from './api/votes'
 import { VoterApi } from './api/voters'
 import { SystemApi } from './api/system'
 import { PermissionsApi } from './api/permissions'
-import BlockchainApi from '../blockchain/index'
+import BlockchainApi from './blockchain/index'
 import FirebaseQueue from './firebase/queue'
 import admin from './firebase/firebaseAdmin-provider'
 const cors = require('cors')
@@ -17,14 +17,14 @@ const express = require('express')
 const app = express()
 app.use(cors({ credentials: true, origin: true }))
 app.use(bodyParser.json())
-app.use(function(req: any, res: any, next: any) {
+app.use(function (req: any, res: any, next: any) {
     if (!req.headers.authorization) {
         return res.status(403).json({ error: 'No credentials sent!' })
     }
     next()
 })
 
-app.get('/', function(req: any, res: any) {
+app.get('/', function (req: any, res: any) {
     return res.json({ hi: 'there' })
 })
 
@@ -45,7 +45,8 @@ VoteApi.blockchainQueue = new FirebaseQueue(admin)
 // Export App for use with Firebase Functions
 exports.voterifyApi = functions.https.onRequest(app)
 
-console.log('Testing Azure blockchain login')
-console.log(new BlockchainApi().acquireTokenWithClientCredentials())
+new BlockchainApi().acquireTokenWithClientCredentials().then((data) => {
+    logger.debug(data)
+})
 
 logger.debug('API loaded')

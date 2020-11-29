@@ -4,6 +4,7 @@
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "sourceMap": true,
+    "outDir": "lib",
     "strict": true,
     "target": "es2016"
   },
