@@ -4,34 +4,24 @@ import { AzureSecrets, SecretsProvider } from '../services/secrets-provider'
 import { logger } from '../log'
 
 export default class BlockchainApi {
-    private workbench_api_url: String
-    private clientAppId: String
-    private clientSecret: String
-    private authorityHostUrl: String
-    private tenant: String
-    private resource: String
+    private secrets: AzureSecrets
 
     public constructor(secrets: AzureSecrets | null = null) {
-        if (secrets === null) secrets = SecretsProvider.Azure()
-        this.workbench_api_url = secrets?.workbench_api_url as String
-        this.clientAppId = secrets?.client_api_id as String
-        this.clientSecret = secrets?.client_secret as String
-        this.authorityHostUrl = secrets?.authority as String
-        this.tenant = secrets?.tenant as String
-        this.resource = secrets?.resource as String
+        if (secrets === null) this.secrets = SecretsProvider.Azure()
+        else this.secrets = secrets
     }
 
     // Getting token from AAD
     public acquireTokenWithClientCredentials = async (): Promise<any> => {
-        var authorityUrl = `${this.authorityHostUrl}${this.tenant}`
+        var authorityUrl = `${this.secrets.authority}${this.secrets.tenant}`
 
         var context = new AuthenticationContext(authorityUrl)
 
         return new Promise((resolve, reject) => {
             context.acquireTokenWithClientCredentials(
-                this.resource,
-                this.clientAppId,
-                this.clientSecret,
+                this.secrets.resource,
+                this.secrets.client_api_id,
+                this.secrets.client_secret,
                 function(err: any, tokenResponse: any) {
                     if (err) {
                         return reject(err)
@@ -49,7 +39,11 @@ export default class BlockchainApi {
             const token = await this.acquireTokenWithClientCredentials()
 
             const request = {
-                url: `${this.workbench_api_url}/api/v2/contracts?workflowId=1&contractCodeId=1&connectionId=1`,
+                url:
+                    `${this.secrets.workbench_api_url}/api/v2/contracts?` +
+                    `workflowId=${this.secrets.workbench_workflow_id}&` +
+                    `contractCodeId=${this.secrets.workbench_contract_code_id}&` +
+                    `connectionId=${this.secrets.workbench_connection_id}`,
                 method: 'POST',
                 headers: {
                     'Content-Type':
@@ -72,7 +66,7 @@ export default class BlockchainApi {
 
             return await Swagger.http(request)
         } catch (err) {
-            console.error(err)
+            return err
         }
     }
 }

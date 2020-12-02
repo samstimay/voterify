@@ -18,6 +18,9 @@ interface AzureSecrets {
     client_api_id: String
     client_secret: String
     tenant: String
+    workbench_workflow_id: String
+    workbench_contract_code_id: String
+    workbench_connection_id: String
 }
 
 class SecretsProvider {

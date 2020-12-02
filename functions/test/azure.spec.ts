@@ -1,5 +1,4 @@
 import * as chai from 'chai'
-import * as sinon from 'sinon'
 const expect = chai.expect
 import { AzureSecrets, SecretsProvider } from '../src/services/secrets-provider'
 import BlockchainApi from '../src/blockchain/index'
@@ -26,10 +25,11 @@ describe('Azure Blockchain', () => {
     it('should create a block in azure blockchain', () => {
         const api = new BlockchainApi(secrets)
         const message = 'UNIT-TEST-MESSAGE ' + String(Date.now())
-        api.send(message).then(token => {
-            expect(token).to.not.be.null
-            expect(token.accessToken).to.not.be.null
-            expect(token.accessToken).to.have.lengthOf.above(0)
+        api.send(message).then(result => {
+            console.log('\n')
+            console.log(result)
+            //expect(result).to.not.be.null
+            expect(parseInt(result.status)).to.equal(200)
         })
     })
 })
