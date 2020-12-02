@@ -3,15 +3,23 @@ import * as sinon from 'sinon'
 const expect = chai.expect
 import { AzureSecrets, SecretsProvider } from '../src/services/secrets-provider'
 import BlockchainApi from '../src/blockchain/index'
+const secrets: AzureSecrets = SecretsProvider.Azure()
 
 describe('Azure Blockchain', () => {
-    it('should get an azure blockchain jwt', () => {
-        // const api = new BlockchainApi()
-        // const jwt = api.acquireTokenWithClientCredentials()
-        // console.log('jwt', jwt)
-        let jwt = {}
-        expect(jwt).to.not.be.null
-        expect(BlockchainApi).to.not.be.null
-        expect(SecretsProvider).to.not.be.null
+    it('should have azure secrets', () => {
+        expect(secrets).to.not.be.null
+        expect(secrets.client_api_id).to.not.be.null
+        expect(secrets.client_api_id).to.have.lengthOf.above(0)
+        expect(secrets.resource).to.not.be.null
+        expect(secrets.resource).to.have.lengthOf.above(0)
+    })
+
+    it('should get an azure blockchain token', () => {
+        const api = new BlockchainApi(secrets)
+        api.acquireTokenWithClientCredentials().then(token => {
+            expect(token).to.not.be.null
+            expect(token.accessToken).to.not.be.null
+            expect(token.accessToken).to.have.lengthOf.above(0)
+        })
     })
 })
