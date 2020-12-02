@@ -11,6 +11,13 @@ export default class BlockchainApi {
         else this.secrets = secrets
     }
 
+    private getHeader(token: any): Object {
+        return {
+            'Content-Type': 'application/json;charset=UTF-8',
+            Authorization: `Bearer ${token.accessToken}`
+        }
+    }
+
     // Getting token from AAD
     public acquireTokenWithClientCredentials = async (): Promise<any> => {
         var authorityUrl = `${this.secrets.authority}${this.secrets.tenant}`
@@ -40,27 +47,17 @@ export default class BlockchainApi {
 
             const request = {
                 url:
-                    `${this.secrets.workbench_api_url}/api/v2/contracts?` +
+                    `${this.secrets.workbench_api_url}api/v2/contracts?` +
                     `workflowId=${this.secrets.workbench_workflow_id}&` +
                     `contractCodeId=${this.secrets.workbench_contract_code_id}&` +
                     `connectionId=${this.secrets.workbench_connection_id}`,
                 method: 'POST',
-                headers: {
-                    'Content-Type':
-                        'application/json;charset=utf-8;odata=verbose',
-                    Authorization: `Bearer ${token.accessToken}`
-                },
+                headers: this.getHeader(token),
                 body: {
-                    workflowActionInput: {
-                        workflowFunctionID: 1,
-                        workflowActionParameters: [
-                            {
-                                name: 'RequestMessage',
-                                value: message,
-                                workflowFunctionParameterId: 2
-                            }
-                        ]
-                    }
+                    workflowFunctionId: 1,
+                    workflowActionParameters: [
+                        { name: 'message', value: message }
+                    ]
                 }
             }
 
