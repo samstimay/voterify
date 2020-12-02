@@ -22,4 +22,14 @@ describe('Azure Blockchain', () => {
             expect(token.accessToken).to.have.lengthOf.above(0)
         })
     })
+
+    it('should create a block in azure blockchain', () => {
+        const api = new BlockchainApi(secrets)
+        const message = 'UNIT-TEST-MESSAGE ' + String(Date.now())
+        api.send(message).then(token => {
+            expect(token).to.not.be.null
+            expect(token.accessToken).to.not.be.null
+            expect(token.accessToken).to.have.lengthOf.above(0)
+        })
+    })
 })
