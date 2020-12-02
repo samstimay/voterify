@@ -1,6 +1,6 @@
 // Initialize Firebase admin
 import { logger } from '../log'
-import SecretsProvider from '../services/secrets-provider'
+import { SecretsProvider } from '../services/secrets-provider'
 
 const admin = require('firebase-admin')
 const serviceAccount = SecretsProvider.Firebase()

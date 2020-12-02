@@ -1,16 +1,25 @@
 const Swagger = require('swagger-client')
 const AuthenticationContext = require('adal-node').AuthenticationContext
-import SecretsProvider from '../services/secrets-provider'
-const secrets = SecretsProvider.Azure()
+import { AzureSecrets, SecretsProvider } from '../services/secrets-provider'
 import { logger } from '../log'
 
 export default class BlockchainApi {
-    private workbench_api_url = secrets.workbench_api_url
-    private clientAppId = secrets.client_api_id
-    private clientSecret = secrets.client_secret
-    private authorityHostUrl = secrets.authority
-    private tenant = secrets.tenant
-    private resource = secrets.resource
+    private workbench_api_url: String
+    private clientAppId: String
+    private clientSecret: String
+    private authorityHostUrl: String
+    private tenant: String
+    private resource: String
+
+    public constructor(secrets: AzureSecrets | null = null) {
+        if (secrets === null) secrets = SecretsProvider.Azure()
+        this.workbench_api_url = secrets?.workbench_api_url as String
+        this.clientAppId = secrets?.client_api_id as String
+        this.clientSecret = secrets?.client_secret as String
+        this.authorityHostUrl = secrets?.authority as String
+        this.tenant = secrets?.tenant as String
+        this.resource = secrets?.resource as String
+    }
 
     // Getting token from AAD
     public acquireTokenWithClientCredentials = async (): Promise<any> => {
@@ -23,7 +32,7 @@ export default class BlockchainApi {
                 this.resource,
                 this.clientAppId,
                 this.clientSecret,
-                function (err: any, tokenResponse: any) {
+                function(err: any, tokenResponse: any) {
                     if (err) {
                         return reject(err)
                     } else {
