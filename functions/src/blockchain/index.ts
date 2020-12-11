@@ -20,9 +20,9 @@ export default class BlockchainApi {
 
     // Getting token from AAD
     public acquireTokenWithClientCredentials = async (): Promise<any> => {
-        var authorityUrl = `${this.secrets.authority}${this.secrets.tenant}`
+        const authorityUrl = `${this.secrets.authority}${this.secrets.tenant}`
 
-        var context = new AuthenticationContext(authorityUrl)
+        const context = new AuthenticationContext(authorityUrl)
 
         return new Promise((resolve, reject) => {
             context.acquireTokenWithClientCredentials(
@@ -31,10 +31,10 @@ export default class BlockchainApi {
                 this.secrets.client_secret,
                 function(err: any, tokenResponse: any) {
                     if (err) {
-                        return reject(err)
+                        reject(err)
                     } else {
                         logger.debug('Blockchain api token created')
-                        return resolve(tokenResponse)
+                        resolve(tokenResponse)
                     }
                 }
             )
@@ -61,7 +61,9 @@ export default class BlockchainApi {
                 }
             }
 
-            return await Swagger.http(request)
+            const result = await Swagger.http(request)
+            console.log('RESULT', result)
+            return result
         } catch (err) {
             return err
         }

@@ -18,42 +18,38 @@ class VoteApi {
     }
 
     public static createEndpoints(app: Application) {
-        app.get('/checkVote', function (req: Request, res: Response) {
+        app.get('/checkVote', function(req: Request, res: Response) {
             logger.message('GET /checkVote', logger.parseExpress(req, res))
             return VoteApi.checkVote(req, res)
         })
-        app.get('/getVotes', function (req: Request, res: Response) {
+        app.get('/getVotes', function(req: Request, res: Response) {
             logger.message('GET /getVotes', logger.parseExpress(req, res))
             return VoteApi.getVotes(req, res)
         })
-        app.get(
-            '/getVotesTable',
-            cors(),
-            function (req: Request, res: Response) {
-                logger.message(
-                    'GET /getVotesTable',
-                    logger.parseExpress(req, res)
-                )
-                return VoteApi.getVotesTable(req, res)
-            }
-        )
-        app.get('/tallyVotes', function (req: Request, res: Response) {
+        app.get('/getVotesTable', cors(), function(
+            req: Request,
+            res: Response
+        ) {
+            logger.message('GET /getVotesTable', logger.parseExpress(req, res))
+            return VoteApi.getVotesTable(req, res)
+        })
+        app.get('/tallyVotes', function(req: Request, res: Response) {
             logger.message('GET /tallyVotes', logger.parseExpress(req, res))
             return VoteApi.tallyVotes(req, res)
         })
-        app.post('/trackVote', function (req: Request, res: Response) {
+        app.post('/trackVote', function(req: Request, res: Response) {
             logger.message('POST /trackVote', logger.parseExpress(req, res))
             return VoteApi.trackVote(req, res)
         })
-        app.post('/trackUID', function (req: Request, res: Response) {
+        app.post('/trackUID', function(req: Request, res: Response) {
             logger.message('POST /trackUID', logger.parseExpress(req, res))
             return VoteApi.trackUID(req, res)
         })
-        app.post('/createVote', function (req: Request, res: Response) {
+        app.post('/createVote', function(req: Request, res: Response) {
             logger.message('POST /createVote', logger.parseExpress(req, res))
             return authApi
                 .firebaseTokenAuth(req)
-                .then((uid) => {
+                .then(uid => {
                     if (uid) return VoteApi.createVote(req, res, uid)
                     else return Errors.authFailed(req, res)
                 })
@@ -80,7 +76,7 @@ class VoteApi {
                     }
                     return res.json(result)
                 })
-                .catch(function (err: any) {
+                .catch(function(err: any) {
                     return Errors.onCatch(res, err)
                 })
         } catch (error) {
@@ -99,7 +95,7 @@ class VoteApi {
                 .get()
                 .then((data: QuerySnapshot) => {
                     const result = [] as Object[]
-                    data.docs.forEach(function (value: QueryDocumentSnapshot) {
+                    data.docs.forEach(function(value: QueryDocumentSnapshot) {
                         result.push({
                             voterId: value.get('voterId'),
                             candidateId: value.get('candidateId'),
@@ -109,7 +105,7 @@ class VoteApi {
                     })
                     return res.json(result)
                 })
-                .catch(function (err: any) {
+                .catch(function(err: any) {
                     return Errors.onCatch(res, err)
                 })
         } catch (error) {
@@ -137,7 +133,7 @@ class VoteApi {
                 .get()
                 .then((data: QuerySnapshot) => {
                     const result = [] as Object[]
-                    data.docs.forEach(function (value: QueryDocumentSnapshot) {
+                    data.docs.forEach(function(value: QueryDocumentSnapshot) {
                         result.push({
                             voterId: value.get('voterId'),
                             candidateId: value.get('candidateId'),
@@ -157,7 +153,7 @@ class VoteApi {
                     }
                     return res.jsonp(response)
                 })
-                .catch(function (err: any) {
+                .catch(function(err: any) {
                     return Errors.onCatch(res, err)
                 })
         } catch (error) {
@@ -176,9 +172,9 @@ class VoteApi {
                 .get()
                 .then((data: QuerySnapshot) => {
                     const result = [] as Object[]
-                    data.docs.forEach(function (value: QueryDocumentSnapshot) {
+                    data.docs.forEach(function(value: QueryDocumentSnapshot) {
                         const candidateId = value.get('candidateId')
-                        const existing = result.filter(function (x) {
+                        const existing = result.filter(function(x) {
                             return (x as any).candidateId === candidateId
                         })
                         if (existing.length === 0) {
@@ -193,7 +189,7 @@ class VoteApi {
                     })
                     return res.json(result)
                 })
-                .catch(function (err: any) {
+                .catch(function(err: any) {
                     return Errors.onCatch(res, err)
                 })
         } catch (error) {
@@ -246,14 +242,17 @@ class VoteApi {
                                     '/createVote new vote',
                                     encodedVote
                                 )
+                                // tslint:disable-next-line:no-floating-promises
                                 this.blockchain.send(encodedVote)
                                 return res.json(
-                                    Object.assign(vote, { status: 'new-vote' })
+                                    Object.assign(vote, {
+                                        status: 'new-vote'
+                                    })
                                 )
                             })
                     }
                 })
-                .catch(function (err: any) {
+                .catch(function(err: any) {
                     return Errors.onCatch(res, err)
                 })
         } catch (error) {
@@ -282,7 +281,7 @@ class VoteApi {
 
                     return res.json({})
                 })
-                .catch(function (err: any) {
+                .catch(function(err: any) {
                     return Errors.onCatch(res, err)
                 })
         } catch (error) {
@@ -317,7 +316,7 @@ class VoteApi {
 
                     return res.json({})
                 })
-                .catch(function (err: any) {
+                .catch(function(err: any) {
                     return Errors.onCatch(res, err)
                 })
         } catch (error) {

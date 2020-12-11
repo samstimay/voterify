@@ -4,7 +4,7 @@ import * as admin from 'firebase-admin'
 
 class AuthApi {
     private getToken(req: Request): string {
-        let token = new String(req.query.token || req.headers.authorization)
+        let token = (req.query.token || req.headers.authorization) as String
         if (token.indexOf('Bearer ') >= 0) {
             token = token.replace('Bearer ', '')
         }
@@ -17,11 +17,11 @@ class AuthApi {
         return admin
             .auth()
             .verifyIdToken(token)
-            .then(function (data) {
+            .then(function(data) {
                 if (data.uid && data.uid.length) return data.uid
                 return ''
             })
-            .catch(function (msg: any) {
+            .catch(function(msg: any) {
                 logger.error('auth failed', msg)
                 return ''
             })
