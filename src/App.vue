@@ -43,7 +43,6 @@
 <script lang="ts">
 ///<reference path="./types/vue-awesome-swiper.d.ts" />
 
-import './styles/global.scss'
 import 'swiper/dist/css/swiper.css'
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import PageLoader from './components/ui/page-loader.vue'
@@ -99,14 +98,14 @@ export default class App extends Vue {
 
     public created() {
         const instance = this as any
-        lang.init().then(function() {
-            instance.$store.dispatch('settings/get').then(function() {
-                instance.$store.dispatch('elections/get').then(function(data) {
+        lang.init().then(function () {
+            instance.$store.dispatch('settings/get').then(function () {
+                instance.$store.dispatch('elections/get').then(function (data) {
                     instance.isLoaded = true
                 })
             })
         })
-        EventHub.$on('showModal', function(params) {
+        EventHub.$on('showModal', function (params) {
             instance.currentModal = params.modal
             instance.currentModalParams = Object.assign(params, {
                 showModal: true

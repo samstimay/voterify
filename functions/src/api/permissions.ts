@@ -3,7 +3,7 @@ import { logger, Errors } from '../log'
 import { firebaseApi } from '../firebase/firebase-api'
 import { authApi } from './auth-api'
 import Permissions from '../models/permissions'
-import * as firebase from 'firebase'
+import firebase from 'firebase'
 import DocumentSnapshot = firebase.firestore.DocumentSnapshot
 
 class PermissionsApi {

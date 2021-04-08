@@ -1,7 +1,7 @@
 import { Application, Request, Response } from 'express'
 import { logger, Errors } from '../log'
 import { firebaseApi } from '../firebase/firebase-api'
-import * as firebase from 'firebase'
+import firebase from 'firebase'
 import DocumentSnapshot = firebase.firestore.DocumentSnapshot
 
 class SystemApi {
