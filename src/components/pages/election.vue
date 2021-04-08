@@ -25,12 +25,19 @@
                                         />
                                     </td>
                                     <td>
-                                        <p class="party-name">{{ candidate.party }}</p>
-                                        <p class="candidate-name">{{ candidate.name }}</p>
+                                        <p class="party-name">
+                                            {{ candidate.party }}
+                                        </p>
+                                        <p class="candidate-name">
+                                            {{ candidate.name }}
+                                        </p>
                                     </td>
                                 </tr>
-                                <tr style="background:inherit">
-                                    <td colspan="2" class="is-centered has-text-centered">
+                                <tr style="background: inherit">
+                                    <td
+                                        colspan="2"
+                                        class="is-centered has-text-centered"
+                                    >
                                         <input
                                             :disabled="isValid() == false"
                                             class="button is-large is-centered is-link"
@@ -45,19 +52,20 @@
                     </div>
                 </div>
             </div>
-            <div
-                v-show="!isLoaded"
-                class="home-bubble-container content"
-            >{{ $content("loading-election", "Loading election...") }}</div>
+            <div v-show="!isLoaded" class="home-bubble-container content">
+                {{ $content('loading-election', 'Loading election...') }}
+            </div>
             <div class="page-counter">
-                <progress-counter currentPage="2" pageCount="4"></progress-counter>
+                <progress-counter
+                    currentPage="2"
+                    pageCount="4"
+                ></progress-counter>
             </div>
         </Bubble>
     </div>
 </template>
 
 <script lang="ts">
-import '@/styles/global.scss'
 import '@/styles/pages/election.scss'
 import { Bubble, Button, TextInput, ProgressCounter } from '@/components/ui/all'
 import { Component, Prop, Vue } from 'vue-property-decorator'

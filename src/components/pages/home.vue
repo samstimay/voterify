@@ -56,7 +56,7 @@
 
             <div v-show="!isValid">
                 <hr />
-                <div clas="padded">&nbsp;</div>
+                <div class="padded">&nbsp;</div>
                 <div class="is-2">
                     <router-link
                         tag="button"
@@ -66,7 +66,7 @@
                         {{ $ui('manifesto-link', 'The Voterify Manifesto') }}
                     </router-link>
                 </div>
-                <div clas="padded">&nbsp;</div>
+                <div class="padded">&nbsp;</div>
                 <div class="is-2">
                     <router-link
                         tag="button"
@@ -76,7 +76,7 @@
                         {{ $ui('instructions-link', 'How to use Voterify') }}
                     </router-link>
                 </div>
-                <div clas="padded">&nbsp;</div>
+                <div class="padded">&nbsp;</div>
                 <div class="is-2">
                     <router-link
                         tag="button"
@@ -86,7 +86,7 @@
                         {{ $ui('track-link', 'Track your Vote') }}
                     </router-link>
                 </div>
-                <div clas="padded">&nbsp;</div>
+                <div class="padded">&nbsp;</div>
                 <div v-show="isLoggedIn && isAdmin" class="is-2">
                     <router-link
                         tag="button"
@@ -194,10 +194,10 @@ export default class HomePage extends Vue {
         const appVerifier = (window as any).recaptchaVerifier
         return firebaseAuth
             .phone(phoneNumber, appVerifier)
-            .then(function() {
+            .then(function () {
                 instance.$router.push('/sms')
             })
-            .catch(function(error) {
+            .catch(function (error) {
                 EventHub.$emit('showPageLoader', {
                     message: error.message,
                     timeout: 2000,
