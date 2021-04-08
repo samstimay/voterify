@@ -1,7 +1,7 @@
 import { Application, Request, Response } from 'express'
 import { logger, Errors } from '../log'
 import { firebaseApi } from '../firebase/firebase-api'
-import * as firebase from 'firebase'
+import firebase from 'firebase'
 import DocumentSnapshot = firebase.firestore.DocumentSnapshot
 import { authApi } from './auth-api'
 import QuerySnapshot = firebase.firestore.QuerySnapshot
@@ -184,7 +184,7 @@ class VoteApi {
                                 count: 1
                             })
                         } else {
-                            ;(existing[0] as any).count++
+                            ; (existing[0] as any).count++
                         }
                     })
                     return res.json(result)
@@ -212,7 +212,7 @@ class VoteApi {
             vote = req.body
         }
 
-        ;(vote as any).voterId = (voter as any).voterId
+        ; (vote as any).voterId = (voter as any).voterId
 
         // @ts-ignore
         const voteId = VoteApi.voteId(vote.voterId, vote.electionId)
