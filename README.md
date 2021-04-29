@@ -12,16 +12,43 @@ voterify at ![g mail](https://ssl.gstatic.com/ui/v1/icons/mail/rfr/logo_gmail_lo
 This project is based on Google Firebase, Vue JS and Bulma.   
 Run Prettier extensions on save.
 
+### SSH
+Create an SSH key where you plan to work  
+* `ssh-keygen` - create the key, usually in .ssh/id_rsa  
+* Add the key to GitHub  
+* Start ssh agent `eval "$(ssh-agent -s)"`
+* Add your ssh to shh agent `ssh-add` 
+* Check if your ssh is already added `ssh-add -l`
+
+### Firebase
+Install firebase tools globally
+* `npm install -g firebase-tools`
+* `firebase login` - login to firebase
+* if running firebase inside a container run `firebase login --no-localhost` instead
+* install functions/secrets/firebase-secrets.json
+   * goto https://console.firebase.google.com
+   * select Votery project and click Project Settings gear
+   * click service accounts
+   * click `Generate new private key`
+   * download the json and rename it to `firebase-secrets.json`
+   * copy firebase-secrets.json to `@/functions/secrets`
+
+### Installation
 ```
-npm install
+yarn
 ```
 
 ### Compiles and hot-reloads for development
 ```
-npm run serve
+yarn serve
 ```
 
 ### Compiles and minifies for production
 ```
-npm run build
+yarn build
+```
+
+### Deployment
+```
+firebase deploy
 ```
