@@ -36,7 +36,10 @@ Install firebase tools globally
 ### Installation
 ```
 yarn
+cd functions
+yarn
 ```
+
 
 ### Compiles and hot-reloads for development
 ```
