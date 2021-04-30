@@ -11,7 +11,7 @@ voterify at ![g mail](https://ssl.gstatic.com/ui/v1/icons/mail/rfr/logo_gmail_lo
 ## Project setup
 This project is based on Google Firebase, Vue JS and Bulma.   
 Run Prettier extensions on save.  
-[https://lucid.app/publicSegments/view/6d41b234-38a2-451d-b95e-b3795699174c](Download Architecture Map)  
+[Download Architecture Map](https://lucid.app/publicSegments/view/6d41b234-38a2-451d-b95e-b3795699174c)  
   
 ### SSH
 Create an SSH key where you plan to work  
