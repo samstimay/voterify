@@ -34,6 +34,7 @@ Install firebase tools globally
    * click `Generate new private key`
    * download the json and rename it to `firebase-secrets.json`
    * copy firebase-secrets.json to `@/functions/secrets`
+* run `firebase use --add`
 
 ### Installation
 ```
