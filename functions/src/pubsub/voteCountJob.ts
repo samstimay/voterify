@@ -1,12 +1,35 @@
 import { logger } from '../log'
 import firebase from 'firebase'
 import QueryDocumentSnapshot = firebase.firestore.QueryDocumentSnapshot
-import DocumentData = firebase.firestore.DocumentData
 import { firebaseApi } from '../firebase/firebase-api'
 import Election from '../models/election'
 import Candidate from '../models/candidate'
 
-function voteCountJob(context: any, functions: any) {
+function updateVotes(candidate: Candidate) {
+    firebaseApi
+        .firestore()
+        .collection('candidates')
+        .where('id', '==', candidate.id)
+        .get()
+        .then(async function (querySnapshot) {
+            if (querySnapshot.empty || querySnapshot.size === 0) {
+                logger.error(`Candidate does not exist ${candidate}`)
+            } else {
+                querySnapshot.forEach(async function (doc) {
+                    logger.debug(`Updating ${candidate.name} with ${candidate.votes}`)
+                    await firebaseApi
+                        .firestore()
+                        .collection('candidates')
+                        .doc(candidate.id)
+                        .update({
+                            votes: candidate.votes
+                        })
+                })
+            }
+        })
+}
+
+function voteCountJob(context: any) {
     logger.debug(`vote count job running at ${Date.now()} with ${context}`)
 
     try {
@@ -55,7 +78,7 @@ function voteCountJob(context: any, functions: any) {
                                     .get()
                                     .then(function (data: any) {
                                         candidate.votes = data.docs.length
-                                        logger.debug(`Candidate ${candidate.name} has ${candidate.votes} votes`)
+                                        updateVotes(candidate)
                                     })
                             })
                         })

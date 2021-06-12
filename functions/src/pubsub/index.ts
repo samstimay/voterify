@@ -7,14 +7,16 @@ const every5Seconds = 'every 5 seconds'
 
 class scheduler {
     run() {
-        functions.pubsub.schedule(every5Seconds)
+        console.log('scheduler.run')
+        let vcjob = functions.pubsub.schedule(every5Seconds)
             .onRun(async context => {
-                console.log('HI!!!!')
-                voteCountJob(context, functions)
+                console.log('scheduler.run.onRun')
+                voteCountJob(context)
             })
+        vcjob.run({}, {})
     }
 }
 
-var scheduled = new scheduler()
+let s = new scheduler()
 
-export default scheduled
+export default s
