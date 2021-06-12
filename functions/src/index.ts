@@ -6,6 +6,7 @@ import { VoteApi } from './api/votes'
 import { VoterApi } from './api/voters'
 import { SystemApi } from './api/system'
 import { PermissionsApi } from './api/permissions'
+import scheduler from './pubsub'
 import FirebaseQueue from './firebase/queue'
 import admin from './firebase/firebaseAdmin-provider'
 const cors = require('cors')
@@ -44,3 +45,5 @@ VoteApi.blockchainQueue = new FirebaseQueue(admin)
 // Export App for use with Firebase Functions
 exports.voterifyApi = functions.https.onRequest(app)
 logger.debug('API loaded')
+
+scheduler.run()

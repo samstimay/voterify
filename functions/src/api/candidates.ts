@@ -57,7 +57,8 @@ class CandidateApi {
                                 name: candidate.name,
                                 party: candidate.party,
                                 electionId: candidate.electionId,
-                                active: true
+                                active: true,
+                                votes: 0
                             })
                     } else {
                         querySnapshot.forEach(async function (doc) {
