@@ -42,7 +42,7 @@
     "eslint-plugin-vue": "^5.0.0",
     "fibers": "^3.1.1",
     "lint-staged": "^8.1.0",
-    "node-sass": "^4.14.1",
+    "node-sass": "^7.0.0",
     "recursive-copy": "^2.0.10",
     "sass": "^1.26.11",
     "sass-loader": "^7.1.0",
