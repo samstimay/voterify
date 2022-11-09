@@ -1,5 +1,5 @@
 import firebase from './firebaseAdmin-provider'
-import fb from 'firebase'
+import fb from 'firebase/compat/app'
 import Database = fb.database.Database
 import Firestore = fb.firestore.Firestore
 
