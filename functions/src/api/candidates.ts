@@ -46,7 +46,7 @@ class CandidateApi {
                 .collection('candidates')
                 .where('id', '==', candidate.id)
                 .get()
-                .then(async function (querySnapshot) {
+                .then(async function (querySnapshot: any) {
                     if (querySnapshot.empty || querySnapshot.size === 0) {
                         await firebaseApi
                             .firestore()
@@ -60,7 +60,7 @@ class CandidateApi {
                                 active: true
                             })
                     } else {
-                        querySnapshot.forEach(async function (doc) {
+                        querySnapshot.forEach(async function (doc: any) {
                             await firebaseApi
                                 .firestore()
                                 .collection('candidates')

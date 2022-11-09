@@ -141,7 +141,7 @@ class ElectionApi {
                     .collection('elections')
                     .where('id', '==', election.id)
                     .get()
-                    .then(async function (querySnapshot) {
+                    .then(async function (querySnapshot: any) {
                         if (querySnapshot.empty || querySnapshot.size === 0) {
                             await firebaseApi
                                 .firestore()
@@ -156,7 +156,7 @@ class ElectionApi {
                                     active: true
                                 })
                         } else {
-                            querySnapshot.forEach(async function (doc) {
+                            querySnapshot.forEach(async function (doc: any) {
                                 if (doc.get('admin') === uid) {
                                     await firebaseApi
                                         .firestore()
