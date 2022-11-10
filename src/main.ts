@@ -2,7 +2,6 @@
 ///<reference path='./types/vue-tel-input.d.ts' />
 
 import 'core-js'
-import 'core-js/shim'
 import '@babel/polyfill'
 import Vue from 'vue'
 import store from './store'
