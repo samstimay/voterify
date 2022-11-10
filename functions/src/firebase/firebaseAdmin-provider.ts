@@ -7,7 +7,7 @@ logger.message('Firebase Admin Service Account: ' + serviceAccount.project_id)
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
-    databaseURL: 'https://votery-1bfb6.firebaseio.com'
+    databaseURL: 'https://votery-2d68d.firebaseio.com'
 })
 
 console.log('Firebase started version: ', admin.SDK_VERSION)
