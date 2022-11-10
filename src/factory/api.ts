@@ -14,11 +14,11 @@ class Api {
     }
 
     public get(path): Promise<AxiosResponse<any>> {
-        return http.get(api.path() + path, { headers: this.getHeader() })
+        return http.get(api.path() + path, this.getHeader())
     }
 
     public post(path, data): Promise<AxiosResponse<any>> {
-        return http.post(this.apiPath + path, data, { headers: this.getHeader() })
+        return http.post(this.apiPath + path, data, this.getHeader())
     }
 
     private getHeader(): object {
