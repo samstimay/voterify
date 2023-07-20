@@ -8,6 +8,7 @@
  */
 
 const logger = require("firebase-functions/logger");
+const {onRequest} = require("firebase-functions/v2/https");
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 const { getFirestore } = require("firebase-admin/firestore");
@@ -15,7 +16,7 @@ admin.initializeApp();
 
 logger.debug('Votery Functions loading...')
 
-exports.getInfo = functions.https.onCall((req, res) => {
+exports.getInfo = onRequest((req, res) => {
     try {
         return getFirestore()
             .collection('System')
