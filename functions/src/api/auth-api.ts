@@ -4,7 +4,7 @@ import * as admin from 'firebase-admin'
 
 class AuthApi {
     private getToken(req: Request): string {
-        let token = new String(req.query.token || req.headers.authorization)
+        let token = req.query.token || req.headers.authorization
         if (token.indexOf('Bearer ') >= 0) {
             token = token.replace('Bearer ', '')
         }

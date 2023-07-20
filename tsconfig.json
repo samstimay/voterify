@@ -10,7 +10,7 @@
     "experimentalDecorators": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "strictFunctionTypes":false,
+    "strictFunctionTypes": false,
     "suppressImplicitAnyIndexErrors": true,
     "sourceMap": true,
     "baseUrl": ".",

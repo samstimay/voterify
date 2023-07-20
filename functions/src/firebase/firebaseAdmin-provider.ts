@@ -1,14 +1,12 @@
 // Initialize Firebase admin
 import { logger } from '../log'
-const admin = require('firebase-admin')
-const serviceAccount = require('../../secrets/firebase-secrets.json')
+const settings = require('../../settings.json')
+const { initializeApp } = require('firebase-admin/app');
+const serviceAccount = require('../../secrets/' + settings.secrets.file)
 
 logger.message('Firebase Admin Service Account: ' + serviceAccount.project_id)
 
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-    databaseURL: 'https://votery-2d68d.firebaseio.com'
-})
+const admin = initializeApp()
 
 console.log('Firebase started version: ', admin.SDK_VERSION)
 

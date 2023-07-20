@@ -17,8 +17,8 @@ class Logger {
         return JSON.stringify({
             statusCode: res.statusCode,
             statusMessage: res.statusMessage,
-            url: req.url,
-            ip: req.headers['x-forwarded-for'] || req.connection.remoteAddress
+            url: req.url
+            //ip: req.headers['x-forwarded-for'] || req.connection.remoteAddress
         })
     }
 }
