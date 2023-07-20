@@ -12,24 +12,7 @@ class SystemApi {
         })
     }
 
-    public static getInfo(req: Request, res: Response) {
-        try {
-            return firebaseApi
-                .firestore()
-                .collection('System')
-                .doc('votery')
-                .get()
-                .then((data: DocumentSnapshot) => {
-                    const result = {
-                        version: data.get('version')
-                    }
-                    if (res) return res.json(result)
-                    return result
-                })
-        } catch (error) {
-            return Errors.onCrash(res, error)
-        }
-    }
+
 }
 
 export { SystemApi }

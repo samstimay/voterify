@@ -6,7 +6,8 @@
     "storageBucket": "voteryapp.appspot.com",
     "messagingSenderId": "441767404698",
     "appId": "1:441767404698:web:16ce72c88ae89ceade2b23",
-    "measurementId": "G-SE5ENMFTMZ"
+    "measurementId": "G-SE5ENMFTMZ",
+    "databaseURL": ""
   },
   "secrets": {
     "file": "firebase-secrets.json"

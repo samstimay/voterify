@@ -1,13 +1,27 @@
 {
     "functions": {
-        "runtime": "nodejs18",
-        "source": "."
+        "codebase": "voteryapp-functions"
+    },
+    "firestore": {
+        "rules": "firestore.rules",
+        "indexes": "firestore.indexes.json"
+    },
+    "emulators": {
+        "functions": {
+            "port": 5001
+        },
+        "firestore": {
+            "port": 8080
+        },
+        "ui": {
+            "enabled": true
+        }
     },
     "hosting": {
         "rewrites": [
             {
-                "source": "/bigben",
-                "function": "bigben"
+                "source": "/info",
+                "function": "getInfo"
             }
         ]
     }
