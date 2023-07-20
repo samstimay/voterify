@@ -1,28 +1,40 @@
 {
+  "functions": [
+    {
+      "codebase": "voteryapp-functions",
+      "source": "functions",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log"
+      ],
+      "predeploy": [
+        "npm --prefix \"$RESOURCE_DIR\" run lint"
+      ]
+    }
+  ],
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "emulators": {
     "functions": {
-        "codebase": "voteryapp-functions"
+      "port": 5001
     },
     "firestore": {
-        "rules": "firestore.rules",
-        "indexes": "firestore.indexes.json"
+      "port": 8080
     },
-    "emulators": {
-        "functions": {
-            "port": 5001
-        },
-        "firestore": {
-            "port": 8080
-        },
-        "ui": {
-            "enabled": true
-        }
-    },
-    "hosting": {
-        "rewrites": [
-            {
-                "source": "/info",
-                "function": "getInfo"
-            }
-        ]
+    "ui": {
+      "enabled": true
     }
+  },
+  "hosting": {
+    "rewrites": [
+      {
+        "source": "/info",
+        "function": "getInfo"
+      }
+    ]
+  }
 }
