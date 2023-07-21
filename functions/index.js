@@ -13,7 +13,7 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 const { getFirestore } = require("firebase-admin/firestore");
 const debug = require("./debug");
-const nanoid = require('nanoid')
+const shortid = require('shortid');
 
 admin.initializeApp();
 
@@ -278,8 +278,7 @@ var newVoterId = onRequest(async (attempts) => {
             return ''
         })
     }
-
-    const voterId = nanoid.nanoid(10)
+    const voterId = shortid.generate();
     return voterIdExists(voterId).then((exists) => {
         if (!exists) return voterId
         else return newVoterId(attempts + 1)
