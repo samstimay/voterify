@@ -13,6 +13,7 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 const { getFirestore } = require("firebase-admin/firestore");
 const debug = require("./debug");
+const nanoid = require('nanoid')
 
 admin.initializeApp();
 
@@ -21,7 +22,8 @@ logger.debug('Votery Functions loading...')
 const collectionNames = {
     elections: "election",
     permissions: "permissions",
-    system: "System"
+    system: "System",
+    voters: "voters"
 };
 
 /// CONSIDER: SPRINKLING ASYNC
@@ -232,5 +234,104 @@ exports.electionsEditPost = onRequest((req, res) => {
             return logger.error(res, msg)
         })
 })
+
+// voter
+var getVoter = onRequest(async (req, res) => {
+    const uid = await firebaseTokenAuth(req)
+    return await getFirestore()
+        .collection(collectionNames.voters)
+        .doc(uid)
+        .get()
+        .then((data) => {
+            const result = {
+                exists: data.exists,
+                uid: data.get('uid'),
+                voterId: data.get('voterId')
+            }
+            if (res) return res.json(result)
+            return result
+        })
+        .catch((err) => {
+            logger.error(res, err)
+            return { exists: false, err: err }
+        })
+});
+exports.getVoter = getVoter;
+var voterIdExists = onRequest(async (voterId) => {
+    logger.debug('voterIdExists', voterId)
+    return getFirestore()
+        .collection(collectionNames.voters)
+        .where('voterId', '==', voterId)
+        .get()
+        .then((data) => {
+            return data.docs && data.docs.length > 0
+        })
+        .catch(function (err) {
+            return false
+        })
+});
+exports.voterIdExists = voterIdExists;
+var newVoterId = onRequest(async (attempts) => {
+    if (attempts > 5) {
+        logger.error('newVoterId too many attempts.')
+        return new Promise<string>(() => {
+            return ''
+        })
+    }
+
+    const voterId = nanoid.nanoid(10)
+    return voterIdExists(voterId).then((exists) => {
+        if (!exists) return voterId
+        else return newVoterId(attempts + 1)
+    })
+});
+exports.newVoterId = newVoterId;
+exports.createVoter = onRequest(async (req, res) => {
+    try {
+        const uid = await firebaseTokenAuth(req)
+
+        // if the voter exists
+        return await getVoter(req).then(async (data) => {
+            const existingVoter = data
+            // if Voter already exists, return that
+            if (
+                existingVoter.exists &&
+                existingVoter.voterId &&
+                existingVoter.voterId.length
+            )
+                return res.json(existingVoter)
+            // Voter does not exist, create a new unique voterId first
+            else
+                return await newVoterId(0)
+                    .then(function (voterId) {
+                        const voter = {
+                            uid: uid.trim(),
+                            voterId: voterId.trim()
+                        }
+
+                        logger.message(
+                            'Creating new voter: ' + JSON.stringify(voter)
+                        )
+
+                        // now create the Voter
+                        return getFirestore()
+                            .collection('voters')
+                            .doc(uid)
+                            .set(voter)
+                            .then(() => {
+                                return res.json(voter)
+                            })
+                            .catch(function (err) {
+                                return logger.error(res, err)
+                            })
+                    })
+                    .catch(() => {
+                        return logger.error(res, req)
+                    })
+        })
+    } catch (error) {
+        return logger.error(res, error)
+    }
+});
 
 logger.debug('Votery Functions loaded')
