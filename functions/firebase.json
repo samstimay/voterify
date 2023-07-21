@@ -2,7 +2,7 @@
   "functions": [
     {
       "codebase": "voteryapp-functions",
-      "source": "functions",
+      "source": ".",
       "ignore": [
         "node_modules",
         ".git",

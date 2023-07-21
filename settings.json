@@ -4,7 +4,7 @@
     "appPort": "8080",
     "apiDomain": "http://localhost",
     "apiPort": "5000",
-    "apiEndpoint": "/votery-2d68d/us-east4/voterifyApi/"
+    "apiEndpoint": "/voteryapp/us-east4/"
   },
   "endpoints": {
     "load": "/load",

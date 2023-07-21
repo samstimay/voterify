@@ -13,7 +13,7 @@
       }
     },
     "host": "firebase",
-    "basePath": "/voterifyApi",
+    "basePath": "/voteryapp",
     "schemes": [
       "https"
     ],

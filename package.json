@@ -42,7 +42,7 @@
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
     "lint-staged": "^8.1.0",
-    "node-sass": "^4.14.1",
+    "node-sass": "^9.0.0",
     "recursive-copy": "^2.0.10",
     "sass": "^1.26.11",
     "sass-loader": "^7.1.0",
@@ -61,6 +61,7 @@
     ]
   },
   "resolutions": {
-    "lodash": "^4.17.20"
+    "lodash": "^4.17.20",
+    "**/node-gyp": "9.4.0"
   }
 }

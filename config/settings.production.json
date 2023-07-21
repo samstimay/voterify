@@ -1,5 +1,5 @@
 {
   "apiHost": "https://us-east4-votery-2d68d.cloudfunctions.net",
   "apiPort": "",
-  "apiPath": "/voterifyApi/"
+  "apiPath": "/voteryapp/"
 }
