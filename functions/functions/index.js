@@ -30,7 +30,7 @@ exports.getInfo = onRequest((req, res) => {
                 return result
             })
     } catch (error) {
-        return logger.error(res, error)
+        return logger.error(req, error)
     }
 });
 
