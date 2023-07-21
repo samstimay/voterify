@@ -12,6 +12,7 @@ const {onRequest} = require("firebase-functions/v2/https");
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 const { getFirestore } = require("firebase-admin/firestore");
+const debug = require("./debug");
 
 admin.initializeApp();
 
@@ -115,7 +116,10 @@ exports.elections = onRequest((req, res) => {
             .then(function (data) {
                 const elections = []
                 data.docs.forEach(function (doc) {
-                    elections.push(doc.data())
+                    elections.push({
+                        id: doc.id,
+                        ...doc.data()
+                    })
                 })
                 return res.json(elections)
             })
@@ -141,7 +145,10 @@ exports.electionsEditGet = onRequest((req, res) => {
                     .then(function (data) {
                         const elections = []
                         data.docs.forEach(function (doc) {
-                            elections.push(doc.data())
+                            elections.push({
+                                id: doc.id,
+                                ...doc.data()
+                            })
                         })
                         return res.json(elections)
                     })
@@ -181,7 +188,6 @@ exports.electionsEditPost = onRequest((req, res) => {
                                         .collection(collectionNames.elections)
                                         .doc(election.id)
                                         .set({
-                                            id: election.id,
                                             name: election.name,
                                             region: election.region,
                                             date: new Date(),
