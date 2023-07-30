@@ -1,21 +1,20 @@
-import firebase from './firebase-provider'
-import ApplicationVerifier = firebase.auth.ApplicationVerifier
+import { getAuth, signInWithPhoneNumber  } from "firebase/auth";
+
 class FirebaseAuth {
-    public phone(phoneNumber: string, appVerifier: ApplicationVerifier) {
-        return firebase
-            .auth()
-            .signInWithPhoneNumber(phoneNumber, appVerifier)
+    public phone(phoneNumber, appVerifier) {
+        const auth = getAuth()
+        return signInWithPhoneNumber(auth, phoneNumber, appVerifier)
             .then(function (confirmationResult) {
                 ;(window as any).confirmationResult = confirmationResult
             })
     }
 
     public getAuthToken() {
-        return firebase.auth().currentUser.getIdToken(true)
+        return getAuth().currentUser.getIdToken(true)
     }
 
     public isAuthorized(): boolean {
-        return firebase.auth().currentUser != null
+        return getAuth().currentUser != null
     }
 
     public get confirmation() {
@@ -23,7 +22,7 @@ class FirebaseAuth {
     }
 
     public signOut() {
-        return firebase.auth().signOut()
+        return getAuth().signOut()
     }
 }
 

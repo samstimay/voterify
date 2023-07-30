@@ -1,9 +1,10 @@
-import firebase from 'firebase'
 import { Env } from '../env'
+import { initializeApp } from 'firebase/app';
+import { getFunctions } from 'firebase/functions';
 
 // Initialize Firebase
 
-firebase.initializeApp(Env.firebaseConfig())
-firebase.auth().useDeviceLanguage()
+const app = initializeApp(Env.firebaseConfig())
+const functions = getFunctions(app);
 
-export default firebase
+export default app

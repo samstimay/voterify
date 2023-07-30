@@ -56,7 +56,6 @@ import { session } from '@/factory/session'
 import { Bubble } from '@/components/ui/all'
 import { EventHub } from '@/factory/event-hub'
 import Election from '@/models/election'
-import firebase from 'firebase'
 import Auth from '@/mixins/auth'
 
 import { mapState } from 'vuex'

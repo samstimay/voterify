@@ -47,15 +47,14 @@ import 'swiper/dist/css/swiper.css'
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import PageLoader from './components/ui/page-loader.vue'
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
-import { constants } from '@/factory/constants'
-import { api } from '@/factory/api'
-import firebase from '@/factory/firebase-provider'
+import app from '@/factory/firebase-provider'
 import { lang, Lang } from '@/factory/lang'
 import { EventHub } from '@/factory/event-hub'
 import FbUser from '@/models/fbUser'
 import Voter from '@/models/voter'
 import { session } from '@/factory/session'
 import { mapState } from 'vuex'
+import { getAuth } from "firebase/auth";
 
 @Component({
     components: {
@@ -98,6 +97,7 @@ export default class App extends Vue {
 
     public created() {
         const instance = this as any
+        console.log(app.name)
         lang.init().then(function () {
             instance.$store.dispatch('settings/get').then(function () {
                 instance.$store.dispatch('elections/get').then(function (data) {
@@ -112,11 +112,12 @@ export default class App extends Vue {
             })
         })
         EventHub.$on('logout', this.onLogout)
+        
+        getAuth().useDeviceLanguage()
     }
 
     public onLogout() {
-        firebase
-            .auth()
+            getAuth()
             .signOut()
             .then(() => {
                 this.$store.dispatch('user/setPermissions', { permissions: {} })

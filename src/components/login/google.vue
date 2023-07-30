@@ -14,8 +14,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
 import { Error } from '@/components/ui/all'
-import firebase from '@/factory/firebase-provider'
-import firebaseAuth from '@/factory/firebase-auth'
+import auth from 'firebase/auth'
 
 @Component({
     components: {
@@ -23,8 +22,6 @@ import firebaseAuth from '@/factory/firebase-auth'
     }
 })
 export default class GoogleLogin extends Vue {
-    public provider = new firebase.auth.GoogleAuthProvider()
-
     public data() {
         return {
             imageSrc: '/images/google/btn_google_signin_light_normal_web.png',
@@ -37,21 +34,25 @@ export default class GoogleLogin extends Vue {
     }
 
     public onClick() {
-        const instance = this as any
-        firebase
-            .auth()
-            .signInWithPopup(this.provider)
-            .then(async function(result) {
-                const token = await firebaseAuth.getAuthToken()
-                const fbUser = await instance.$store.dispatch('user/setUser', {
-                    user: result.user,
-                    token
-                })
-                instance.$emit('auth-success')
-            })
-            .catch(function(error) {
-                instance.errorMessage = error.message
-            })
+        
+        // TODO: fix auth provider with google
+        var provider = new auth.GoogleAuthProvider()
+
+        // const instance = this as any
+        //     auth
+        
+        //     .signInWithPopup(this.provider)
+        //     .then(async function(result) {
+        //         const token = await firebaseAuth.getAuthToken()
+        //         const fbUser = await instance.$store.dispatch('user/setUser', {
+        //             user: result.user,
+        //             token
+        //         })
+        //         instance.$emit('auth-success')
+        //     })
+        //     .catch(function(error) {
+        //         instance.errorMessage = error.message
+        //     })
     }
 }
 </script>

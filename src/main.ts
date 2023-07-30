@@ -12,13 +12,10 @@ import VueTelInput from 'vue-tel-input'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 import 'bulma/css/bulma.css'
 import './styles/global.scss'
-import firebase from './factory/firebase-provider'
 import Translate from './plugins/translate'
 import { Vuetable, VuetablePagination } from 'vuetable-2'
 import Toasted from 'vue-toasted'
 import '@fortawesome/fontawesome-free/css/fontawesome.css'
-
-firebase.auth()
 
 Vue.config.productionTip = false
 

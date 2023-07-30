@@ -36,7 +36,7 @@
                 <div class="field is-grouped is-grouped-centered">
                     <div class="control" v-show="isValid">
                         <input
-                            id="send-sms-button"
+                            id="sign-in-button"
                             class="button is-large is-centered"
                             type="button"
                             :value="$ui('send', 'Send')"
@@ -117,10 +117,9 @@ import '@/styles/pages/home.scss'
 import { EventHub } from '@/factory/event-hub'
 import { Bubble, TextInput, ProgressCounter } from '@/components/ui/all'
 import { Component, Prop, Vue } from 'vue-property-decorator'
-import firebase from '@/factory/firebase-provider'
+import { getAuth, RecaptchaVerifier, signInWithPhoneNumber  } from "firebase/auth";
 import { constants } from '@/factory/constants'
 import { session } from '@/factory/session'
-import firebaseAuth from '@/factory/firebase-auth'
 import CookiesModal from '@/components/modals/cookies.vue'
 import Phone from '@/mixins/phone'
 import Permissions from '@/models/permissions'
@@ -165,17 +164,17 @@ export default class HomePage extends Vue {
                 modal: CookiesModal,
                 callBackFn: instance.onClickModalOk
             })
-        }
+        }       
 
-        ;(window as any).recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
-            'send-sms-button',
-            {
-                size: 'invisible',
-                callback(response) {
-                    instance.onClick()
-                }
+        const auth = getAuth();
+        // @ts-ignore
+        window.recaptchaVerifier = new RecaptchaVerifier(auth, 'sign-in-button', {
+            'size': 'invisible',
+            'callback': (response) => {
+                instance.onClick()
             }
-        )
+        });
+
         const phoneInput: Element = document.querySelectorAll('[type="tel"]')[0]
         ;(phoneInput as any).focus()
         instance.isLoaded = true
@@ -192,8 +191,8 @@ export default class HomePage extends Vue {
         const instance = this as any
         const phoneNumber = instance.phoneToRecaptcha((this as any).phoneNumber)
         const appVerifier = (window as any).recaptchaVerifier
-        return firebaseAuth
-            .phone(phoneNumber, appVerifier)
+        const auth = getAuth()
+        return signInWithPhoneNumber(auth, phoneNumber, appVerifier)
             .then(function () {
                 instance.$router.push('/sms')
             })

@@ -12,7 +12,6 @@ import { Component, Prop, Vue } from 'vue-property-decorator'
 import { Bubble } from '@/components/ui/all'
 import { session } from '@/factory/session'
 import { EventHub } from '@/factory/event-hub'
-import firebase from 'firebase'
 import GoogleLogin from '@/components/login/google.vue'
 
 @Component({

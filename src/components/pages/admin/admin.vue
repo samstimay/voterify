@@ -36,7 +36,6 @@ import { Bubble } from '@/components/ui/all'
 import { session } from '@/factory/session'
 import { EventHub } from '@/factory/event-hub'
 import Election from '@/models/election'
-import firebase from 'firebase'
 import Auth from '@/mixins/auth'
 
 @Component({
